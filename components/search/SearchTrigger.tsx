@@ -8,6 +8,18 @@ export function SearchTrigger() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
+    const root = document.getElementById('page-root')
+    if (!root) return
+    if (open) {
+      root.style.filter = 'blur(4px)'
+      root.style.transition = 'filter 0.15s ease'
+    } else {
+      root.style.filter = ''
+    }
+    return () => { root.style.filter = '' }
+  }, [open])
+
+  useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault()
@@ -18,19 +30,6 @@ export function SearchTrigger() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  useEffect(() => {
-    const main = document.getElementById('main-content')
-    if (!main) return
-    if (open) {
-      main.style.filter = 'blur(4px)'
-      main.style.transition = 'filter 0.15s ease'
-    } else {
-      main.style.filter = ''
-    }
-    return () => {
-      main.style.filter = ''
-    }
-  }, [open])
 
   return (
     <>

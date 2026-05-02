@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { Search, FileText, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -81,10 +82,13 @@ export function SearchDialog({ open, onOpenChange, initialTag }: SearchDialogPro
 
   if (!open) return null
 
-  return (
+  return createPortal(
     <>
-      <div className="fixed inset-0 z-50" />
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] pointer-events-none">
+      <div
+        className="fixed inset-0 z-[200] bg-black/20"
+        onClick={() => onOpenChange(false)}
+      />
+      <div className="fixed inset-0 z-[201] flex items-start justify-center pt-[10vh] pointer-events-none">
         <div
           ref={dialogRef}
           className="w-full max-w-lg mx-4 bg-background border border-border rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
@@ -163,6 +167,7 @@ export function SearchDialog({ open, onOpenChange, initialTag }: SearchDialogPro
           )}
         </div>
       </div>
-    </>
+    </>,
+    document.body
   )
 }

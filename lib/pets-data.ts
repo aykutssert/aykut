@@ -10,6 +10,7 @@ export async function getPets(
   page: number,
   q: string,
   sort: string,
+  showNsfw: boolean,
 ): Promise<{ pets: Pet[]; total: number; totalLikes: number }> {
   'use cache'
   cacheTag('pets')
@@ -24,9 +25,10 @@ export async function getPets(
     .from('pets')
     .select('*', { count: 'exact' })
     .eq('published', true)
-    .eq('is_nsfw', false)
     .order(orderCol, { ascending: false })
     .range(from, to)
+
+  if (!showNsfw) query = query.eq('is_nsfw', false)
 
   if (q) {
     const safe = q.replace(/[%_\\]/g, '\\$&')

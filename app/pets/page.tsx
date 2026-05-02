@@ -12,15 +12,16 @@ import { LikeButton } from '@/components/pets/LikeButton'
 import { cn } from '@/lib/utils'
 
 interface Props {
-  searchParams: Promise<{ page?: string; q?: string; sort?: string }>
+  searchParams: Promise<{ page?: string; q?: string; sort?: string; nsfw?: string }>
 }
 
 async function PetsList({ searchParams }: Props) {
-  const { page: pageParam, q = '', sort = 'newest' } = await searchParams
+  const { page: pageParam, q = '', sort = 'newest', nsfw } = await searchParams
   const page = Math.max(1, parseInt(pageParam ?? '1') || 1)
   const sortVal = sort === 'liked' ? 'liked' : 'newest'
+  const showNsfw = nsfw === '1'
 
-  const { pets, total, totalLikes } = await getPets(page, q, sortVal)
+  const { pets, total, totalLikes } = await getPets(page, q, sortVal, showNsfw)
 
   const totalPages = Math.ceil(total / PER_PAGE)
   const hasPrev = page > 1
@@ -61,7 +62,7 @@ async function PetsList({ searchParams }: Props) {
           <PetsSearchBar defaultValue={q} />
         </Suspense>
         <Suspense>
-          <PetsSortTabs defaultSort={sortVal} />
+          <PetsSortTabs defaultSort={sortVal} showNsfw={showNsfw} />
         </Suspense>
       </div>
 

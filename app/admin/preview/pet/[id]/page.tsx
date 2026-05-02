@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { PetViewer } from '@/components/pets/PetViewer'
 import type { Pet } from '@/lib/pets'
 
@@ -9,7 +9,10 @@ interface Props {
 
 export default async function PreviewPetPage({ params }: Props) {
   const { id } = await params
-  const supabase = await createClient()
+  const supabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
   const { data: pet } = await supabase.from('pets').select('*').eq('id', id).single() as { data: Pet | null }
   if (!pet) notFound()
 

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { PetEditForm } from '@/components/admin/PetEditForm'
 import type { Pet } from '@/lib/pets'
@@ -7,8 +8,7 @@ interface Props {
   params: Promise<{ id: string }>
 }
 
-export default async function EditPetPage({ params }: Props) {
-  const { id } = await params
+async function EditPetContent({ id }: { id: string }) {
   const supabase = createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -21,5 +21,14 @@ export default async function EditPetPage({ params }: Props) {
       <h1 className="text-xl font-semibold mb-6">Edit pet</h1>
       <PetEditForm pet={pet} />
     </div>
+  )
+}
+
+export default async function EditPetPage({ params }: Props) {
+  const { id } = await params
+  return (
+    <Suspense fallback={<div className="h-8 w-48 bg-muted animate-pulse rounded-lg" />}>
+      <EditPetContent id={id} />
+    </Suspense>
   )
 }

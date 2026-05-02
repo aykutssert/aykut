@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { getAllCategories, getAllDocsMeta } from '@/lib/docs'
 import { DocForm } from '@/components/admin/DocForm'
@@ -14,8 +15,7 @@ async function getDocById(id: string): Promise<Doc | null> {
   return data ?? null
 }
 
-export default async function EditDocPage({ params }: Props) {
-  const { id } = await params
+async function EditDocContent({ id }: { id: string }) {
   const [doc, categories, allDocs] = await Promise.all([
     getDocById(id),
     getAllCategories(),
@@ -29,5 +29,14 @@ export default async function EditDocPage({ params }: Props) {
       <h1 className="text-xl font-semibold mb-6">Edit doc</h1>
       <DocForm doc={doc} categories={categories} allDocs={allDocs} />
     </div>
+  )
+}
+
+export default async function EditDocPage({ params }: Props) {
+  const { id } = await params
+  return (
+    <Suspense fallback={<div className="h-8 w-48 bg-muted animate-pulse rounded-lg" />}>
+      <EditDocContent id={id} />
+    </Suspense>
   )
 }

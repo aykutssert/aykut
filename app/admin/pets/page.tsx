@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { PetAdminTable } from '@/components/admin/PetAdminTable'
 import type { Pet } from '@/lib/pets'
@@ -12,7 +13,7 @@ async function getAllPets(): Promise<Pet[]> {
   return data ?? []
 }
 
-export default async function AdminPetsPage() {
+async function PetList() {
   const pets = await getAllPets()
 
   if (pets.length === 0) {
@@ -31,5 +32,13 @@ export default async function AdminPetsPage() {
       <h1 className="text-xl font-semibold mb-6">Pets</h1>
       <PetAdminTable pets={pets} />
     </div>
+  )
+}
+
+export default function AdminPetsPage() {
+  return (
+    <Suspense fallback={<div className="h-8 w-48 bg-muted animate-pulse rounded-lg" />}>
+      <PetList />
+    </Suspense>
   )
 }

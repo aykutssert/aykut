@@ -19,6 +19,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
+            <Link href="/admin/pets" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-2">
+              Pets
+            </Link>
+            <Link
+              href="/admin/pets/new"
+              className="inline-flex items-center gap-1.5 text-sm border border-border px-3 py-1.5 rounded-lg hover:bg-muted transition-colors"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              New pet
+            </Link>
             <Link
               href="/admin/new"
               className="inline-flex items-center gap-1.5 text-sm bg-foreground text-background px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"

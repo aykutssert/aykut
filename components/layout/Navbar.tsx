@@ -26,6 +26,10 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
           <SearchTrigger />
         </div>
 
+        <Link href="/pets" className="text-sm text-muted-foreground hover:text-foreground transition-colors hidden md:block">
+          Pets
+        </Link>
+
         <ThemeToggle />
       </div>
     </header>

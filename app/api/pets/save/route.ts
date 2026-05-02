@@ -1,0 +1,28 @@
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+
+export async function POST(req: Request) {
+  const body = await req.json() as {
+    id: string
+    display_name: string
+    description: string
+    spritesheet_url: string
+    published: boolean
+  }
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const { error } = await supabase.from('pets').upsert({
+    id: body.id,
+    display_name: body.display_name,
+    description: body.description,
+    spritesheet_url: body.spritesheet_url,
+    published: body.published,
+  })
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ ok: true })
+}

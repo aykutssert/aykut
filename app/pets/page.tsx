@@ -85,28 +85,27 @@ export default async function PetsPage({ searchParams }: Props) {
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {pets.map((pet) => (
-                <div key={pet.id} className="border border-border rounded-xl overflow-hidden bg-background flex flex-col">
+                <div key={pet.id} className="border border-border rounded-xl overflow-hidden bg-background flex flex-col shadow-sm">
                   <Link href={`/pets/${pet.id}`} className="block hover:opacity-90 transition-opacity">
                     <PetCardCanvas spritesheetUrl={pet.spritesheet_url} size={140} />
                   </Link>
-                  <div className="px-3 pt-3 pb-2 flex-1 flex flex-col">
+                  <div className="px-3 pt-3 pb-3 flex-1 flex flex-col">
                     <p className="text-sm font-semibold truncate">{pet.display_name}</p>
                     {pet.description && (
                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2 leading-relaxed flex-1">{pet.description}</p>
                     )}
                   </div>
-                  <div className="border-t border-border flex">
+                  <div className="px-3 pb-3 flex gap-2">
                     <Link
                       href={`/pets/${pet.id}`}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium border border-border rounded-lg text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       View
                     </Link>
-                    <div className="w-px bg-border" />
                     <a
                       href={`/api/pets/download?id=${pet.id}`}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium border border-border rounded-lg text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                     >
                       <Download className="w-3.5 h-3.5" />
                       Download

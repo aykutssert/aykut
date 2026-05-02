@@ -2,15 +2,17 @@
 
 import { useRouter } from 'next/navigation'
 import { Trash2 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
 
 export function DeleteDocButton({ id, title }: { id: string; title: string }) {
   const router = useRouter()
 
   async function handleDelete() {
     if (!confirm(`Delete "${title}"? This cannot be undone.`)) return
-    const supabase = createClient()
-    await supabase.from('docs').delete().eq('id', id)
+    await fetch('/api/docs/delete', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
     router.refresh()
   }
 

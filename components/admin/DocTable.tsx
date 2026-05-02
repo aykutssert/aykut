@@ -4,14 +4,19 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Pencil } from 'lucide-react'
 import { DeleteDocButton } from './DeleteDocButton'
+import { ReorderPanel } from './ReorderPanel'
 import { cn } from '@/lib/utils'
 import type { Doc } from '@/types'
 
 export function DocTable({ docs }: { docs: Doc[] }) {
   const categories = ['All', ...Array.from(new Set(docs.map((d) => d.category))).sort()]
   const [active, setActive] = useState('All')
+  const [mode, setMode] = useState<'list' | 'reorder'>('list')
 
   const filtered = active === 'All' ? docs : docs.filter((d) => d.category === active)
+  const reorderDocs = active !== 'All'
+    ? docs.filter((d) => d.category === active).sort((a, b) => a.order_index - b.order_index)
+    : []
 
   return (
     <div>
@@ -20,7 +25,7 @@ export function DocTable({ docs }: { docs: Doc[] }) {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setActive(cat)}
+              onClick={() => { setActive(cat); setMode('list') }}
               className={cn(
                 'px-3 py-1 rounded-lg text-xs font-medium transition-colors',
                 active === cat
@@ -32,10 +37,30 @@ export function DocTable({ docs }: { docs: Doc[] }) {
             </button>
           ))}
         </div>
-        <p className="text-xs text-muted-foreground shrink-0">{filtered.length} doc{filtered.length !== 1 ? 's' : ''}</p>
+        <div className="flex items-center gap-3">
+          {active !== 'All' && (
+            <div className="flex border border-border rounded-lg overflow-hidden text-xs">
+              {(['list', 'reorder'] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setMode(m)}
+                  className={cn(
+                    'px-3 py-1 capitalize transition-colors',
+                    mode === m ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
+                  )}
+                >
+                  {m === 'list' ? 'List' : 'Reorder'}
+                </button>
+              ))}
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground shrink-0">{filtered.length} doc{filtered.length !== 1 ? 's' : ''}</p>
+        </div>
       </div>
 
-      {filtered.length === 0 ? (
+      {mode === 'reorder' && active !== 'All' ? (
+        <ReorderPanel docs={reorderDocs} category={active} />
+      ) : filtered.length === 0 ? (
         <p className="text-center py-16 text-sm text-muted-foreground">No docs in this category.</p>
       ) : (
         <div className="border border-border rounded-xl overflow-hidden">

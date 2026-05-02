@@ -13,12 +13,26 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+
 export const metadata: Metadata = {
   title: {
     default: 'Kernel',
     template: '%s — Kernel',
   },
   description: 'Curated, LLM-friendly documentation for AI concepts, agent frameworks, MCP, and more.',
+  metadataBase: new URL(baseUrl),
+  openGraph: {
+    type: 'website',
+    siteName: 'Kernel',
+    title: 'Kernel',
+    description: 'Curated, LLM-friendly documentation for AI concepts, agent frameworks, MCP, and more.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kernel',
+    description: 'Curated, LLM-friendly documentation for AI concepts, agent frameworks, MCP, and more.',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -236,7 +236,16 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               <img src={imageUrl} alt="" className="h-40 rounded-lg object-cover border border-border" />
               <button
                 type="button"
-                onClick={() => setImageUrl('')}
+                onClick={async () => {
+                  if (imageUrl !== (doc?.image_url ?? '')) {
+                    await fetch('/api/upload', {
+                      method: 'DELETE',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ url: imageUrl }),
+                    })
+                  }
+                  setImageUrl('')
+                }}
                 className="absolute -top-2 -right-2 w-5 h-5 bg-foreground text-background rounded-full flex items-center justify-center"
               >
                 <X className="w-3 h-3" />

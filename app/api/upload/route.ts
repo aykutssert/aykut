@@ -25,3 +25,14 @@ export async function POST(req: Request) {
   const { data } = supabase.storage.from('kernel').getPublicUrl(filename)
   return NextResponse.json({ url: data.publicUrl })
 }
+
+export async function DELETE(req: Request) {
+  const { url } = await req.json() as { url: string }
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+  const parts = new URL(url).pathname.split('/object/public/kernel/')
+  if (parts[1]) await supabase.storage.from('kernel').remove([parts[1]])
+  return NextResponse.json({ ok: true })
+}

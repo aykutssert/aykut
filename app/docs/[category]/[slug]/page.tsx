@@ -28,9 +28,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, slug } = await params
   const doc = await getDoc(category, slug)
   if (!doc) return {}
+  const description = `${doc.category} — ${doc.title}`
   return {
     title: doc.title,
-    description: `${doc.category} — ${doc.title}`,
+    description,
+    openGraph: {
+      title: doc.title,
+      description,
+      ...(doc.image_url ? { images: [{ url: doc.image_url }] } : {}),
+    },
+    twitter: {
+      card: doc.image_url ? 'summary_large_image' : 'summary',
+      title: doc.title,
+      description,
+      ...(doc.image_url ? { images: [doc.image_url] } : {}),
+    },
   }
 }
 

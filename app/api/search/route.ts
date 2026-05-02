@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/server'
 
 function snippet(content: string, query: string, len = 140): string {
   const lower = content.toLowerCase()
@@ -13,15 +13,18 @@ function snippet(content: string, query: string, len = 140): string {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const q = searchParams.get('q')?.trim() ?? ''
+  const tag = searchParams.get('tag')?.trim() ?? ''
   const safe = q.replace(/[%_\\]/g, '\\$&')
 
-  const supabase = await createClient()
+  const supabase = createPublicClient()
 
-  const base = supabase
+  let base = supabase
     .from('docs')
-    .select('id, title, category, slug, content')
+    .select('id, title, category, slug, content, tags')
     .eq('published', true)
     .limit(8)
+
+  if (tag) base = base.contains('tags', [tag])
 
   const { data } = await (q
     ? base.or(`title.ilike.%${safe}%,content.ilike.%${safe}%`)
@@ -33,6 +36,7 @@ export async function GET(req: Request) {
       title: doc.title,
       category: doc.category,
       slug: doc.slug,
+      tags: doc.tags ?? [],
       snippet: q ? snippet(doc.content ?? '', q) : null,
     }))
   )

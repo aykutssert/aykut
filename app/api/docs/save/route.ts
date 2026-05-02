@@ -22,6 +22,17 @@ export async function POST(req: Request) {
   }
 
   if (id) {
+    const { data: existing } = await supabase
+      .from('docs')
+      .select('image_url')
+      .eq('id', id)
+      .single()
+
+    if (existing?.image_url && existing.image_url !== payload.image_url) {
+      const parts = new URL(existing.image_url).pathname.split('/object/public/kernel/')
+      if (parts[1]) await supabase.storage.from('kernel').remove([parts[1]])
+    }
+
     const { error } = await supabase
       .from('docs')
       .update({ ...payload, updated_at: new Date().toISOString() })

@@ -2,12 +2,28 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { Eye, Pencil, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Pet } from '@/lib/pets'
 
-export function PetAdminTable({ pets }: { pets: Pet[] }) {
+export function PetAdminTable({ pets: initialPets }: { pets: Pet[] }) {
   const router = useRouter()
+  const [pets, setPets] = useState(initialPets)
+
+  async function handleTogglePublish(id: string, current: boolean) {
+    setPets((prev) => prev.map((p) => p.id === id ? { ...p, published: !current } : p))
+    const res = await fetch('/api/pets/publish', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, published: !current }),
+    })
+    if (!res.ok) {
+      setPets((prev) => prev.map((p) => p.id === id ? { ...p, published: current } : p))
+    } else {
+      router.refresh()
+    }
+  }
 
   async function handleDelete(id: string, name: string) {
     if (!confirm(`Delete "${name}"? This cannot be undone.`)) return
@@ -50,14 +66,17 @@ export function PetAdminTable({ pets }: { pets: Pet[] }) {
               <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{pet.id}</td>
               <td className="px-4 py-2">
                 <div className="flex items-center gap-2">
-                  <span className={cn(
-                    'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
-                    pet.published
-                      ? 'bg-foreground text-background dark:bg-green-900/30 dark:text-green-400'
-                      : 'bg-muted text-muted-foreground'
-                  )}>
+                  <button
+                    onClick={() => handleTogglePublish(pet.id, pet.published)}
+                    className={cn(
+                      'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium transition-opacity hover:opacity-70',
+                      pet.published
+                        ? 'bg-foreground text-background dark:bg-green-900/30 dark:text-green-400'
+                        : 'bg-muted text-muted-foreground'
+                    )}
+                  >
                     {pet.published ? 'Published' : 'Draft'}
-                  </span>
+                  </button>
                   {pet.is_nsfw && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-500 border border-red-500/30">
                       NSFW

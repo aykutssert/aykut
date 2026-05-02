@@ -85,7 +85,7 @@ export default async function PetsPage({ searchParams }: Props) {
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {pets.map((pet) => (
-                <div key={pet.id} className="border border-border rounded-xl overflow-hidden bg-background flex flex-col shadow-sm">
+                <div key={pet.id} className="border border-foreground/15 rounded-xl overflow-hidden bg-background flex flex-col shadow-sm">
                   <Link href={`/pets/${pet.id}`} className="block hover:opacity-90 transition-opacity">
                     <PetCardCanvas spritesheetUrl={pet.spritesheet_url} size={140} />
                   </Link>
@@ -98,14 +98,14 @@ export default async function PetsPage({ searchParams }: Props) {
                   <div className="px-3 pb-3 flex gap-2">
                     <Link
                       href={`/pets/${pet.id}`}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium border border-border rounded-lg text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium border border-foreground/15 rounded-lg text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       View
                     </Link>
                     <a
                       href={`/api/pets/download?id=${pet.id}`}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium border border-border rounded-lg text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium border border-foreground/15 rounded-lg text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                     >
                       <Download className="w-3.5 h-3.5" />
                       Download

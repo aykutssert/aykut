@@ -89,10 +89,10 @@ export function PetViewer({ spritesheetUrl, size = 192 }: PetViewerProps) {
             key={s.name}
             onClick={() => setActiveState(i)}
             className={cn(
-              'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
+              'px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
               activeState === i
-                ? 'bg-foreground text-background'
-                : 'bg-muted text-muted-foreground hover:text-foreground'
+                ? 'border-foreground/40 text-foreground bg-muted/50'
+                : 'border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/40'
             )}
           >
             {s.label}

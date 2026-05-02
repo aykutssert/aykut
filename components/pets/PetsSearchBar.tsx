@@ -32,7 +32,7 @@ export function PetsSearchBar({ defaultValue = '' }: { defaultValue?: string }) 
           defaultValue={defaultValue}
           onKeyDown={handleKeyDown}
           placeholder="Search pets…"
-          className="pl-8 pr-3 py-1.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring w-52"
+          className="pl-8 pr-3 py-1.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring w-80"
         />
       </div>
       <button

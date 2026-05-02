@@ -1,0 +1,125 @@
+import { ImageResponse } from 'next/og'
+import { createPublicClient } from '@/lib/supabase/server'
+
+export const alt = 'Codex Pet'
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
+
+const CELL_W = 192
+const CELL_H = 208
+const SCALE = 2.5
+
+export default async function Image({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const supabase = createPublicClient()
+  const { data: pet } = await supabase
+    .from('pets')
+    .select('display_name, description, spritesheet_url')
+    .eq('id', id)
+    .eq('published', true)
+    .single()
+
+  const spriteW = Math.round(CELL_W * SCALE)
+  const spriteH = Math.round(CELL_H * SCALE)
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          background: '#0a0a0a',
+          padding: '72px 80px',
+          alignItems: 'center',
+          gap: '64px',
+        }}
+      >
+        {/* Sprite — crop to first frame via overflow hidden */}
+        {pet?.spritesheet_url && (
+          <div
+            style={{
+              display: 'flex',
+              width: spriteW,
+              height: spriteH,
+              overflow: 'hidden',
+              flexShrink: 0,
+              borderRadius: 16,
+              background: '#141414',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={pet.spritesheet_url}
+              alt=""
+              width={spriteW}
+              height={spriteH}
+              style={{
+                imageRendering: 'pixelated',
+                objectFit: 'none',
+                objectPosition: '0 0',
+                flexShrink: 0,
+              }}
+            />
+          </div>
+        )}
+
+        {/* Text */}
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              color: '#555',
+              fontSize: 18,
+              letterSpacing: 4,
+              textTransform: 'uppercase',
+              marginBottom: 20,
+              fontFamily: 'sans-serif',
+            }}
+          >
+            Codex Pet
+          </div>
+          <div
+            style={{
+              color: '#ffffff',
+              fontSize: 68,
+              fontWeight: 700,
+              lineHeight: 1.1,
+              marginBottom: 28,
+              fontFamily: 'sans-serif',
+            }}
+          >
+            {pet?.display_name ?? id}
+          </div>
+          {pet?.description && (
+            <div
+              style={{
+                color: '#888',
+                fontSize: 26,
+                lineHeight: 1.5,
+                fontFamily: 'sans-serif',
+              }}
+            >
+              {pet.description.length > 110
+                ? pet.description.slice(0, 110) + '…'
+                : pet.description}
+            </div>
+          )}
+          <div
+            style={{
+              color: '#333',
+              fontSize: 18,
+              marginTop: 'auto',
+              paddingTop: 40,
+              fontFamily: 'sans-serif',
+            }}
+          >
+            kernel.so
+          </div>
+        </div>
+      </div>
+    ),
+    { ...size }
+  )
+}

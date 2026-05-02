@@ -19,7 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = createPublicClient()
   const { data: pet } = await supabase.from('pets').select('display_name, description').eq('id', id).eq('published', true).eq('is_nsfw', false).single()
   if (!pet) return {}
-  return { title: pet.display_name, description: pet.description ?? undefined }
+  return {
+    title: pet.display_name,
+    description: pet.description ?? undefined,
+    openGraph: { title: pet.display_name, description: pet.description ?? undefined },
+    twitter: { card: 'summary_large_image', title: pet.display_name, description: pet.description ?? undefined },
+  }
 }
 
 export default async function PetPage({ params }: Props) {

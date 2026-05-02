@@ -24,6 +24,7 @@ export function PetAdminTable({ pets }: { pets: Pet[] }) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-muted/50">
+            <th className="px-4 py-3 w-12" />
             <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
             <th className="text-left px-4 py-3 font-medium text-muted-foreground">ID</th>
             <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
@@ -33,17 +34,36 @@ export function PetAdminTable({ pets }: { pets: Pet[] }) {
         <tbody>
           {pets.map((pet, i) => (
             <tr key={pet.id} className={i < pets.length - 1 ? 'border-b border-border' : ''}>
-              <td className="px-4 py-3 font-medium">{pet.display_name}</td>
-              <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{pet.id}</td>
-              <td className="px-4 py-3">
-                <span className={cn(
-                  'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
-                  pet.published
-                    ? 'bg-foreground text-background dark:bg-green-900/30 dark:text-green-400'
-                    : 'bg-muted text-muted-foreground'
-                )}>
-                  {pet.published ? 'Published' : 'Draft'}
-                </span>
+              <td className="px-4 py-2">
+                <div
+                  className="w-8 h-8 rounded overflow-hidden shrink-0"
+                  style={{
+                    backgroundImage: `url(${pet.spritesheet_url})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: '0 0',
+                    backgroundSize: 'auto 100%',
+                    imageRendering: 'pixelated',
+                  }}
+                />
+              </td>
+              <td className="px-4 py-2 font-medium">{pet.display_name}</td>
+              <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{pet.id}</td>
+              <td className="px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <span className={cn(
+                    'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
+                    pet.published
+                      ? 'bg-foreground text-background dark:bg-green-900/30 dark:text-green-400'
+                      : 'bg-muted text-muted-foreground'
+                  )}>
+                    {pet.published ? 'Published' : 'Draft'}
+                  </span>
+                  {pet.is_nsfw && (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-500 border border-red-500/30">
+                      NSFW
+                    </span>
+                  )}
+                </div>
               </td>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-1 justify-end">

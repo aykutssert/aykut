@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeSlug)
-    .use(rehypePrettyCode, { theme: { dark: 'one-dark-pro', light: 'github-light' }, keepBackground: true })
+    .use(rehypePrettyCode, { theme: { dark: 'one-dark-pro', light: 'one-light' }, keepBackground: true })
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(normalizeContent(content ?? ''))
 

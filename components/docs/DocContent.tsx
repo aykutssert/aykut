@@ -24,7 +24,7 @@ export async function DocContent({ content }: DocContentProps) {
       content: { type: 'text', value: '#' },
     })
     .use(rehypePrettyCode, {
-      theme: { dark: 'one-dark-pro', light: 'github-light' },
+      theme: { dark: 'one-dark-pro', light: 'one-light' },
       keepBackground: true,
     })
     .use(rehypeStringify, { allowDangerousHtml: true })

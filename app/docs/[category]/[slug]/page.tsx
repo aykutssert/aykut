@@ -108,11 +108,15 @@ export default async function DocPage({ params }: Props) {
 
           {/* Image */}
           {doc.image_url && (
-            <div className="mb-8">
+            <div className="relative mb-8 rounded-xl border border-border overflow-hidden flex justify-center items-center" style={{ maxHeight: '70vh' }}>
+              <div
+                className="absolute inset-0 scale-110 blur-2xl brightness-90"
+                style={{ backgroundImage: `url(${doc.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+              />
               <img
                 src={doc.image_url}
                 alt={doc.title}
-                className="w-full rounded-xl border border-border"
+                className="relative z-10 max-w-full max-h-[70vh] object-contain"
               />
             </div>
           )}

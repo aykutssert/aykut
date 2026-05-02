@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 
 export async function DELETE(req: Request) {
@@ -25,5 +26,6 @@ export async function DELETE(req: Request) {
 
   await supabase.from('docs').delete().eq('id', id)
 
+  revalidateTag('docs', 'max')
   return NextResponse.json({ ok: true })
 }

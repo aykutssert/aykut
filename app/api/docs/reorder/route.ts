@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 
 export async function POST(req: Request) {
@@ -14,5 +15,6 @@ export async function POST(req: Request) {
   )
 
   await Promise.all(updates)
+  revalidateTag('docs', 'max')
   return NextResponse.json({ ok: true })
 }

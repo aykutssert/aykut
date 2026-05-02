@@ -91,7 +91,7 @@ export function PetViewer({ spritesheetUrl, size = 192 }: PetViewerProps) {
             className={cn(
               'px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
               activeState === i
-                ? 'border-foreground/40 text-foreground bg-muted/50'
+                ? 'border-foreground/40 text-foreground bg-foreground/10'
                 : 'border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/40'
             )}
           >

@@ -4,7 +4,7 @@ import { Search } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { SearchDialog } from './SearchDialog'
 
-export function SearchTrigger() {
+export function SearchTrigger({ allTags = [] }: { allTags?: string[] }) {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export function SearchTrigger() {
           <span>⌘</span>K
         </kbd>
       </button>
-      <SearchDialog open={open} onOpenChange={setOpen} />
+      <SearchDialog open={open} onOpenChange={setOpen} allTags={allTags} />
     </>
   )
 }

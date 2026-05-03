@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { DocMeta } from '@/types'
@@ -41,6 +41,37 @@ export function Sidebar({ docs, onNavigate }: SidebarProps) {
 }
 
 
+function ActiveLink({ href, active, onClick, children }: {
+  href: string
+  active: boolean
+  onClick?: () => void
+  children: React.ReactNode
+}) {
+  const ref = useRef<HTMLAnchorElement>(null)
+
+  useEffect(() => {
+    if (active) {
+      ref.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    }
+  }, [active])
+
+  return (
+    <Link
+      ref={ref}
+      href={href}
+      onClick={onClick}
+      className={cn(
+        'flex py-2 px-3 rounded-md text-sm transition-colors leading-snug',
+        active
+          ? 'bg-[#E5E5DF] dark:bg-[#1E1917] text-foreground dark:text-[#D5A27F] font-medium'
+          : 'text-muted-foreground hover:text-foreground hover:bg-[#EEEEE8] dark:hover:bg-[#171513]'
+      )}
+    >
+      {children}
+    </Link>
+  )
+}
+
 function CategoryGroup({
   category,
   pages,
@@ -78,18 +109,13 @@ function CategoryGroup({
             const active = pathname === href
             return (
               <li key={page.id}>
-                <Link
+                <ActiveLink
                   href={href}
+                  active={active}
                   onClick={onNavigate}
-                  className={cn(
-                    'flex py-2 px-3 rounded-md text-sm transition-colors leading-snug',
-                    active
-                      ? 'bg-[#E5E5DF] dark:bg-[#1E1917] text-foreground dark:text-[#D5A27F] font-medium'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-[#EEEEE8] dark:hover:bg-[#171513]'
-                  )}
                 >
                   {page.title}
-                </Link>
+                </ActiveLink>
               </li>
             )
           })}

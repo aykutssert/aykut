@@ -23,7 +23,7 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
         </Link>
 
         <div className="flex-1">
-          <SearchTrigger />
+          <SearchTrigger allTags={[...new Set(docs.flatMap((d) => d.tags ?? []))].sort()} />
         </div>
 
         <ThemeToggle />

@@ -20,9 +20,10 @@ interface SearchDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   initialTag?: string
+  allTags?: string[]
 }
 
-export function SearchDialog({ open, onOpenChange, initialTag }: SearchDialogProps) {
+export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: SearchDialogProps) {
   const router = useRouter()
   const dialogRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -80,7 +81,8 @@ export function SearchDialog({ open, onOpenChange, initialTag }: SearchDialogPro
     return () => { window.removeEventListener('keydown', onKey); document.removeEventListener('mousedown', onMouseDown) }
   }, [open, results, selected, navigate, onOpenChange])
 
-  const allTags = [...new Set(results.flatMap((r) => r.tags))].slice(0, 8)
+  const resultTags = [...new Set(results.flatMap((r) => r.tags))].slice(0, 8)
+  const visibleTags = query ? resultTags : allTags.slice(0, 16)
 
   if (!open) return null
 
@@ -120,9 +122,9 @@ export function SearchDialog({ open, onOpenChange, initialTag }: SearchDialogPro
             </div>
           )}
 
-          {!activeTag && allTags.length > 0 && (
+          {!activeTag && visibleTags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 px-4 py-2 border-b border-border">
-              {allTags.map((tag) => (
+              {visibleTags.map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setActiveTag(tag)}

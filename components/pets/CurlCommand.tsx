@@ -26,10 +26,6 @@ export function CurlCommand({ petId }: Props) {
 
   return (
     <div className="mt-8">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-        Install via terminal
-      </p>
-
       {/* Tabs */}
       <div className="flex gap-1 mb-2">
         {(['cli', 'curl'] as const).map((t) => (

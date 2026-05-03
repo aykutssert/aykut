@@ -81,7 +81,8 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
               </span>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              Includes <code>pet.json</code> + <code>spritesheet.webp</code>
+              Download the package, then unzip it into{' '}
+              <code className="text-xs">{`$HOME/.codex/pets/${pet.id}`}</code>
             </p>
             {pet.source_url && (
               <a
@@ -94,6 +95,9 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
                 Source
               </a>
             )}
+            <p className="text-xs text-muted-foreground mt-8">
+              Alternatively, copy and paste this command into your terminal.
+            </p>
             <CurlCommand petId={pet.id} />
           </PetDetailSection>
         </main>

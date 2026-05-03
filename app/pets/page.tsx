@@ -8,6 +8,7 @@ import { PetCardCanvas } from '@/components/pets/PetCardCanvas'
 import { PetsSearchBar } from '@/components/pets/PetsSearchBar'
 import { PetsSortTabs } from '@/components/pets/PetsSortTabs'
 import { PetsPageScroller } from '@/components/pets/PetsPageScroller'
+import { PetsGridSkeleton } from '@/components/pets/PetsGridSkeleton'
 import { getDocs } from '@/lib/docs'
 import { getPets, PER_PAGE } from '@/lib/pets-data'
 import { ChevronLeft, ChevronRight, Download, ExternalLink, Heart, Eye, SearchX, PawPrint } from 'lucide-react'
@@ -219,9 +220,7 @@ export default async function PetsPage({ searchParams }: Props) {
       <Navbar docs={docs} />
       <CategoryTabs docs={docs} />
       <main className="flex-1 max-w-[1400px] mx-auto w-full px-4 md:px-0 py-12">
-        <Suspense fallback={
-          <div className="h-8 w-48 bg-muted animate-pulse rounded-lg" />
-        }>
+        <Suspense fallback={<PetsGridSkeleton />}>
           <PetsList searchParams={searchParams} />
         </Suspense>
       </main>

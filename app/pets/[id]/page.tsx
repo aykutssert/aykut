@@ -49,9 +49,9 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
       <CategoryTabs docs={docs} />
       <main className="flex-1 max-w-[900px] mx-auto w-full px-4 md:px-0 py-12 mb-0">
         <BackButton />
-        <div className="flex flex-col md:flex-row gap-12 items-start">
+        <div className="flex flex-col md:flex-row gap-12 md:items-start">
           {/* Left: info + download */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 w-full overflow-hidden">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Codex Pet</p>
             <h1 className="text-3xl font-bold tracking-tight mb-3">{pet.display_name}</h1>
             {pet.description && (

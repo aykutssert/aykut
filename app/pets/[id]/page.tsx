@@ -9,6 +9,7 @@ import { PetDetailSection } from '@/components/pets/PetDetailSection'
 import { getDocs } from '@/lib/docs'
 import { Download, ExternalLink, Eye } from 'lucide-react'
 import { LikeButton } from '@/components/pets/LikeButton'
+import { ShareButton } from '@/components/pets/ShareModal'
 import { CurlCommand } from '@/components/pets/CurlCommand'
 import { BackButton } from '@/components/pets/BackButton'
 import { ViewTracker } from '@/components/pets/ViewTracker'
@@ -73,6 +74,7 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
                 Download .codex-pet
               </a>
               <LikeButton petId={pet.id} initialCount={pet.likes_count ?? 0} showCount />
+              <ShareButton petId={pet.id} petName={pet.display_name} description={pet.description} spritesheetUrl={pet.spritesheet_url} />
               <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
                 <Eye className="w-4 h-4" />
                 {(pet.views_count ?? 0).toLocaleString()}

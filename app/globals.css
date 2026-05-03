@@ -6,7 +6,10 @@
   :root {
     --checker-a: #e0e0e0;
     --checker-b: #f5f5f5;
-    --background: 50 33% 96%;
+    --background: 60 60% 98%;
+    /*--background: 60 60% 98%; 
+      --background: 50 33% 96%;
+      DON'T DELETE */
     --foreground: 240 10% 3.9%;
     --card: 60 60% 98%;
     --card-foreground: 240 10% 3.9%;

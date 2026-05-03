@@ -7,7 +7,11 @@ export const contentType = 'image/png'
 
 const CELL_W = 192
 const CELL_H = 208
+const ATLAS_COLS = 8
+const ATLAS_ROWS = 9
 const SCALE = 2.5
+
+const SITE = 'kernel-indol.vercel.app'
 
 export default async function Image({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -35,35 +39,21 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           gap: '64px',
         }}
       >
-        {/* Sprite — crop to first frame via overflow hidden */}
+        {/* Sprite — first frame via background-image crop */}
         {pet?.spritesheet_url && (
           <div
             style={{
-              display: 'flex',
+              flexShrink: 0,
               width: spriteW,
               height: spriteH,
-              overflow: 'hidden',
-              flexShrink: 0,
               borderRadius: 16,
-              background: '#141414',
-              alignItems: 'center',
-              justifyContent: 'center',
+              overflow: 'hidden',
+              backgroundImage: `url(${pet.spritesheet_url})`,
+              backgroundSize: `${CELL_W * ATLAS_COLS * SCALE}px ${CELL_H * ATLAS_ROWS * SCALE}px`,
+              backgroundPosition: '0 0',
+              backgroundRepeat: 'no-repeat',
             }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={pet.spritesheet_url}
-              alt=""
-              width={spriteW}
-              height={spriteH}
-              style={{
-                imageRendering: 'pixelated',
-                objectFit: 'none',
-                objectPosition: '0 0',
-                flexShrink: 0,
-              }}
-            />
-          </div>
+          />
         )}
 
         {/* Text */}
@@ -115,7 +105,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
               fontFamily: 'sans-serif',
             }}
           >
-            kernel.so
+            {SITE}
           </div>
         </div>
       </div>

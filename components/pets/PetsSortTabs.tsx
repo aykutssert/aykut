@@ -31,7 +31,7 @@ export function PetsSortTabs({ defaultSort, showNsfw }: { defaultSort: SortValue
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between gap-4">
       <div className="inline-flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/40">
         {TABS.map((tab) => (
           <button
@@ -51,14 +51,19 @@ export function PetsSortTabs({ defaultSort, showNsfw }: { defaultSort: SortValue
 
       <button
         onClick={toggleNsfw}
-        className={cn(
-          'px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
-          showNsfw
-            ? 'border-red-500/60 text-red-500 bg-red-500/10 hover:bg-red-500/15'
-            : 'border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/40'
-        )}
+        aria-label="Toggle NSFW content"
+        className="flex items-center gap-2.5 shrink-0"
       >
-        NSFW
+        <span className="text-xs text-muted-foreground select-none">Include NSFW</span>
+        <span className={cn(
+          'relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200',
+          showNsfw ? 'bg-foreground' : 'bg-muted border border-border'
+        )}>
+          <span className={cn(
+            'inline-block h-[18px] w-[18px] rounded-full bg-white shadow-sm transition-transform duration-200',
+            showNsfw ? 'translate-x-[22px]' : 'translate-x-[3px]'
+          )} />
+        </span>
       </button>
     </div>
   )

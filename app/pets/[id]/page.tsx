@@ -10,6 +10,7 @@ import { getDocs } from '@/lib/docs'
 import { Download, ExternalLink, Eye } from 'lucide-react'
 import { LikeButton } from '@/components/pets/LikeButton'
 import { CurlCommand } from '@/components/pets/CurlCommand'
+import { BackButton } from '@/components/pets/BackButton'
 import { ViewTracker } from '@/components/pets/ViewTracker'
 import type { Pet } from '@/lib/pets'
 
@@ -47,6 +48,7 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
       <Navbar docs={docs} />
       <CategoryTabs docs={docs} />
       <main className="flex-1 max-w-[900px] mx-auto w-full px-4 md:px-0 py-12 mb-0">
+        <BackButton />
         <div className="flex flex-col md:flex-row gap-12 items-start">
           {/* Left: info + download */}
           <div className="flex-1 min-w-0">

@@ -222,3 +222,15 @@ button:disabled { cursor: not-allowed !important; }
   background: hsl(240 3.7% 20%);
   color: hsl(var(--foreground));
 }
+
+@keyframes heart-pop {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.45); }
+  60%  { transform: scale(0.9); }
+  80%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.animate-heart-pop {
+  animation: heart-pop 0.4s ease-out forwards;
+}

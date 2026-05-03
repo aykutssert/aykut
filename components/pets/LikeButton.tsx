@@ -26,6 +26,7 @@ export function LikeButton({ petId, initialCount = 0, compact = false, showCount
   const [count, setCount] = useState(initialCount)
   const [loading, setLoading] = useState(false)
   const [ready, setReady] = useState(false)
+  const [animating, setAnimating] = useState(false)
 
   useEffect(() => {
     const fp = getFingerprint()
@@ -53,6 +54,10 @@ export function LikeButton({ petId, initialCount = 0, compact = false, showCount
         const data = await res.json()
         setLiked(data.liked)
         setCount(data.count)
+        if (data.liked) {
+          setAnimating(true)
+          setTimeout(() => setAnimating(false), 400)
+        }
       }
     } finally {
       setLoading(false)
@@ -76,7 +81,11 @@ export function LikeButton({ petId, initialCount = 0, compact = false, showCount
           (!ready || loading) && 'opacity-50 cursor-not-allowed'
         )}
       >
-        <Heart className={cn('transition-all', compact ? 'w-3.5 h-3.5' : 'w-4 h-4', liked && 'fill-rose-500')} />
+        <Heart className={cn(
+          compact ? 'w-3.5 h-3.5' : 'w-4 h-4',
+          liked && 'fill-rose-500',
+          animating && 'animate-heart-pop'
+        )} />
       </button>
       {showCount && count > 0 && (
         <span className="text-sm text-muted-foreground tabular-nums">{count.toLocaleString()}</span>

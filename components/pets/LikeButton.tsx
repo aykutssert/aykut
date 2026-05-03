@@ -65,31 +65,27 @@ export function LikeButton({ petId, initialCount = 0, compact = false, showCount
   }, [petId, loading])
 
   return (
-    <div className="inline-flex items-center gap-2">
-      <button
-        onClick={toggle}
-        disabled={!ready || loading}
-        aria-label={liked ? 'Unlike' : 'Like'}
-        className={cn(
-          'inline-flex items-center justify-center rounded-lg border transition-colors',
-          compact
-            ? 'px-2.5 py-1.5'
-            : 'px-4 py-2.5',
-          liked
-            ? 'border-rose-500/60 text-rose-500 bg-rose-500/10 hover:bg-rose-500/15'
-            : 'border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/40',
-          (!ready || loading) && 'opacity-50 cursor-not-allowed'
-        )}
-      >
-        <Heart className={cn(
-          compact ? 'w-3.5 h-3.5' : 'w-4 h-4',
-          liked && 'fill-rose-500',
-          animating && 'animate-heart-pop'
-        )} />
-      </button>
-      {showCount && count > 0 && (
-        <span className="text-sm text-muted-foreground tabular-nums">{count.toLocaleString()}</span>
+    <button
+      onClick={toggle}
+      disabled={!ready || loading}
+      aria-label={liked ? 'Unlike' : 'Like'}
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-lg border transition-colors',
+        compact ? 'px-2.5 py-1.5' : 'px-3 py-2',
+        liked
+          ? 'border-rose-500/60 text-rose-500 bg-rose-500/10 hover:bg-rose-500/15'
+          : 'border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/40',
+        (!ready || loading) && 'opacity-50 cursor-not-allowed'
       )}
-    </div>
+    >
+      <Heart className={cn(
+        compact ? 'w-3.5 h-3.5' : 'w-4 h-4',
+        liked && 'fill-rose-500',
+        animating && 'animate-heart-pop'
+      )} />
+      {showCount && count > 0 && (
+        <span className="text-sm tabular-nums">{count.toLocaleString()}</span>
+      )}
+    </button>
   )
 }

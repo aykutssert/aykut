@@ -7,6 +7,7 @@ import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { PetCardCanvas } from '@/components/pets/PetCardCanvas'
 import { PetsSearchBar } from '@/components/pets/PetsSearchBar'
 import { PetsSortTabs } from '@/components/pets/PetsSortTabs'
+import { PetsPageScroller } from '@/components/pets/PetsPageScroller'
 import { getDocs } from '@/lib/docs'
 import { getPets, PER_PAGE } from '@/lib/pets-data'
 import { ChevronLeft, ChevronRight, Download, ExternalLink, Heart, Eye, SearchX, PawPrint } from 'lucide-react'
@@ -59,6 +60,9 @@ async function PetsList({ searchParams }: Props) {
         )}
       </div>
 
+      <Suspense>
+        <PetsPageScroller />
+      </Suspense>
       <div className="flex flex-col gap-3 mb-8">
         <Suspense>
           <PetsSearchBar defaultValue={q} />
@@ -99,7 +103,7 @@ async function PetsList({ searchParams }: Props) {
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {pets.map((pet) => (
-              <div key={pet.id} className="border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-background flex flex-col shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-black/20 dark:hover:border-white/20">
+              <div key={pet.id} className="border border-black/10 dark:border-white/10 rounded-xl overflow-hidden bg-background flex flex-col shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-black/50 dark:hover:border-white/50">
                 <Link href={`/pets/${pet.id}`} className="block">
                   <PetCardCanvas spritesheetUrl={pet.spritesheet_url} size={140} />
                 </Link>

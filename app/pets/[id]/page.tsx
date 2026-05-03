@@ -5,7 +5,7 @@ import { createPublicClient } from '@/lib/supabase/server'
 import { Navbar } from '@/components/layout/Navbar'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
 import { Footer } from '@/components/layout/Footer'
-import { PetViewer } from '@/components/pets/PetViewer'
+import { PetDetailSection } from '@/components/pets/PetDetailSection'
 import { getDocs } from '@/lib/docs'
 import { Download, ExternalLink, Eye } from 'lucide-react'
 import { LikeButton } from '@/components/pets/LikeButton'
@@ -43,15 +43,13 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <>
-    <ViewTracker petId={pet.id} />
-    <div className="flex flex-col min-h-screen">
-      <Navbar docs={docs} />
-      <CategoryTabs docs={docs} />
-      <main className="flex-1 max-w-[900px] mx-auto w-full px-4 md:px-0 py-12 mb-0">
-        <BackButton />
-        <div className="flex flex-col md:flex-row gap-12 md:items-start">
-          {/* Left: info + download */}
-          <div className="flex-1 min-w-0 w-full overflow-hidden">
+      <ViewTracker petId={pet.id} />
+      <div className="flex flex-col min-h-screen">
+        <Navbar docs={docs} />
+        <CategoryTabs docs={docs} />
+        <main className="flex-1 max-w-[900px] mx-auto w-full px-4 md:px-0 py-12">
+          <BackButton />
+          <PetDetailSection spritesheetUrl={pet.spritesheet_url} size={256}>
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Codex Pet</p>
             <h1 className="text-3xl font-bold tracking-tight mb-3">{pet.display_name}</h1>
             {pet.description && (
@@ -86,16 +84,10 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
               </a>
             )}
             <CurlCommand petId={pet.id} />
-          </div>
-
-          {/* Right: animated viewer */}
-          <div className="w-full flex justify-center md:w-auto md:block md:shrink-0">
-            <PetViewer spritesheetUrl={pet.spritesheet_url} size={256} />
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
+          </PetDetailSection>
+        </main>
+        <Footer />
+      </div>
     </>
   )
 }

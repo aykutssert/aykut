@@ -25,6 +25,8 @@ export default async function Image({ params }: { params: Promise<{ id: string }
 
   const spriteW = Math.round(CELL_W * SCALE)
   const spriteH = Math.round(CELL_H * SCALE)
+  const sheetW = Math.round(CELL_W * ATLAS_COLS * SCALE)
+  const sheetH = Math.round(CELL_H * ATLAS_ROWS * SCALE)
 
   return new ImageResponse(
     (
@@ -39,21 +41,27 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           gap: '64px',
         }}
       >
-        {/* Sprite — first frame via background-image crop */}
+        {/* Sprite — overflow:hidden crops to first frame */}
         {pet?.spritesheet_url && (
           <div
             style={{
-              flexShrink: 0,
+              display: 'flex',
               width: spriteW,
               height: spriteH,
-              borderRadius: 16,
               overflow: 'hidden',
-              backgroundImage: `url(${pet.spritesheet_url})`,
-              backgroundSize: `${CELL_W * ATLAS_COLS * SCALE}px ${CELL_H * ATLAS_ROWS * SCALE}px`,
-              backgroundPosition: '0 0',
-              backgroundRepeat: 'no-repeat',
+              flexShrink: 0,
+              borderRadius: 16,
             }}
-          />
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={pet.spritesheet_url}
+              alt=""
+              width={sheetW}
+              height={sheetH}
+              style={{ flexShrink: 0 }}
+            />
+          </div>
         )}
 
         {/* Text */}

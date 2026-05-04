@@ -20,9 +20,6 @@ function MobileCategoryGroup({
   defaultOpen: boolean
 }) {
   const [open, setOpen] = useState(defaultOpen)
-  const [activeTag, setActiveTag] = useState<string | null>(null)
-  const allTags = [...new Set(pages.flatMap((p) => p.tags ?? []))].sort()
-  const filtered = activeTag ? pages.filter((p) => (p.tags ?? []).includes(activeTag)) : pages
 
   return (
     <div className="border-b border-border last:border-0 pb-1 last:pb-0">
@@ -36,26 +33,8 @@ function MobileCategoryGroup({
 
       {open && (
         <div className="pb-2">
-          {allTags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-2">
-              {allTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                  className={cn(
-                    'px-1.5 py-0.5 rounded text-[11px] font-mono transition-colors',
-                    activeTag === tag
-                      ? 'bg-foreground text-background'
-                      : 'bg-muted text-muted-foreground hover:text-foreground'
-                  )}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          )}
           <ul className="space-y-0.5">
-            {filtered.map((page) => {
+            {pages.map((page) => {
               const href = `/docs/${page.category}/${page.slug}`
               return (
                 <li key={page.id}>

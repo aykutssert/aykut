@@ -211,7 +211,7 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
         0, 0,
         CELL_WIDTH, CELL_HEIGHT
       )
-      canvas.style.transform = `translate(${posRef.current.x}px, ${posRef.current.y}px)`
+      canvas!.style.transform = `translate(${posRef.current.x}px, ${posRef.current.y}px)`
 
       // Sprite frame update at 8fps
       if (time - lastTimeRef.current >= 1000 / FPS) {

@@ -5,9 +5,6 @@ import { CODEX_PET_STATES, CELL_WIDTH, CELL_HEIGHT } from '@/lib/pets'
 import { usePathname } from 'next/navigation'
 
 const FPS = 8
-const SCALE = 0.5
-const VISIBLE_WIDTH = Math.round(CELL_WIDTH * SCALE)
-const VISIBLE_HEIGHT = Math.round(CELL_HEIGHT * SCALE)
 
 export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | null }) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -16,6 +13,18 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
   const imgRef = useRef<HTMLImageElement | null>(null)
   const [loaded, setLoaded] = useState(false)
   const pathname = usePathname()
+  const [isMobileState, setIsMobileState] = useState(false)
+
+  useEffect(() => {
+    setIsMobileState(window.innerWidth < 768)
+    const handleResize = () => setIsMobileState(window.innerWidth < 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const currentScale = isMobileState ? 0.35 : 0.5
+  const visibleWidth = Math.round(CELL_WIDTH * currentScale)
+  const visibleHeight = Math.round(CELL_HEIGHT * currentScale)
 
   const posRef = useRef({ x: Math.random() * 300, y: 0 })
   const velRef = useRef({ x: 0, y: 0 })
@@ -78,10 +87,12 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
       posRef.current.y += dy
       
       // Clamp bounds immediately while dragging
+      const currentVisibleWidth = Math.round(CELL_WIDTH * (window.innerWidth < 768 ? 0.35 : 0.5))
+      const currentVisibleHeight = Math.round(CELL_HEIGHT * (window.innerWidth < 768 ? 0.35 : 0.5))
       if (posRef.current.x < 0) posRef.current.x = 0
-      if (posRef.current.x > window.innerWidth - VISIBLE_WIDTH) posRef.current.x = window.innerWidth - VISIBLE_WIDTH
+      if (posRef.current.x > window.innerWidth - currentVisibleWidth) posRef.current.x = window.innerWidth - currentVisibleWidth
       if (posRef.current.y < 0) posRef.current.y = 0
-      if (posRef.current.y > window.innerHeight - VISIBLE_HEIGHT) posRef.current.y = window.innerHeight - VISIBLE_HEIGHT
+      if (posRef.current.y > window.innerHeight - currentVisibleHeight) posRef.current.y = window.innerHeight - currentVisibleHeight
       
       // Calculate throw velocity based on drag speed
       dragVelocityRef.current.x = dx * 0.8
@@ -123,7 +134,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    posRef.current.y = window.innerHeight - VISIBLE_HEIGHT
+    const currentVisibleHeight = Math.round(CELL_HEIGHT * (window.innerWidth < 768 ? 0.35 : 0.5))
+    posRef.current.y = window.innerHeight - currentVisibleHeight
 
     function changeState(newStateName: string) {
       if (stateRef.current.name === newStateName) return
@@ -137,6 +149,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
     function draw(time: number) {
       const isMobile = window.innerWidth < 768
       const speedMult = isMobile ? 0.5 : 1.0
+      const currentVisibleWidth = Math.round(CELL_WIDTH * (isMobile ? 0.35 : 0.5))
+      const currentVisibleHeight = Math.round(CELL_HEIGHT * (isMobile ? 0.35 : 0.5))
 
       if (isDraggingRef.current) {
         // User is holding the pet
@@ -144,7 +158,7 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
         velRef.current.x = 0
         velRef.current.y = 0
       } 
-      else if (posRef.current.y < window.innerHeight - VISIBLE_HEIGHT || Math.abs(velRef.current.y) > 0.1 || Math.abs(velRef.current.x) > 10) {
+      else if (posRef.current.y < window.innerHeight - currentVisibleHeight || Math.abs(velRef.current.y) > 0.1 || Math.abs(velRef.current.x) > 10) {
         // IN THE AIR or Thrown fast
         velRef.current.y += 0.8 * speedMult // Gravity
         
@@ -153,8 +167,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
           posRef.current.x = 0
           velRef.current.x *= -0.7
           changeState('running-right')
-        } else if (posRef.current.x + velRef.current.x + VISIBLE_WIDTH >= window.innerWidth) {
-          posRef.current.x = window.innerWidth - VISIBLE_WIDTH
+        } else if (posRef.current.x + velRef.current.x + currentVisibleWidth >= window.innerWidth) {
+          posRef.current.x = window.innerWidth - currentVisibleWidth
           velRef.current.x *= -0.7
           changeState('running-left')
         }
@@ -166,8 +180,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
         }
 
         // Floor collision and bounce (Predictive)
-        if (posRef.current.y + velRef.current.y >= window.innerHeight - VISIBLE_HEIGHT) {
-           posRef.current.y = window.innerHeight - VISIBLE_HEIGHT
+        if (posRef.current.y + velRef.current.y >= window.innerHeight - currentVisibleHeight) {
+           posRef.current.y = window.innerHeight - currentVisibleHeight
            if (velRef.current.y > 6) {
              // Bounce up
              velRef.current.y *= -0.4
@@ -215,7 +229,7 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
            }
         } else if (foodRef.current) {
            // FOOD CHASE LOGIC
-           const dist = foodRef.current.x - (posRef.current.x + VISIBLE_WIDTH / 2)
+           const dist = foodRef.current.x - (posRef.current.x + currentVisibleWidth / 2)
            
            if (Math.abs(dist) > 20) {
               if (dist > 0) {
@@ -287,8 +301,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
              changeState('running-right')
              velRef.current.x = 5.0 * speedMult
              stateTimerRef.current = 0
-           } else if (posRef.current.x + VISIBLE_WIDTH >= window.innerWidth) {
-             posRef.current.x = window.innerWidth - VISIBLE_WIDTH
+           } else if (posRef.current.x + currentVisibleWidth >= window.innerWidth) {
+             posRef.current.x = window.innerWidth - currentVisibleWidth
              changeState('running-left')
              velRef.current.x = -5.0 * speedMult
              stateTimerRef.current = 0
@@ -302,9 +316,9 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
 
       // Force bounds to prevent pet from disappearing completely
       if (posRef.current.x < 0) posRef.current.x = 0
-      if (posRef.current.x > window.innerWidth - VISIBLE_WIDTH) posRef.current.x = window.innerWidth - VISIBLE_WIDTH
+      if (posRef.current.x > window.innerWidth - currentVisibleWidth) posRef.current.x = window.innerWidth - currentVisibleWidth
       if (posRef.current.y < 0) posRef.current.y = 0
-      if (posRef.current.y > window.innerHeight - VISIBLE_HEIGHT) posRef.current.y = window.innerHeight - VISIBLE_HEIGHT
+      if (posRef.current.y > window.innerHeight - currentVisibleHeight) posRef.current.y = window.innerHeight - currentVisibleHeight
 
       // FOOD PHYSICS
       if (foodRef.current) {
@@ -364,8 +378,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
         ref={containerRef}
         className="absolute top-0 left-0"
         style={{
-          width: VISIBLE_WIDTH,
-          height: VISIBLE_HEIGHT,
+          width: visibleWidth,
+          height: visibleHeight,
           willChange: 'transform'
         }}
       >

@@ -297,8 +297,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
       if (time - lastTimeRef.current >= 1000 / FPS) {
         lastTimeRef.current = time
         if (stateRef.current.name === 'failed') {
-          // Do not loop failed/sleep animation, stick to last frame or frame 0
-          frameRef.current = 0
+          // Play the animation once and stick to the last frame
+          frameRef.current = Math.min(frameRef.current + 1, stateRef.current.frames - 1)
         } else {
           frameRef.current = (frameRef.current + 1) % stateRef.current.frames
         }

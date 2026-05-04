@@ -84,6 +84,9 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
               </h1>
               <CopyPageButton content={doc.content} />
             </div>
+            {doc.description && (
+              <p className="text-sm text-muted-foreground mt-2">{doc.description}</p>
+            )}
             {doc.tags && doc.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {doc.tags.map((tag) => (

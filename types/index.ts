@@ -3,6 +3,7 @@ export interface Doc {
   title: string
   slug: string
   category: string
+  description: string | null
   content: string
   source_url: string | null
   image_url: string | null

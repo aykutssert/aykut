@@ -22,6 +22,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
   const [title, setTitle] = useState(doc?.title ?? '')
   const [category, setCategory] = useState(doc?.category ?? '')
   const [customCategory, setCustomCategory] = useState('')
+  const [description, setDescription] = useState(doc?.description ?? '')
   const [slug, setSlug] = useState(doc?.slug ?? '')
   const [sourceUrl, setSourceUrl] = useState(doc?.source_url ?? '')
   const [content, setContent] = useState(doc?.content ?? '')
@@ -46,7 +47,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
   useEffect(() => {
     if (!isMounted.current) { isMounted.current = true; return }
     setIsDirty(true)
-  }, [title, category, customCategory, slug, sourceUrl, content, orderIndex, published, imageUrl, tags, requiredImages, variables])
+  }, [title, category, customCategory, slug, description, sourceUrl, content, orderIndex, published, imageUrl, tags, requiredImages, variables])
 
   useEffect(() => {
     if (!isDirty) return
@@ -139,6 +140,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
       category: effectiveCategory,
       slug,
       content,
+      description: description || null,
       source_url: sourceUrl || null,
       order_index: parseInt(orderIndex) || 0,
       published,
@@ -198,6 +200,17 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               required
               className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="What is MCP?"
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium mb-1.5">Description <span className="text-muted-foreground font-normal">(optional)</span></label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Brief one-line description…"
             />
           </div>
 

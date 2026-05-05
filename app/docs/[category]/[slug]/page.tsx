@@ -9,12 +9,13 @@ import { MobileOnThisPage } from '@/components/layout/MobileOnThisPage'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
 import { TagFilterBar } from '@/components/layout/TagFilterBar'
 import { DocContent } from '@/components/docs/DocContent'
+import { DocVersionHandler } from '@/components/docs/DocVersionHandler'
 import { CopyPageButton } from '@/components/docs/CopyPageButton'
 import { CopyCodeButton } from '@/components/docs/CopyCodeButton'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
-import { getDocs, getDoc } from '@/lib/docs'
+import { getDocs, getDoc, getDocVersions } from '@/lib/docs'
 import { DocViewTracker } from '@/components/docs/DocViewTracker'
 import { ExternalLink, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react'
 
@@ -47,8 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 async function DocPageContent({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params
   const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
-
   if (!doc) notFound()
+  const versions = await getDocVersions(doc.id)
 
   const categoryDocs = docs.filter((d) => d.category === doc.category)
   const allSorted = docs
@@ -133,7 +134,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             </div>
           )}
 
-          <DocContent content={doc.content} variables={doc.variables ?? []} />
+          <DocVersionHandler doc={doc} versions={versions} />
           <CopyCodeButton />
 
           {doc.source_url && (

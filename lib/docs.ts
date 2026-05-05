@@ -1,6 +1,19 @@
 import { cacheTag, cacheLife } from 'next/cache'
 import { createPublicClient } from '@/lib/supabase/server'
-import type { Doc, DocMeta, TaggedDoc } from '@/types'
+import type { Doc, DocMeta, TaggedDoc, DocVersion } from '@/types'
+
+export async function getDocVersions(docId: string): Promise<DocVersion[]> {
+  'use cache'
+  cacheTag('docs', `versions-${docId}`)
+  cacheLife('max')
+  const supabase = createPublicClient()
+  const { data } = await supabase
+    .from('doc_versions')
+    .select('*')
+    .eq('doc_id', docId)
+    .order('version_number', { ascending: false })
+  return data ?? []
+}
 
 export async function getDocs(): Promise<DocMeta[]> {
   'use cache'

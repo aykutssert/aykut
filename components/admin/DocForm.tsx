@@ -41,6 +41,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
   const [previewTab, setPreviewTab] = useState<'write' | 'preview' | 'split'>('write')
   const [previewHtml, setPreviewHtml] = useState('')
   const [previewLoading, setPreviewLoading] = useState(false)
+  const [versionSummary, setVersionSummary] = useState('')
 
   const isMounted = useRef(false)
   const [isDirty, setIsDirty] = useState(false)
@@ -160,16 +161,17 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
     const res = await fetch('/api/docs/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: doc?.id ?? null, payload, conflict }),
+      body: JSON.stringify({ id: doc?.id ?? null, payload, conflict, versionSummary }),
     })
     const data = await res.json()
     if (!res.ok) { setError(data.error ?? 'Save failed'); setSaving(false); return }
 
     setIsDirty(false)
+    setVersionSummary('')
     toast.success(isEdit ? 'Document saved.' : 'Document created.')
     router.push('/admin/docs')
     router.refresh()
-  }, [allDocs, slug, doc, title, effectiveCategory, content, sourceUrl, orderIndex, published, imageUrl, tags, isEdit, categoryDocs, router])
+  }, [allDocs, slug, doc, title, effectiveCategory, content, description, sourceUrl, orderIndex, published, imageUrl, tags, requiredImages, variables, versionSummary, isEdit, categoryDocs, router])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -465,6 +467,19 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
             </div>
           )}
         </div>
+        
+        {isEdit && (
+          <div className="pt-4 border-t border-border">
+            <label className="block text-sm font-medium mb-1.5">Version Note <span className="text-muted-foreground font-normal">(optional)</span></label>
+            <input
+              type="text"
+              value={versionSummary}
+              onChange={(e) => setVersionSummary(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="What changed in this version? (e.g. Fixed typo, Added more examples...)"
+            />
+          </div>
+        )}
 
         <div className="flex items-center justify-between pt-2">
           <label className="flex items-center gap-2 cursor-pointer select-none">

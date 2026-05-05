@@ -42,3 +42,13 @@ export type TaggedDoc = Pick<
   | 'tags'
   | 'created_at'
 >
+
+export interface DocVersion {
+  id: string
+  doc_id: string
+  version_number: number
+  content: string
+  change_summary: string | null
+  author_handle: string | null
+  created_at: string
+}

@@ -202,7 +202,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
                           <h3 className="text-[13px] font-medium leading-snug tracking-tight line-clamp-2 group-hover:underline group-hover:underline-offset-2">
                             {d.title}
                           </h3>
-                          <span className="shrink-0 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                          <span className="shrink-0 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium text-foreground">
                             {d.image_url ? 'Image' : 'Text'}
                           </span>
                         </div>

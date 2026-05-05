@@ -55,6 +55,8 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
 
   const foodRef = useRef<{ x: number, y: number, velY: number } | null>(null)
   const foodElementRef = useRef<HTMLDivElement>(null)
+  const selectionTargetRef = useRef<{ x: number, text: string } | null>(null)
+  const lastSpokenSelectionRef = useRef<string | null>(null)
 
   const showSpeech = (phrases: string[], durationMs?: number) => {
     if (!bubbleRef.current) return
@@ -144,13 +146,30 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
       lastActivityTimeRef.current = Date.now()
     }
 
+    function handleSelectionChange() {
+      const selection = document.getSelection()
+      if (selection && selection.toString().trim().length > 0) {
+        // Find the center X of the first range
+        const range = selection.getRangeAt(0)
+        const rect = range.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        
+        selectionTargetRef.current = { x: centerX, text: selection.toString().trim() }
+        lastActivityTimeRef.current = Date.now() // Wake up!
+      } else {
+        selectionTargetRef.current = null
+      }
+    }
+
     window.addEventListener('pointermove', handlePointerMove)
     window.addEventListener('pointerup', handlePointerUp)
     window.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('selectionchange', handleSelectionChange)
     return () => {
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('pointerup', handlePointerUp)
       window.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('selectionchange', handleSelectionChange)
     }
   }, [])
 
@@ -280,6 +299,37 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
             }
           }
           stateTimerRef.current = 0 // Keep timer reset while chasing
+        } else if (selectionTargetRef.current) {
+          // READING BUDDY LOGIC
+          const dist = selectionTargetRef.current.x - (posRef.current.x + currentVisibleWidth / 2)
+          
+          if (Math.abs(dist) > 20) {
+            if (dist > 0) {
+              changeState('running-right')
+              velRef.current.x = 6.0 * speedMult
+            } else {
+              changeState('running-left')
+              velRef.current.x = -6.0 * speedMult
+            }
+          } else {
+            velRef.current.x = 0
+            changeState('idle') // Staring at the text
+            
+            if (lastSpokenSelectionRef.current !== selectionTargetRef.current.text) {
+              lastSpokenSelectionRef.current = selectionTargetRef.current.text
+              const phrases = [
+                "Hmm, interesting...",
+                "Are you going to copy that?",
+                "Good read!",
+                "I was reading that too!",
+                "Taking notes?",
+                "Fascinating."
+              ]
+              const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)]
+              showSpeech([randomPhrase], 4000)
+            }
+          }
+          stateTimerRef.current = 0 // Keep timer reset while staring
         } else {
           // Normal AI Logic
           stateTimerRef.current++

@@ -14,7 +14,7 @@ interface DocContentProps {
 
 const FENCE_RE = /^```(\w+)?\n([\s\S]*?)```\s*$/
 
-function detectLang(raw: string): { lang: string; code: string } {
+export function detectLang(raw: string): { lang: string; code: string } {
   const trimmed = raw.trim()
   const match = trimmed.match(FENCE_RE)
   if (match) return { lang: match[1] ?? 'text', code: match[2] }
@@ -38,7 +38,7 @@ function detectLang(raw: string): { lang: string; code: string } {
   return { lang: 'markdown', code: raw }
 }
 
-export async function DocContent({ content, variables = [] }: DocContentProps) {
+export async function renderDocHtml(content: string) {
   const normalized = normalizeContent(content)
   const { lang, code } = detectLang(normalized)
 
@@ -48,10 +48,14 @@ export async function DocContent({ content, variables = [] }: DocContentProps) {
     defaultColor: false,
   })
 
-  // Override the default dull grey plain text color with crisp foreground color for both themes
   html = html
     .replace(/#abb2bf/gi, 'hsl(var(--foreground))')
     .replace(/#383a42/gi, 'hsl(var(--foreground))')
 
+  return { html, lang, code }
+}
+
+export async function DocContent({ content, variables = [] }: DocContentProps) {
+  const { html, lang, code } = await renderDocHtml(content)
   return <DocRawContent html={html} content={code} variables={variables} withLines={lang !== 'markdown'} />
 }

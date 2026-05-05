@@ -8,14 +8,14 @@ import { ScrollFadeAside } from '@/components/layout/ScrollFadeAside'
 import { MobileOnThisPage } from '@/components/layout/MobileOnThisPage'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
 import { TagFilterBar } from '@/components/layout/TagFilterBar'
-import { DocContent } from '@/components/docs/DocContent'
+import { getDoc, getDocs, getDocVersions } from '@/lib/docs'
+import { DocContent, renderDocHtml } from '@/components/docs/DocContent'
 import { DocVersionHandler } from '@/components/docs/DocVersionHandler'
 import { CopyPageButton } from '@/components/docs/CopyPageButton'
 import { CopyCodeButton } from '@/components/docs/CopyCodeButton'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
-import { getDocs, getDoc, getDocVersions } from '@/lib/docs'
 import { DocViewTracker } from '@/components/docs/DocViewTracker'
 import { ExternalLink, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react'
 
@@ -49,7 +49,11 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
   const { category, slug } = await params
   const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
   if (!doc) notFound()
-  const versions = await getDocVersions(doc.id)
+  
+  const [versions, { html: currentHtml, lang: currentLang }] = await Promise.all([
+    getDocVersions(doc.id),
+    renderDocHtml(doc.content)
+  ])
 
   const categoryDocs = docs.filter((d) => d.category === doc.category)
   const allSorted = docs
@@ -134,7 +138,12 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             </div>
           )}
 
-          <DocVersionHandler doc={doc} versions={versions} />
+          <DocVersionHandler 
+            doc={doc} 
+            versions={versions} 
+            currentHtml={currentHtml} 
+            currentLang={currentLang} 
+          />
           <CopyCodeButton />
 
           {doc.source_url && (

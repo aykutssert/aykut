@@ -5,14 +5,16 @@ import { History, FileText, ChevronRight, GitCompare, X, Clock, User } from 'luc
 import * as diff from 'diff'
 import { cn } from '@/lib/utils'
 import type { Doc, DocVersion } from '@/types'
-import { DocContent } from './DocContent'
+import { DocRawContent } from './DocRawContent'
 
 interface Props {
   doc: Doc
   versions: DocVersion[]
+  currentHtml: string
+  currentLang: string
 }
 
-export function DocVersionHandler({ doc, versions }: Props) {
+export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: Props) {
   const [activeTab, setActiveTab] = useState<'content' | 'versions'>('content')
   const [selectedVersion, setSelectedVersion] = useState<DocVersion | null>(null)
   const [comparingVersion, setComparingVersion] = useState<DocVersion | null>(null)
@@ -20,8 +22,14 @@ export function DocVersionHandler({ doc, versions }: Props) {
   // Current version is not in versions table as a separate snapshot usually until edited
   // But we want to show it in the list.
   
-  const handleCompare = (v: DocVersion) => {
-    setComparingVersion(v)
+  const handleCompareLatest = () => {
+    if (versions.length >= 2) {
+      // Compare v1 with current if there's only 2, or compare latest two
+      // Actually usually Compare in this context means "Compare Current with Previous"
+      setComparingVersion(versions[1] || versions[0])
+    } else if (versions.length === 1) {
+      setComparingVersion(versions[0])
+    }
   }
 
   const renderDiff = (oldText: string, newText: string) => {
@@ -49,6 +57,7 @@ export function DocVersionHandler({ doc, versions }: Props) {
       {/* Tabs */}
       <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50 w-fit">
         <button
+          type="button"
           onClick={() => setActiveTab('content')}
           className={cn(
             "flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all",
@@ -59,6 +68,7 @@ export function DocVersionHandler({ doc, versions }: Props) {
           Content
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('versions')}
           className={cn(
             "flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all",
@@ -74,17 +84,24 @@ export function DocVersionHandler({ doc, versions }: Props) {
       </div>
 
       {activeTab === 'content' ? (
-        <DocContent content={doc.content} variables={doc.variables ?? []} />
+        <DocRawContent 
+          html={currentHtml} 
+          content={doc.content} 
+          variables={doc.variables ?? []} 
+          withLines={currentLang !== 'markdown'} 
+        />
       ) : (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Version History</h3>
             <button 
+              type="button"
+              onClick={handleCompareLatest}
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-muted transition-colors"
-              disabled={versions.length < 2}
+              disabled={versions.length === 0}
             >
               <GitCompare className="w-3.5 h-3.5" />
-              Compare
+              Compare Latest
             </button>
           </div>
 
@@ -114,7 +131,8 @@ export function DocVersionHandler({ doc, versions }: Props) {
                   
                   {i > 0 && (
                     <button 
-                      onClick={() => handleCompare(v)}
+                      type="button"
+                      onClick={() => setComparingVersion(v)}
                       className="p-2 rounded-md hover:bg-muted transition-colors opacity-0 group-hover:opacity-100"
                       title="Compare with current"
                     >
@@ -140,6 +158,7 @@ export function DocVersionHandler({ doc, versions }: Props) {
                 </h2>
               </div>
               <button 
+                type="button"
                 onClick={() => setComparingVersion(null)}
                 className="p-2 rounded-full hover:bg-muted transition-colors"
               >
@@ -164,6 +183,7 @@ export function DocVersionHandler({ doc, versions }: Props) {
             
             <div className="p-4 border-t bg-muted/10 flex justify-end">
               <button 
+                type="button"
                 onClick={() => setComparingVersion(null)}
                 className="px-6 py-2 bg-foreground text-background rounded-full font-medium hover:opacity-90 transition-opacity"
               >

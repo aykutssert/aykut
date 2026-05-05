@@ -57,6 +57,9 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
   const foodElementRef = useRef<HTMLDivElement>(null)
   const selectionTargetRef = useRef<{ x: number, text: string } | null>(null)
   const lastSpokenSelectionRef = useRef<string | null>(null)
+  
+  const activeInputRef = useRef<HTMLElement | null>(null)
+  const inputKeystrokesRef = useRef(0)
 
   const showSpeech = (phrases: string[], durationMs?: number) => {
     if (!bubbleRef.current) return
@@ -161,15 +164,45 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
       }
     }
 
+    function handleFocusIn(e: FocusEvent) {
+      const target = e.target as HTMLElement
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        // Ignore navbar or header inputs
+        if (target.closest('nav') || target.closest('header')) return
+        activeInputRef.current = target
+        inputKeystrokesRef.current = 0
+        lastActivityTimeRef.current = Date.now()
+      }
+    }
+
+    function handleFocusOut(e: FocusEvent) {
+      if (activeInputRef.current === e.target) {
+        activeInputRef.current = null
+      }
+    }
+
+    function handleInputEvent(e: Event) {
+      if (activeInputRef.current === e.target) {
+        inputKeystrokesRef.current++
+        lastActivityTimeRef.current = Date.now()
+      }
+    }
+
     window.addEventListener('pointermove', handlePointerMove)
     window.addEventListener('pointerup', handlePointerUp)
     window.addEventListener('keydown', handleKeyDown)
     document.addEventListener('selectionchange', handleSelectionChange)
+    document.addEventListener('focusin', handleFocusIn)
+    document.addEventListener('focusout', handleFocusOut)
+    document.addEventListener('input', handleInputEvent)
     return () => {
       window.removeEventListener('pointermove', handlePointerMove)
       window.removeEventListener('pointerup', handlePointerUp)
       window.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('selectionchange', handleSelectionChange)
+      document.removeEventListener('focusin', handleFocusIn)
+      document.removeEventListener('focusout', handleFocusOut)
+      document.removeEventListener('input', handleInputEvent)
     }
   }, [])
 
@@ -299,6 +332,48 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
             }
           }
           stateTimerRef.current = 0 // Keep timer reset while chasing
+        } else if (activeInputRef.current) {
+          // INPUT INSPECTOR LOGIC
+          const rect = activeInputRef.current.getBoundingClientRect()
+          const targetX = rect.left + rect.width / 2
+          const dist = targetX - (posRef.current.x + currentVisibleWidth / 2)
+          
+          if (Math.abs(dist) > 20) {
+            if (dist > 0) {
+              changeState('running-right')
+              velRef.current.x = 6.0 * speedMult
+            } else {
+              changeState('running-left')
+              velRef.current.x = -6.0 * speedMult
+            }
+            stateTimerRef.current = 0
+          } else {
+            velRef.current.x = 0
+            changeState('idle') // Staring up at the input
+            
+            // Periodically mock the user's typing
+            stateTimerRef.current++
+            if (stateTimerRef.current > 60 * 4) { // Every 4 seconds
+               stateTimerRef.current = 0
+               const strokes = inputKeystrokesRef.current
+               let phrase = ""
+               if (strokes === 0) {
+                  phrase = "What are we typing? 🤔"
+               } else if (strokes < 5) {
+                  phrase = "Type faster! ⌨️"
+               } else {
+                  phrase = [
+                     "Watch your spelling! 🧐",
+                     "I don't think that's how you spell it...",
+                     "Wow, you type fast! ⚡",
+                     "Make sure it compiles!",
+                     "Interesting..."
+                  ][Math.floor(Math.random() * 5)]
+               }
+               showSpeech([phrase], 3000)
+               inputKeystrokesRef.current = 0 // Reset for next batch
+            }
+          }
         } else if (selectionTargetRef.current) {
           // READING BUDDY LOGIC
           const dist = selectionTargetRef.current.x - (posRef.current.x + currentVisibleWidth / 2)

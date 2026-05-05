@@ -8,7 +8,7 @@ import { PromptsGridSkeleton } from '@/components/prompts/PromptsGridSkeleton'
 import { getAllTags, getDocs, getPromptDocs } from '@/lib/docs'
 
 interface Props {
-  searchParams: Promise<{ q?: string; tag?: string | string[]; sort?: string }>
+  searchParams: Promise<{ q?: string; tag?: string | string[]; sort?: string; auth?: string }>
 }
 
 export const metadata: Metadata = {
@@ -36,6 +36,7 @@ async function PromptsContent({ searchParams }: Props) {
       tags={tags}
       initialQuery={params.q ?? ''}
       initialSort={sort}
+      authStatus={params.auth}
     />
   )
 }

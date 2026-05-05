@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Check, Copy, X } from 'lucide-react'
 import { CODEX_PET_STATES, CELL_WIDTH, CELL_HEIGHT } from '@/lib/pets'
+import { siteHost } from '@/lib/site'
 
 const FPS = 8
-const ATLAS_COLS = 8
 const SPRITE_SIZE = 164
 
 function SpriteCanvas({ spritesheetUrl }: { spritesheetUrl: string }) {
@@ -125,7 +125,7 @@ function ShareModalContent({ petId, petName, description, spritesheetUrl, onClos
                     <p className="text-sm text-black/60 line-clamp-2 leading-snug mt-1">{description}</p>
                   )}
                   <span className="mt-3 self-start text-[11px] font-bold font-mono border-2 border-foreground/80 text-foreground/80 px-2 py-0.5 rounded">
-                    kernel-indol.vercel.app
+                    {siteHost}
                   </span>
                 </div>
                 <div className="shrink-0">
@@ -169,9 +169,6 @@ function ShareModalContent({ petId, petName, description, spritesheetUrl, onClos
 
 export function ShareButton({ petId, petName, description, spritesheetUrl }: Omit<Props, 'onClose'>) {
   const [open, setOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => { setMounted(true) }, [])
 
   return (
     <>
@@ -184,7 +181,7 @@ export function ShareButton({ petId, petName, description, spritesheetUrl }: Omi
         </svg>
         Share
       </button>
-      {mounted && open && createPortal(
+      {open && createPortal(
         <ShareModalContent
           petId={petId}
           petName={petName}

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 const rateLimit = new Map<string, number[]>()
 const WINDOW_MS = 60_000
@@ -13,24 +13,29 @@ function isRateLimited(ip: string): boolean {
   return hits.length > MAX_REQ
 }
 
-function admin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-}
-
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const id = searchParams.get('id')
   const fp = searchParams.get('fp')
-  if (!id || !fp) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
+  if (!id) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
 
-  const supabase = admin()
-  const [{ data: pet }, { data: like }] = await Promise.all([
-    supabase.from('pets').select('likes_count').eq('id', id).single(),
-    supabase.from('pet_likes').select('pet_id').eq('pet_id', id).eq('fingerprint', fp).maybeSingle(),
-  ])
+  const auth = await createClient()
+  const { data: { user } } = await auth.auth.getUser()
+  if (!user && !fp) return NextResponse.json({ error: 'Missing params' }, { status: 400 })
+
+  const supabase = createServiceClient()
+  const petQuery = supabase.from('pets').select('likes_count').eq('id', id).single()
+  const likeQuery = user
+    ? supabase.from('pet_likes').select('pet_id').eq('pet_id', id).eq('user_id', user.id).maybeSingle()
+    : supabase
+        .from('pet_likes')
+        .select('pet_id')
+        .eq('pet_id', id)
+        .eq('fingerprint', fp)
+        .is('user_id', null)
+        .maybeSingle()
+
+  const [{ data: pet }, { data: like }] = await Promise.all([petQuery, likeQuery])
 
   return NextResponse.json({ liked: !!like, count: pet?.likes_count ?? 0 })
 }
@@ -41,22 +46,75 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
   }
 
-  const { id, fingerprint } = await req.json() as { id: string; fingerprint: string }
-  if (!id || !fingerprint || fingerprint.length > 64) {
+  const { id, fingerprint } = await req.json() as { id: string; fingerprint?: string }
+  if (!id || (fingerprint && fingerprint.length > 64)) {
     return NextResponse.json({ error: 'Invalid params' }, { status: 400 })
   }
 
-  const supabase = admin()
+  const auth = await createClient()
+  const { data: { user } } = await auth.auth.getUser()
+
+  if (!user && !fingerprint) {
+    return NextResponse.json({ error: 'Invalid params' }, { status: 400 })
+  }
+
+  const supabase = createServiceClient()
+
+  if (user) {
+    const { data: existing } = await supabase
+      .from('pet_likes')
+      .select('pet_id')
+      .eq('pet_id', id)
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (existing) {
+      await supabase.from('pet_likes').delete().eq('pet_id', id).eq('user_id', user.id)
+      await supabase.rpc('adjust_pet_likes', { p_pet_id: id, p_delta: -1 })
+    } else if (fingerprint) {
+      const { data: anonymousLike } = await supabase
+        .from('pet_likes')
+        .select('pet_id')
+        .eq('pet_id', id)
+        .eq('fingerprint', fingerprint)
+        .is('user_id', null)
+        .maybeSingle()
+
+      if (anonymousLike) {
+        await supabase
+          .from('pet_likes')
+          .update({ user_id: user.id })
+          .eq('pet_id', id)
+          .eq('fingerprint', fingerprint)
+          .is('user_id', null)
+      } else {
+        await supabase.from('pet_likes').insert({ pet_id: id, fingerprint, user_id: user.id })
+        await supabase.rpc('adjust_pet_likes', { p_pet_id: id, p_delta: 1 })
+      }
+    } else {
+      await supabase.from('pet_likes').insert({ pet_id: id, user_id: user.id })
+      await supabase.rpc('adjust_pet_likes', { p_pet_id: id, p_delta: 1 })
+    }
+
+    const { data: updated } = await supabase.from('pets').select('likes_count').eq('id', id).single()
+    return NextResponse.json({ liked: !existing, count: updated?.likes_count ?? 0 })
+  }
 
   const { data: existing } = await supabase
     .from('pet_likes')
     .select('pet_id')
     .eq('pet_id', id)
     .eq('fingerprint', fingerprint)
+    .is('user_id', null)
     .maybeSingle()
 
   if (existing) {
-    await supabase.from('pet_likes').delete().eq('pet_id', id).eq('fingerprint', fingerprint)
+    await supabase
+      .from('pet_likes')
+      .delete()
+      .eq('pet_id', id)
+      .eq('fingerprint', fingerprint)
+      .is('user_id', null)
     await supabase.rpc('adjust_pet_likes', { p_pet_id: id, p_delta: -1 })
   } else {
     await supabase.from('pet_likes').insert({ pet_id: id, fingerprint })

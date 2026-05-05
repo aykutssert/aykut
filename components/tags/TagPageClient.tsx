@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Copy, ExternalLink, SlidersHorizontal, Search, X } from 'lucide-react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import type { TaggedDoc } from '@/types'
 
@@ -171,6 +172,7 @@ export function TagPageClient({
   allTags,
   initialQuery = '',
   initialSort = 'default',
+  authStatus,
 }: {
   tag?: string
   tags?: string[]
@@ -178,13 +180,28 @@ export function TagPageClient({
   allTags: string[]
   initialQuery?: string
   initialSort?: SortOption
+  authStatus?: string
 }) {
   const activeTags = [...new Set(tags.filter(Boolean))]
   const [sort, setSort] = useState<SortOption>(initialSort)
   const [promptQuery, setPromptQuery] = useState(initialQuery)
   const [tagQuery, setTagQuery] = useState('')
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const shownAuthStatusRef = useRef<string | undefined>(undefined)
   const hasActiveFilters = activeTags.length > 0 || promptQuery.trim() !== '' || tagQuery.trim() !== '' || sort !== 'default'
+
+  useEffect(() => {
+    if (!authStatus || shownAuthStatusRef.current === authStatus) return
+
+    shownAuthStatusRef.current = authStatus
+    if (authStatus === 'confirmed') {
+      toast.success('Email confirmed. You are signed in.')
+    } else if (authStatus === 'password-updated') {
+      toast.success('Password updated.')
+    } else if (authStatus === 'callback-error') {
+      toast.error('Auth link could not be verified.')
+    }
+  }, [authStatus])
 
   function clearFilters() {
     setPromptQuery('')

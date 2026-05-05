@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const PUBLIC_API_PREFIXES = [
   '/api/search',
+  '/api/auth',
   '/api/pets/like',
   '/api/pets/download',
   '/api/pets/view',
@@ -37,9 +38,9 @@ export async function proxy(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
 
-  if (pathname.startsWith('/admin') && !user) {
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/admin/login'
     return NextResponse.redirect(url)
   }
 

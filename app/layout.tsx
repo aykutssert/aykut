@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
 import { RoamingPetWrapper } from '@/components/pets/RoamingPetWrapper'
+import { siteUrl } from '@/lib/site'
 import './globals.css'
 
 const geistSans = Geist({
@@ -15,16 +16,13 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
-
 export const metadata: Metadata = {
   title: {
     default: 'Kernel',
     template: '%s — Kernel',
   },
   description: 'Curated, LLM-friendly documentation for AI concepts, agent frameworks, MCP, and more.',
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL(siteUrl),
   openGraph: {
     type: 'website',
     siteName: 'Kernel',

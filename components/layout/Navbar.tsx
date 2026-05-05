@@ -4,6 +4,7 @@ import { ThemeToggle } from './ThemeToggle'
 import { SearchTrigger } from '@/components/search/SearchTrigger'
 import { MobileNav } from './MobileNav'
 import { ConnectButton } from '@/components/mcp/ConnectButton'
+import { AuthButton } from '@/components/auth/AuthButton'
 import type { DocMeta } from '@/types'
 
 export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
@@ -28,6 +29,7 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
         </div>
 
         <ConnectButton />
+        <AuthButton />
         <ThemeToggle />
       </div>
     </header>

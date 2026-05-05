@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Copy, Check } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Variable {
   name: string
@@ -34,6 +36,19 @@ export function DocRawContent({ html, content, variables, withLines = true }: Pr
   const [values, setValues] = useState<Record<string, string>>(
     Object.fromEntries(variables.map((v) => [v.name, v.default ?? '']))
   )
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    let textToCopy = content
+    if (variables.length > 0) {
+      textToCopy = content.replace(/\{\{(\w+)\}\}/g, (match, name) => {
+        return values[name] || match
+      })
+    }
+    navigator.clipboard.writeText(textToCopy)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   const hasVars = variables.length > 0
 
@@ -46,7 +61,22 @@ export function DocRawContent({ html, content, variables, withLines = true }: Pr
   }
 
   const RawView = (
-    <div className="rounded-md border border-foreground/20 overflow-hidden">
+    <div className="relative group/raw rounded-md border border-foreground/20 overflow-hidden">
+      <button
+        onClick={handleCopy}
+        className={cn(
+          "absolute right-3 top-3 z-30 p-2 rounded-md border border-foreground/10 bg-background/50 backdrop-blur-sm transition-all duration-200",
+          "opacity-0 group-hover/raw:opacity-100 hover:bg-background hover:border-foreground/20",
+          copied ? "opacity-100 border-emerald-500/50 bg-emerald-50/50 dark:bg-emerald-500/10" : ""
+        )}
+        title="Copy prompt"
+      >
+        {copied ? (
+          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+        ) : (
+          <Copy className="w-4 h-4 text-muted-foreground" />
+        )}
+      </button>
       <div
         className={`doc-raw ${withLines ? 'with-lines' : ''} text-xs leading-relaxed font-mono
           [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:m-0

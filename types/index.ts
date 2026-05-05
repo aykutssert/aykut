@@ -24,6 +24,8 @@ export interface DocMeta {
   order_index: number
   published: boolean
   tags: string[]
+  description: string | null
+  image_url: string | null
 }
 
 export type TaggedDoc = Pick<

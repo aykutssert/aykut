@@ -9,7 +9,7 @@ export async function getDocs(): Promise<DocMeta[]> {
   const supabase = createPublicClient()
   const { data } = await supabase
     .from('docs')
-    .select('id, title, slug, category, order_index, published, tags')
+    .select('id, title, slug, category, order_index, published, tags, description, image_url')
     .eq('published', true)
     .order('category')
     .order('order_index')

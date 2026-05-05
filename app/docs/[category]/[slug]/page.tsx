@@ -181,7 +181,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
         </main>
 
         {/* Right sidebar */}
-        <ScrollFadeAside className="hidden lg:block w-[200px] shrink-0 sticky top-[105px] h-[calc(100vh-105px)] overflow-y-auto scrollbar-none border-l border-border pl-5">
+        <ScrollFadeAside className="hidden lg:block w-[260px] shrink-0 sticky top-[105px] h-[calc(100vh-105px)] overflow-y-auto scrollbar-none border-l border-border pl-5">
           {(() => {
             const docTags = doc.tags ?? []
             const related = docTags.length > 0
@@ -189,17 +189,31 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
               : []
             if (related.length > 0) {
               return (
-                <div className="pt-1.5 pb-8 space-y-1">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Related</p>
-                  {related.map((d) => (
-                    <a
-                      key={d.id}
-                      href={`/docs/${d.category}/${d.slug}`}
-                      className="block text-sm text-muted-foreground hover:text-foreground transition-colors py-1 truncate"
-                    >
-                      {d.title}
-                    </a>
-                  ))}
+                <div className="pt-1.5 pb-8 pr-1">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Related</p>
+                  <div className="flex flex-col gap-3">
+                    {related.map((d) => (
+                      <Link
+                        key={d.id}
+                        href={`/docs/${d.category}/${d.slug}`}
+                        className="group block rounded-md border border-border bg-background p-3 transition-colors hover:border-foreground/30"
+                      >
+                        <div className="flex items-start justify-between gap-2 mb-1.5">
+                          <h3 className="text-[13px] font-medium leading-snug tracking-tight line-clamp-2 group-hover:underline group-hover:underline-offset-2">
+                            {d.title}
+                          </h3>
+                          <span className="shrink-0 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                            {d.image_url ? 'Image' : 'Text'}
+                          </span>
+                        </div>
+                        {d.description && (
+                          <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground/90">
+                            {d.description}
+                          </p>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )
             }

@@ -47,7 +47,7 @@ export function DocRawContent({ html, content, variables }: Props) {
   const RawView = (
     <div className="rounded-xl border border-foreground/20 overflow-hidden">
       <div
-        className="doc-raw text-[13px] leading-relaxed font-mono
+        className="doc-raw text-xs leading-relaxed font-mono
           [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:m-0
           [&_pre]:p-5 [&_pre]:bg-[#F5F5F5]! dark:[&_pre]:bg-[#262626]!"
         dangerouslySetInnerHTML={{ __html: displayHtml }}

@@ -42,11 +42,16 @@ export async function DocContent({ content, variables = [] }: DocContentProps) {
   const normalized = normalizeContent(content)
   const { lang, code } = detectLang(normalized)
 
-  const html = await codeToHtml(code, {
+  let html = await codeToHtml(code, {
     lang,
     themes: { dark: 'one-dark-pro', light: 'one-light' },
     defaultColor: false,
   })
+
+  // Override the default dull grey plain text color with crisp foreground color for both themes
+  html = html
+    .replace(/#abb2bf/gi, 'hsl(var(--foreground))')
+    .replace(/#383a42/gi, 'hsl(var(--foreground))')
 
   return <DocRawContent html={html} content={code} variables={variables} withLines={lang !== 'markdown'} />
 }

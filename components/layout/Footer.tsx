@@ -38,6 +38,9 @@ export function Footer() {
           <Link href="/docs" className="hover:text-foreground transition-colors">
             Docs
           </Link>
+          <Link href="/feedback" className="hover:text-foreground transition-colors">
+            Feedback
+          </Link>
           <a
             href="https://github.com/aykutssert/kernel"
             target="_blank"

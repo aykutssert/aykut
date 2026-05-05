@@ -4,7 +4,7 @@ import { getDocs } from '@/lib/docs'
 import { createClient } from '@/lib/supabase/server'
 import { MessageSquare, Quote } from 'lucide-react'
 
-export const revalidate = 3600 // Saatte bir yenile
+
 
 export default async function FeedbackPage() {
   const docs = await getDocs()

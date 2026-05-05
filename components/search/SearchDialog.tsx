@@ -104,7 +104,7 @@ export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: S
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search docs..."
-              className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
             />
             {loading
               ? <span className="text-[10px] text-muted-foreground">…</span>

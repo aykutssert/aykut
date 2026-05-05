@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/admin'
 
 export async function PATCH(req: Request) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { id, published } = await req.json()
   if (!id || typeof published !== 'boolean') {
     return NextResponse.json({ error: 'Missing id or published' }, { status: 400 })

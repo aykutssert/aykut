@@ -42,7 +42,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, author_name: author || 'Anonymous', source }),
+        body: JSON.stringify({ content, author_name: author || 'Anonymous', source, website: honeypot }),
       })
 
       if (!res.ok) throw new Error('Failed to send feedback')
@@ -54,7 +54,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
         setAuthor('')
         onClose()
       }, 2000)
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)

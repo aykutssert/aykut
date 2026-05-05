@@ -1,18 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/auth/admin'
 
 async function checkAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return false
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single()
-  
-  return !!profile?.is_admin
+  return requireAdmin()
 }
 
 export async function PATCH(req: Request) {
@@ -22,16 +13,28 @@ export async function PATCH(req: Request) {
 
   try {
     const { id, ...updates } = await req.json()
+    const safeUpdates: { status?: string; is_featured?: boolean } = {}
+
+    if (['pending', 'published', 'archived'].includes(updates.status)) {
+      safeUpdates.status = updates.status
+    }
+    if (typeof updates.is_featured === 'boolean') {
+      safeUpdates.is_featured = updates.is_featured
+    }
+    if (!id || Object.keys(safeUpdates).length === 0) {
+      return NextResponse.json({ error: 'Invalid update' }, { status: 400 })
+    }
+
     const supabase = await createClient()
     
     const { error } = await supabase
       .from('site_feedback')
-      .update(updates)
+      .update(safeUpdates)
       .eq('id', id)
 
     if (error) throw error
     return NextResponse.json({ success: true })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -43,6 +46,8 @@ export async function DELETE(req: Request) {
 
   try {
     const { id } = await req.json()
+    if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
+
     const supabase = await createClient()
     
     const { error } = await supabase
@@ -52,7 +57,7 @@ export async function DELETE(req: Request) {
 
     if (error) throw error
     return NextResponse.json({ success: true })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

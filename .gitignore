@@ -44,4 +44,6 @@ next-env.d.ts
 nice-to-have.md
 MCP_SERVER.md
 login.md
+sql-status.json
+supabase_schema.sql
 

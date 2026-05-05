@@ -5,23 +5,11 @@ const PUBLIC_API_PREFIXES = [
   '/api/search',
   '/api/auth',
   '/api/docs/like',
+  '/api/feedback',
   '/api/pets/like',
   '/api/pets/download',
   '/api/pets/view',
 ]
-
-function adminEmails() {
-  return (process.env.ADMIN_EMAILS ?? process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? '')
-    .split(',')
-    .map((email) => email.trim().toLowerCase())
-    .filter(Boolean)
-}
-
-function isAdminEmail(email: string | undefined) {
-  const allowed = adminEmails()
-  if (allowed.length === 0) return process.env.NODE_ENV !== 'production'
-  return Boolean(email && allowed.includes(email.toLowerCase()))
-}
 
 export async function proxy(request: NextRequest) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -51,7 +39,16 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
-  const isAdmin = isAdminEmail(user?.email)
+  let isAdmin = false
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .maybeSingle()
+    isAdmin = Boolean(profile?.is_admin)
+  }
 
   if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !user) {
     const url = request.nextUrl.clone()

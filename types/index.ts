@@ -56,3 +56,13 @@ export interface DocVersion {
   author_handle: string | null
   created_at: string
 }
+
+export interface ProductTemplate {
+  id: string
+  category: 'home_decor' | 'beauty_wellness'
+  name: string
+  image_url: string
+  sort_order: number
+  is_active: boolean
+  created_at: string
+}

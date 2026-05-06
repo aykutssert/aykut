@@ -7,11 +7,20 @@ const PUBLIC_API_PREFIXES = [
   '/api/docs/like',
   '/api/feedback',
   '/api/pets/like',
+  '/api/pets/likes',
   '/api/pets/download',
   '/api/pets/view',
 ]
 
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const isPublicApi = pathname.startsWith('/api/')
+    && PUBLIC_API_PREFIXES.some((p) => pathname.startsWith(p))
+
+  if (isPublicApi) {
+    return NextResponse.next({ request })
+  }
+
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next({ request })
   }
@@ -38,7 +47,6 @@ export async function proxy(request: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
-  const { pathname } = request.nextUrl
   let isAdmin = false
 
   if (user) {
@@ -75,8 +83,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (pathname.startsWith('/api/')) {
-    const isPublic = PUBLIC_API_PREFIXES.some((p) => pathname.startsWith(p))
-    if (!isPublic && (!user || !isAdmin)) {
+    if (!user || !isAdmin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
   }

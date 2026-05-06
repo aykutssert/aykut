@@ -9,6 +9,7 @@ import { PetsSearchBar } from '@/components/pets/PetsSearchBar'
 import { PetsSortTabs } from '@/components/pets/PetsSortTabs'
 import { PetsPageScroller } from '@/components/pets/PetsPageScroller'
 import { PetsGridSkeleton } from '@/components/pets/PetsGridSkeleton'
+import { PetLikeStatusProvider } from '@/components/pets/PetLikeStatusProvider'
 import { getDocs } from '@/lib/docs'
 import { getPets, PER_PAGE } from '@/lib/pets-data'
 import { ChevronLeft, ChevronRight, Heart, SearchX, PawPrint } from 'lucide-react'
@@ -101,11 +102,13 @@ async function PetsList({ searchParams }: Props) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {pets.map((pet) => (
-              <PetListCard key={pet.id} pet={pet} />
-            ))}
-          </div>
+          <PetLikeStatusProvider petIds={pets.map((pet) => pet.id)}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {pets.map((pet) => (
+                <PetListCard key={pet.id} pet={pet} />
+              ))}
+            </div>
+          </PetLikeStatusProvider>
 
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-12">

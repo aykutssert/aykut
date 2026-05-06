@@ -3,16 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-function getFingerprint(): string {
-  const key = 'codex_fp'
-  let fp = localStorage.getItem(key)
-  if (!fp) {
-    fp = crypto.randomUUID()
-    localStorage.setItem(key, fp)
-  }
-  return fp
-}
+import { getPetLikeFingerprint, usePetLikeStatus } from '@/components/pets/PetLikeStatusProvider'
 
 interface LikeButtonProps {
   petId: string
@@ -23,28 +14,35 @@ interface LikeButtonProps {
 }
 
 export function LikeButton({ petId, initialCount = 0, compact = false, showCount = false, onChange }: LikeButtonProps) {
-  const [liked, setLiked] = useState(false)
-  const [count, setCount] = useState(initialCount)
+  const likeStatus = usePetLikeStatus()
+  const status = likeStatus?.getStatus(petId)
+  const [localLiked, setLocalLiked] = useState(false)
+  const [localCount, setLocalCount] = useState(initialCount)
   const [loading, setLoading] = useState(false)
-  const [ready, setReady] = useState(false)
+  const [localReady, setLocalReady] = useState(false)
   const [animating, setAnimating] = useState(false)
+  const liked = status?.liked ?? localLiked
+  const count = status?.count ?? localCount
+  const ready = likeStatus ? likeStatus.ready : localReady
 
   useEffect(() => {
-    const fp = getFingerprint()
+    if (likeStatus) return
+
+    const fp = getPetLikeFingerprint()
     fetch(`/api/pets/like?id=${petId}&fp=${fp}`)
       .then((r) => r.json())
       .then(({ liked, count }) => {
-        setLiked(liked)
-        setCount(count)
-        setReady(true)
+        setLocalLiked(liked)
+        setLocalCount(count)
+        setLocalReady(true)
       })
-      .catch(() => setReady(true))
-  }, [petId])
+      .catch(() => setLocalReady(true))
+  }, [petId, likeStatus])
 
   const toggle = useCallback(async () => {
     if (loading) return
     setLoading(true)
-    const fp = getFingerprint()
+    const fp = getPetLikeFingerprint()
     try {
       const res = await fetch('/api/pets/like', {
         method: 'POST',
@@ -53,8 +51,9 @@ export function LikeButton({ petId, initialCount = 0, compact = false, showCount
       })
       if (res.ok) {
         const data = await res.json()
-        setLiked(data.liked)
-        setCount(data.count)
+        setLocalLiked(data.liked)
+        setLocalCount(data.count)
+        likeStatus?.setStatus(petId, { liked: data.liked, count: data.count })
         onChange?.(data.liked, data.count)
         if (data.liked) {
           setAnimating(true)
@@ -64,7 +63,7 @@ export function LikeButton({ petId, initialCount = 0, compact = false, showCount
     } finally {
       setLoading(false)
     }
-  }, [petId, loading, onChange])
+  }, [petId, loading, onChange, likeStatus])
 
   return (
     <button

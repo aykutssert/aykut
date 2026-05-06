@@ -15,7 +15,8 @@ export function CategoryTabs({ docs }: { docs: DocMeta[] }) {
   const categories = Array.from(new Set(docs.map((d) => d.category)))
   const isPets = pathname.startsWith('/pets')
   const isPrompts = pathname.startsWith('/prompts')
-  const activeCategory = isPets ? null : isPrompts ? 'prompts' : categories.find((cat) => pathname.startsWith(`/docs/${cat}`))
+  const isProductTemplates = pathname.startsWith('/product-templates')
+  const activeCategory = isPets || isProductTemplates ? null : isPrompts ? 'prompts' : categories.find((cat) => pathname.startsWith(`/docs/${cat}`))
 
   const update = useCallback(() => {
     const el = navRef.current
@@ -60,6 +61,20 @@ export function CategoryTabs({ docs }: { docs: DocMeta[] }) {
             <div className={cn(
               'absolute bottom-0 left-0 w-full h-[1.5px] transition-colors',
               isPets ? 'bg-foreground dark:bg-[#D5A27F]' : 'bg-transparent group-hover:bg-border'
+            )} />
+          </Link>
+
+          <Link
+            href="/product-templates"
+            className={cn(
+              'group relative h-full flex items-center text-sm font-medium transition-colors whitespace-nowrap shrink-0',
+              isProductTemplates ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            Product Templates
+            <div className={cn(
+              'absolute bottom-0 left-0 w-full h-[1.5px] transition-colors',
+              isProductTemplates ? 'bg-foreground dark:bg-[#D5A27F]' : 'bg-transparent group-hover:bg-border'
             )} />
           </Link>
 

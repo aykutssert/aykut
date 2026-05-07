@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { ProductOnboardingBanner } from '@/components/product-templates/ProductOnboardingBanner'
 
 const links = [
   { href: '/product-studio/products', label: 'My Products' },
@@ -14,6 +15,8 @@ export function ProductSubnav() {
   const pathname = usePathname()
 
   return (
+    <div className="w-full">
+      <ProductOnboardingBanner />
     <div className="relative mb-6 w-full">
       <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
       <nav className="flex items-center gap-1">
@@ -39,6 +42,7 @@ export function ProductSubnav() {
           )
         })}
       </nav>
+    </div>
     </div>
   )
 }

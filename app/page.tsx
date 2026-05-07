@@ -1,12 +1,46 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Camera, Code2, PawPrint, Sparkles } from 'lucide-react'
+import { ArrowRight, Camera, Code2, PawPrint, Share2, Sparkles, Zap } from 'lucide-react'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { getDocs } from '@/lib/docs'
 import { getProductTemplates } from '@/lib/product-templates'
+import { PRODUCT_TEMPLATE_CATEGORIES } from '@/lib/product-template-categories'
+import { BeforeAfterShowcase } from '@/components/landing/BeforeAfterShowcase'
+import { FadeInSection } from '@/components/landing/FadeInSection'
+import type { ProductTemplate } from '@/types'
+
+function pickShowcaseTemplates(templates: ProductTemplate[], count = 4) {
+  const seen = new Set<string>()
+  const result: ProductTemplate[] = []
+  // first pass: one per category for variety
+  for (const t of templates) {
+    if (!seen.has(t.category) && result.length < count) {
+      seen.add(t.category)
+      result.push(t)
+    }
+  }
+  // second pass: fill remaining slots with any leftover templates
+  if (result.length < count) {
+    const picked = new Set(result.map((t) => t.id))
+    for (const t of templates) {
+      if (!picked.has(t.id) && result.length < count) {
+        result.push(t)
+        picked.add(t.id)
+      }
+    }
+  }
+  return result
+}
+
+export const metadata: Metadata = {
+  title: 'AI Product Photography & Developer Tools',
+  description: 'Product Studio for AI-generated product photos and a developer toolkit with prompts, docs, and Codex pets.',
+}
 
 export default async function LandingPage() {
   const [docs, templates] = await Promise.all([getDocs(), getProductTemplates()])
+  const showcaseTemplates = pickShowcaseTemplates(templates, 4)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -56,21 +90,38 @@ export default async function LandingPage() {
               href="/product-studio/templates"
               className="inline-flex h-10 items-center gap-2 rounded-xl bg-foreground px-5 text-sm font-medium text-background transition-opacity hover:opacity-85"
             >
-              Start creating
-              <ArrowRight className="h-4 w-4" />
+              <Zap className="h-4 w-4" />
+              Studio-quality product photos, instantly
             </Link>
             <Link
               href="/prompts"
               className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-background/60 px-5 text-sm font-medium text-muted-foreground backdrop-blur-sm transition-colors hover:border-foreground/25 hover:text-foreground"
             >
-              Read docs
+              See how it works
             </Link>
           </div>
         </div>
       </section>
 
+      {/* ── Stats strip ── */}
+      <div className="border-b border-border bg-muted/30">
+        <div className="mx-auto flex w-full max-w-[1400px] flex-wrap items-center justify-center gap-x-8 gap-y-1 px-4 py-3 md:px-0">
+          {[
+            { icon: '✦', text: `${templates.length} scene templates` },
+            { icon: '✦', text: 'Free to start' },
+            { icon: '✦', text: 'Generate in seconds' },
+          ].map(({ icon, text }) => (
+            <span key={text} className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="text-[10px] text-foreground/20">{icon}</span>
+              {text}
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* ── Workflow cards ── */}
       <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-12 md:px-0 md:py-16">
+        <FadeInSection>
         <div className="grid gap-4 md:grid-cols-2">
 
           {/* Product Studio */}
@@ -108,20 +159,16 @@ export default async function LandingPage() {
               </div>
             </div>
 
-            {/* Example output */}
-            <div className="border-t border-border bg-muted/30">
-              <div className="flex items-center justify-between px-4 py-2">
-                <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Generated result</span>
-                <span className="text-[10px] text-muted-foreground/60">AI · product photo</span>
+            {/* Before / After showcase */}
+            <div className="overflow-hidden border-t border-border">
+              <div className="flex items-center justify-between bg-muted/30 px-4 py-2">
+                <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Before &amp; After</span>
+                <span className="text-[10px] text-muted-foreground/60">click to pause</span>
               </div>
-              <div className="flex h-80 items-center justify-center px-6 pb-5">
-                <img
-                  src="/product-workflow-example.webp"
-                  alt="Example AI-generated product photo"
-                  loading="lazy"
-                  className="h-full w-auto rounded-lg object-contain shadow-md transition-transform duration-700 group-hover:scale-[1.02]"
-                />
-              </div>
+              <BeforeAfterShowcase
+                beforeSrc="/product-workflow-before.webp"
+                afterSrc="/product-workflow-example.webp"
+              />
             </div>
           </Link>
 
@@ -190,7 +237,95 @@ export default async function LandingPage() {
           </Link>
 
         </div>
+
+          {/* Social Media — Coming Soon */}
+          <div className="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-dashed border-border bg-muted/20 px-6 py-5 opacity-70">
+            <div className="flex items-center gap-4">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border bg-background">
+                <Share2 className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-semibold">Social Media Workflow</p>
+                  <span className="rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-violet-600 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-400">
+                    Coming soon
+                  </span>
+                </div>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Turn your products into scroll-stopping content for Instagram, TikTok, and more.
+                </p>
+              </div>
+            </div>
+            <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+          </div>
+
+        </FadeInSection>
       </main>
+
+      {/* ── Scene gallery ── */}
+      {showcaseTemplates.length > 0 && (
+        <section className="border-t border-border">
+          <div className="mx-auto w-full max-w-[1400px] px-4 py-12 md:px-0 md:py-16">
+            <FadeInSection>
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  Scene templates
+                </p>
+                <h2 className="text-2xl font-bold tracking-tight">What can you create?</h2>
+                <p className="mt-2 max-w-md text-sm text-muted-foreground">
+                  Choose a scene, upload your product — get a studio-quality photo in seconds.
+                </p>
+              </div>
+              <Link
+                href="/product-studio/templates"
+                className="hidden shrink-0 items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+              >
+                Browse all {templates.length} templates
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {showcaseTemplates.map((t, i) => (
+                <FadeInSection key={t.id} delay={i * 80}>
+                  <Link
+                    href="/product-studio/templates"
+                    className="group relative block overflow-hidden rounded-xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-lg hover:shadow-foreground/5"
+                  >
+                    <div className="aspect-[3/4] overflow-hidden bg-muted">
+                      <img
+                        src={t.image_url}
+                        alt={t.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      />
+                    </div>
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 pt-10">
+                      <p className="text-xs font-semibold text-white">{t.name}</p>
+                      <p className="mt-0.5 text-[11px] text-white/60">
+                        {PRODUCT_TEMPLATE_CATEGORIES.find((c) => c.value === t.category)?.label}
+                      </p>
+                    </div>
+                  </Link>
+                </FadeInSection>
+              ))}
+            </div>
+
+            <div className="mt-5 text-center sm:hidden">
+              <Link
+                href="/product-studio/templates"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                Browse all {templates.length} templates
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            </FadeInSection>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </div>

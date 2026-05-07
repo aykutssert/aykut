@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
@@ -19,6 +20,11 @@ async function ProductResultsContent() {
   ])
 
   return <ProductResultsList results={results} signedIn={Boolean(user)} usage={usage} />
+}
+
+export const metadata: Metadata = {
+  title: 'Results',
+  description: 'Your AI-generated product photos.',
 }
 
 export default async function ProductResultsPage() {

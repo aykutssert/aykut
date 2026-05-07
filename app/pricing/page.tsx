@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Check } from 'lucide-react'
 import { Navbar } from '@/components/layout/Navbar'
@@ -45,6 +46,11 @@ const PLANS = [
     disabled: true,
   },
 ]
+
+export const metadata: Metadata = {
+  title: 'Pricing',
+  description: 'Simple, transparent pricing for Product Studio. Start free, upgrade when you need more.',
+}
 
 export default async function PricingPage() {
   const docs = await getDocs()

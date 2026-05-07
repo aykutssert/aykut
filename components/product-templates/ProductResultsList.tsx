@@ -42,9 +42,22 @@ function statusLabel(status: ProductResult['status']) {
 }
 
 function ResultLightbox({ result, onClose }: { result: ProductResult; onClose: () => void }) {
+  const hasProduct = Boolean(result.product?.image_url)
+  const [view, setView] = useState<'after' | 'before'>('after')
+
+  const src = view === 'before' && hasProduct
+    ? result.product!.image_url
+    : result.image_url!
+
+  const altText = view === 'before'
+    ? `Original product photo — ${result.product?.name ?? ''}`
+    : result.product?.name ? `Generated photo for ${result.product.name}` : 'Generated product photo'
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') { onClose(); return }
+      if (event.key === 'b' || event.key === 'B') setView('before')
+      if (event.key === 'a' || event.key === 'A') setView('after')
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
@@ -61,6 +74,32 @@ function ResultLightbox({ result, onClose }: { result: ProductResult; onClose: (
               <p className="mt-0.5 text-xs text-muted-foreground">{result.template?.name ?? 'Unknown template'}</p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
+              {hasProduct && (
+                <div className="flex items-center rounded-lg border border-border bg-muted/40 p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setView('before')}
+                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                      view === 'before'
+                        ? 'bg-background text-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Before
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setView('after')}
+                    className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                      view === 'after'
+                        ? 'bg-background text-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    After
+                  </button>
+                </div>
+              )}
               <a
                 href={`/api/product-results/download?id=${result.id}`}
                 className="rounded-md border border-foreground/15 px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
@@ -78,11 +117,20 @@ function ResultLightbox({ result, onClose }: { result: ProductResult; onClose: (
           </div>
           <div className="flex max-h-[calc(100dvh-160px)] items-center justify-center bg-muted/30 p-2 sm:p-4">
             <img
-              src={result.image_url!}
-              alt={result.product?.name ? `Generated product photo for ${result.product.name}` : 'Generated product photo'}
+              key={view}
+              src={src}
+              alt={altText}
               className="max-h-[calc(100dvh-192px)] w-auto max-w-full rounded-sm object-contain"
             />
           </div>
+          {hasProduct && (
+            <div className="border-t border-border px-4 py-2 text-center">
+              <p className="text-[10px] text-muted-foreground/50">
+                Press <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[9px]">B</kbd> for before ·{' '}
+                <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[9px]">A</kbd> for after
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { ImageIcon } from 'lucide-react'
 import { Suspense } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
@@ -29,6 +30,11 @@ async function ProductTemplatesContent() {
       )}
     </>
   )
+}
+
+export const metadata: Metadata = {
+  title: 'Templates',
+  description: 'Browse AI scene templates for product photography.',
 }
 
 export default async function ProductTemplatesPage() {

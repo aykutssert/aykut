@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
@@ -50,6 +51,11 @@ function ProductCreateSkeleton() {
       <p className="text-sm text-muted-foreground">Loading create form...</p>
     </div>
   )
+}
+
+export const metadata: Metadata = {
+  title: 'Create',
+  description: 'Generate a studio-quality product photo with AI.',
 }
 
 export default async function ProductCreatePage({ searchParams }: Props) {

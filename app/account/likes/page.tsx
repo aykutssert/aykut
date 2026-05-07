@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
@@ -51,6 +52,11 @@ async function AccountLikesContent({ searchParams }: Props) {
     getLikedDocs(user.id),
   ])
   return <AccountLikesClient initialPets={pets} initialPrompts={prompts} type={type} />
+}
+
+export const metadata: Metadata = {
+  title: 'Library',
+  description: 'Your liked prompts and saved Codex pets.',
 }
 
 export default async function AccountLikesPage({ searchParams }: Props) {

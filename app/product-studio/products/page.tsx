@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
@@ -18,6 +19,11 @@ async function ProductProductsContent() {
   const { data: { user } } = await supabase.auth.getUser()
 
   return <ProductProductsClient products={products} signedIn={Boolean(user)} />
+}
+
+export const metadata: Metadata = {
+  title: 'My Products',
+  description: 'Manage your uploaded products for AI product photography.',
 }
 
 export default async function ProductProductsPage() {

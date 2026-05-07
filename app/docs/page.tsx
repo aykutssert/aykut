@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/layout/Navbar'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
@@ -5,6 +6,11 @@ import { DeveloperSubnav } from '@/components/layout/DeveloperSubnav'
 import { Footer } from '@/components/layout/Footer'
 import { getDocs } from '@/lib/docs'
 import { ArrowRight } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Docs',
+  description: 'Curated, LLM-friendly documentation for AI concepts, agent frameworks, MCP, and more.',
+}
 
 export default async function DocsIndexPage() {
   let docs: Awaited<ReturnType<typeof getDocs>> = []

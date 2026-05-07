@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
@@ -180,6 +181,11 @@ async function PetsList({ searchParams }: Props) {
       )}
     </>
   )
+}
+
+export const metadata: Metadata = {
+  title: 'Codex Pets',
+  description: 'Pixel-art companion pets with a REST API. Each sprite is unique per generation.',
 }
 
 export default async function PetsPage({ searchParams }: Props) {

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton'
 import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronDown, Edit2, ImageIcon, Loader2, PackagePlus, Plus, Trash2, UserRound, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, Edit2, ImageIcon, Loader2, PackagePlus, Plus, Sparkles, Trash2, UserRound, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/admin/ConfirmDialog'
 import { PRODUCT_TEMPLATE_CATEGORIES } from '@/lib/product-template-categories'
@@ -252,6 +252,53 @@ export function ProductProductsClient({
                   </button>
                 </div>
               </aside>
+            </div>
+          )}
+
+          {products.length === 0 && !showForm && (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border px-6 py-12 text-center">
+              <p className="mb-1 text-sm font-semibold">No products yet</p>
+              <p className="mb-10 text-xs text-muted-foreground">Add your first product to start generating photos</p>
+
+              <div className="flex w-full max-w-lg flex-col items-center gap-2 sm:flex-row sm:gap-0">
+                <button
+                  type="button"
+                  onClick={handleAddClick}
+                  className="group flex w-full flex-col items-center gap-2.5 rounded-xl border border-foreground/20 bg-muted/40 px-4 py-5 transition-colors hover:bg-muted/70 sm:flex-1"
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">1</span>
+                  <PackagePlus className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-foreground" />
+                  <div>
+                    <p className="text-xs font-semibold">Upload a product</p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">Add a photo of your product</p>
+                  </div>
+                </button>
+
+                <ArrowRight className="h-4 w-4 shrink-0 rotate-90 text-muted-foreground/30 sm:rotate-0 sm:mx-2" />
+
+                <Link
+                  href="/product-studio/templates"
+                  className="group flex w-full flex-col items-center gap-2.5 rounded-xl border border-border bg-background px-4 py-5 transition-colors hover:border-foreground/20 hover:bg-muted/40 sm:flex-1"
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">2</span>
+                  <Sparkles className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-foreground" />
+                  <div>
+                    <p className="text-xs font-semibold">Pick a template</p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">Choose a scene</p>
+                  </div>
+                </Link>
+
+                <ArrowRight className="h-4 w-4 shrink-0 rotate-90 text-muted-foreground/30 sm:rotate-0 sm:mx-2" />
+
+                <div className="flex w-full flex-col items-center gap-2.5 rounded-xl border border-dashed border-border px-4 py-5 opacity-50 sm:flex-1">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">3</span>
+                  <Zap className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-xs font-semibold">Generate</p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">Get studio-quality photos</p>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

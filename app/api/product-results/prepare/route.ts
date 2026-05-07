@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { isProductImageSize } from '@/lib/product-image-sizes'
+import { isProductImageQuality, isProductImageSize } from '@/lib/product-image-sizes'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export async function POST(req: Request) {
@@ -15,12 +15,14 @@ export async function POST(req: Request) {
     template_id?: string
     final_prompt?: string
     image_size?: string
+    image_quality?: string
   }
 
   const productId = body.product_id?.trim()
   const templateId = body.template_id?.trim()
   const finalPrompt = body.final_prompt?.trim()
   const imageSize = body.image_size?.trim() || '1:1'
+  const imageQuality = body.image_quality?.trim() || 'medium'
 
   if (!productId || !templateId) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -28,6 +30,10 @@ export async function POST(req: Request) {
 
   if (!isProductImageSize(imageSize)) {
     return NextResponse.json({ error: 'Invalid image size' }, { status: 400 })
+  }
+
+  if (!isProductImageQuality(imageQuality)) {
+    return NextResponse.json({ error: 'Invalid image quality' }, { status: 400 })
   }
 
   const service = createServiceClient()
@@ -57,6 +63,7 @@ export async function POST(req: Request) {
       product_id: productId,
       template_id: templateId,
       image_size: imageSize,
+      image_quality: imageQuality,
       final_prompt: finalPrompt || 'Place the selected product into the selected template scene.',
       negative_prompt: '',
       status: 'pending',

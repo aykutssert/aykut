@@ -12,6 +12,8 @@ const PUBLIC_API_PREFIXES = [
   '/api/pets/likes',
   '/api/pets/download',
   '/api/pets/view',
+  '/api/product-products',
+  '/api/product-results',
 ]
 
 export async function proxy(request: NextRequest) {

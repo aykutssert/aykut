@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Edit2, ImageIcon, Loader2, PackagePlus, Plus, Trash2, UserRound, X } from 'lucide-react'
+import { ChevronDown, Edit2, ImageIcon, Loader2, PackagePlus, Plus, Trash2, UserRound, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/admin/ConfirmDialog'
 import { PRODUCT_TEMPLATE_CATEGORIES } from '@/lib/product-template-categories'
@@ -28,6 +28,17 @@ export function ProductProductsClient({
   const [saving, setSaving] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    function onOpen() {
+      if (!signedIn) { window.dispatchEvent(new Event('kernel-auth-open')); return }
+      resetForm()
+      setShowForm(true)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    window.addEventListener('kernel-add-product-open', onOpen)
+    return () => window.removeEventListener('kernel-add-product-open', onOpen)
+  }, [signedIn])
 
   function resetForm() {
     setEditingId(null)
@@ -106,30 +117,21 @@ export function ProductProductsClient({
     router.refresh()
   }
 
+  function handleAddClick() {
+    if (!signedIn) {
+      window.dispatchEvent(new Event('kernel-auth-open'))
+      return
+    }
+    if (showForm) {
+      resetForm()
+      return
+    }
+    resetForm()
+    setShowForm(true)
+  }
+
   return (
     <>
-      <div className="mb-5 flex items-center justify-end">
-        <button
-          type="button"
-          onClick={() => {
-            if (!signedIn) {
-              window.dispatchEvent(new Event('kernel-auth-open'))
-              return
-            }
-            if (showForm) {
-              resetForm()
-              return
-            }
-            resetForm()
-            setShowForm(true)
-          }}
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-foreground px-3 text-sm font-medium text-background transition-opacity hover:opacity-90"
-        >
-          <Plus className="h-4 w-4" />
-          {showForm ? 'Close' : 'Add product'}
-        </button>
-      </div>
-
       {!signedIn ? (
         <div className="flex min-h-[360px] flex-col items-center justify-center rounded-md border border-dashed border-border text-center">
           <UserRound className="mb-4 h-10 w-10 text-muted-foreground/30" />
@@ -145,7 +147,7 @@ export function ProductProductsClient({
               <div className="space-y-4">
                 {preview ? (
                   <div className="relative overflow-hidden rounded-md border border-border bg-muted">
-                    <img src={preview} alt="" className="max-h-[280px] w-full object-contain" />
+                    <img src={preview} alt="" className="block w-full" />
                     {editingId && !image && (
                       <button
                         type="button"
@@ -214,10 +216,11 @@ export function ProductProductsClient({
               <aside className="space-y-4">
                 <label className="block">
                   <span className="mb-1.5 block text-xs font-medium">Category</span>
+                  <div className="relative">
                   <select
                     value={category}
                     onChange={(event) => setCategory(event.target.value)}
-                    className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-foreground/40"
+                    className="h-10 w-full appearance-none rounded-lg border border-border bg-background px-3 pr-9 text-sm outline-none focus:border-foreground/40"
                   >
                     {PRODUCT_TEMPLATE_CATEGORIES.map((item) => (
                       <option key={item.value} value={item.value}>
@@ -225,6 +228,8 @@ export function ProductProductsClient({
                       </option>
                     ))}
                   </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  </div>
                 </label>
 
                 <div className="flex justify-end gap-3 pt-2">
@@ -249,24 +254,18 @@ export function ProductProductsClient({
             </div>
           )}
 
-          {products.length === 0 ? (
-            <div className="flex min-h-[360px] flex-col items-center justify-center rounded-md border border-dashed border-border text-center">
-              <PackagePlus className="mb-4 h-10 w-10 text-muted-foreground/30" />
-              <p className="text-sm font-medium">No products yet.</p>
-              <p className="mt-1 max-w-sm text-xs text-muted-foreground">
-                Add your first product image to use it with templates.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="columns-2 gap-4 sm:columns-3 lg:columns-4 xl:columns-5">
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="overflow-hidden rounded-md border border-border bg-background transition-colors hover:border-foreground/30"
+                  className="mb-4 break-inside-avoid overflow-hidden rounded-md border border-border bg-background transition-colors hover:border-foreground/30"
                 >
-                  <Link href={`/product-studio/create?product=${product.id}`} className="block">
-                    <div className="aspect-square bg-muted">
-                      <img src={product.image_url} alt={product.name} className="h-full w-full object-contain" />
+                  <Link href={`/product-studio/create?product=${product.id}`} className="group block">
+                    <div className="relative overflow-hidden rounded-t-md bg-muted">
+                      <img src={product.image_url} alt={product.name} className="block w-full" />
+                      <div className="absolute inset-0 flex items-center justify-center bg-background/50 opacity-0 transition-opacity group-hover:opacity-100">
+                        <span className="rounded-lg bg-foreground px-3 py-1.5 text-xs font-semibold text-background">Use</span>
+                      </div>
                     </div>
                     <div className="border-t border-border p-3">
                       <p className="truncate text-sm font-medium">{product.name}</p>
@@ -303,8 +302,7 @@ export function ProductProductsClient({
                 </div>
               ))}
             </div>
-          )}
-        </>
+          </>
       )}
     </>
   )

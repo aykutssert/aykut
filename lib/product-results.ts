@@ -24,11 +24,14 @@ export async function getMyProductResults(): Promise<ProductResult[]> {
       product_id,
       template_id,
       image_size,
+      image_quality,
       final_prompt,
       negative_prompt,
       image_url,
       status,
+      error_message,
       created_at,
+      updated_at,
       product:products(id, name, image_url),
       template:product_templates(id, name, category, image_url)
     `)

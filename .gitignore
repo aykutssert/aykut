@@ -41,9 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 # Local notes
-nice-to-have.md
-MCP_SERVER.md
-login.md
-sql-status.json
-supabase_schema.sql
-
+task.md/
+/memory

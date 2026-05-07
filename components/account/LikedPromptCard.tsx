@@ -16,7 +16,7 @@ export function LikedPromptCard({
   return (
     <article className="overflow-hidden rounded-md border border-border bg-background">
       {doc.image_url ? (
-        <Link href={`/docs/${doc.category}/${doc.slug}`} className="relative flex h-40 items-center justify-center overflow-hidden bg-muted">
+        <Link href={`/docs/${doc.category}/${doc.slug}`} className="relative block overflow-hidden bg-muted">
           <div
             className="absolute inset-0 scale-110 bg-cover bg-center opacity-45 blur-xl"
             style={{ backgroundImage: `url(${doc.image_url})` }}
@@ -26,7 +26,7 @@ export function LikedPromptCard({
             alt={doc.title}
             loading="lazy"
             decoding="async"
-            className="relative z-10 h-full w-full object-contain"
+            className="relative z-10 block w-full"
           />
         </Link>
       ) : (

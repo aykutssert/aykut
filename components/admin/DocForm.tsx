@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { slugify, cn } from '@/lib/utils'
-import { ImagePlus, X, Plus } from 'lucide-react'
+import { ChevronDown, ImagePlus, X, Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmDialog } from './ConfirmDialog'
 import type { Doc } from '@/types'
@@ -218,11 +218,12 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
 
           <div>
             <label className="block text-sm font-medium mb-1.5">Category</label>
+            <div className="relative">
             <select
               value={category}
               onChange={(e) => handleCategoryChange(e.target.value)}
               required
-              className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full appearance-none px-3 py-2 pr-9 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="">Select category...</option>
               {categories.map((c) => (
@@ -230,6 +231,8 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               ))}
               <option value="__new__">+ New category</option>
             </select>
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            </div>
             {category === '__new__' && (
               <input
                 type="text"

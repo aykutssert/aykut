@@ -58,7 +58,7 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
     <article className="mb-4 break-inside-avoid overflow-hidden rounded-md border border-border bg-background transition-colors hover:border-foreground/30 dark:bg-[#080808]">
       <div>
         {doc.image_url ? (
-          <div className="relative flex h-[260px] items-center justify-center overflow-hidden bg-muted">
+          <div className="relative overflow-hidden bg-muted">
             <div
               className="absolute inset-0 scale-110 bg-cover bg-center opacity-45 blur-xl"
               style={{ backgroundImage: `url(${doc.image_url})` }}
@@ -68,7 +68,7 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
               alt={doc.title}
               loading="lazy"
               decoding="async"
-              className="relative z-10 h-full w-full object-contain"
+              className="relative z-10 block w-full"
             />
             <div className="absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t from-background/75 via-background/25 to-transparent dark:h-20 dark:from-[#080808] dark:via-[#080808]/70" />
             <span className="absolute right-2.5 top-2.5 z-20 rounded-md border border-border bg-background/85 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur">

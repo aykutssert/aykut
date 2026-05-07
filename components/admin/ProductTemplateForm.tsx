@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Upload, X } from 'lucide-react'
+import { ChevronDown, Upload, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { PRODUCT_TEMPLATE_CATEGORIES } from '@/lib/product-template-categories'
 import type { ProductTemplate } from '@/types'
@@ -98,17 +98,20 @@ export function ProductTemplateForm({ template }: { template?: ProductTemplate }
 
         <div>
           <label className="mb-1.5 block text-sm font-medium">Category</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as Category)}
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-          >
-            {PRODUCT_TEMPLATE_CATEGORIES.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as Category)}
+              className="w-full appearance-none rounded-lg border border-border bg-background px-3 py-2 pr-9 text-sm outline-none focus:ring-2 focus:ring-ring"
+            >
+              {PRODUCT_TEMPLATE_CATEGORIES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          </div>
         </div>
 
         <div>

@@ -4,7 +4,6 @@ import { ThemeToggle } from './ThemeToggle'
 import { SearchTrigger } from '@/components/search/SearchTrigger'
 import { MobileNav } from './MobileNav'
 import { MoreMenu } from './MoreMenu'
-import { RoamingPetToggle } from '@/components/pets/RoamingPetToggle'
 import { AuthButton } from '@/components/auth/AuthButton'
 import type { DocMeta } from '@/types'
 
@@ -30,8 +29,19 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
           <SearchTrigger allTags={[...new Set(docs.flatMap((d) => d.tags ?? []))].sort()} />
         </div>
 
+        <Link
+          href="/pricing"
+          className="hidden md:flex h-8 items-center rounded-lg px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Pricing
+        </Link>
         <MoreMenu />
-        <RoamingPetToggle />
+        <Link
+          href="/pricing"
+          className="md:hidden flex h-8 items-center rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Pricing
+        </Link>
         <AuthButton />
         <ThemeToggle />
       </div>

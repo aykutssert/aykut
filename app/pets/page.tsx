@@ -11,6 +11,7 @@ import { PetsSortTabs } from '@/components/pets/PetsSortTabs'
 import { PetsPageScroller } from '@/components/pets/PetsPageScroller'
 import { PetsGridSkeleton } from '@/components/pets/PetsGridSkeleton'
 import { PetLikeStatusProvider } from '@/components/pets/PetLikeStatusProvider'
+import { RoamingPetToggle } from '@/components/pets/RoamingPetToggle'
 import { getDocs } from '@/lib/docs'
 import { getPets, PER_PAGE } from '@/lib/pets-data'
 import { ChevronLeft, ChevronRight, Heart, SearchX, PawPrint } from 'lucide-react'
@@ -42,24 +43,27 @@ async function PetsList({ searchParams }: Props) {
 
   return (
     <>
-      <div className="flex items-end justify-between mb-4">
+      <div className="flex items-start justify-between mb-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight mb-2">Codex Pets</h1>
           <p className="text-sm text-muted-foreground">Pixel-art companion sprites generated with OpenAI Codex.</p>
         </div>
-        {total > 0 && (
-          <div className="flex items-center gap-3 shrink-0">
-            {totalLikes > 0 && (
-              <span className="inline-flex items-center gap-1 text-xs text-rose-500">
-                <Heart className="w-3.5 h-3.5 fill-rose-500" />
-                {totalLikes.toLocaleString()}
-              </span>
-            )}
-            <p className="text-xs text-muted-foreground">
-              {total} pet{total !== 1 ? 's' : ''}{totalPages > 1 ? ` · Page ${page} / ${totalPages}` : ''}
-            </p>
-          </div>
-        )}
+        <div className="flex items-center gap-3 shrink-0 mt-1">
+          {total > 0 && (
+            <>
+              {totalLikes > 0 && (
+                <span className="inline-flex items-center gap-1 text-xs text-rose-500">
+                  <Heart className="w-3.5 h-3.5 fill-rose-500" />
+                  {totalLikes.toLocaleString()}
+                </span>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {total} pet{total !== 1 ? 's' : ''}{totalPages > 1 ? ` · Page ${page} / ${totalPages}` : ''}
+              </p>
+            </>
+          )}
+          <RoamingPetToggle />
+        </div>
       </div>
 
       <Suspense>

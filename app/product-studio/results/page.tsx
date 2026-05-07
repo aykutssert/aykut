@@ -3,27 +3,22 @@ import { Navbar } from '@/components/layout/Navbar'
 import { CategoryTabs } from '@/components/layout/CategoryTabs'
 import { Footer } from '@/components/layout/Footer'
 import { ProductResultsList } from '@/components/product-templates/ProductResultsList'
+import { ProductResultsSkeleton } from '@/components/product-templates/ProductResultsSkeleton'
 import { ProductSubnav } from '@/components/product-templates/ProductSubnav'
 import { getDocs } from '@/lib/docs'
 import { getMyProductResults } from '@/lib/product-results'
+import { getProductUsageSnapshot } from '@/lib/product-usage'
 import { createClient } from '@/lib/supabase/server'
 
 async function ProductResultsContent() {
-  const [results, supabase] = await Promise.all([
-    getMyProductResults(),
-    createClient(),
-  ])
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const [results, usage] = await Promise.all([
+    getMyProductResults(),
+    user ? getProductUsageSnapshot(user.id) : Promise.resolve(null),
+  ])
 
-  return <ProductResultsList results={results} signedIn={Boolean(user)} />
-}
-
-function ProductResultsSkeleton() {
-  return (
-    <div className="flex min-h-[360px] items-center justify-center rounded-md border border-dashed border-border">
-      <p className="text-sm text-muted-foreground">Loading results...</p>
-    </div>
-  )
+  return <ProductResultsList results={results} signedIn={Boolean(user)} usage={usage} />
 }
 
 export default async function ProductResultsPage() {

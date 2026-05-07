@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <div id="page-root">{children}</div>
           <RoamingPetWrapper />
-          <Toaster position="bottom-right" richColors />
+          <Toaster position="bottom-center" mobileOffset={16} richColors />
         </ThemeProvider>
       </body>
     </html>

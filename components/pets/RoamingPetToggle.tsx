@@ -41,8 +41,8 @@ export function RoamingPetToggle() {
       type="button"
       onClick={toggle}
       className={cn(
-        'flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]',
-        enabled && 'text-foreground'
+        'flex h-8 w-8 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-[#EEEEE8] dark:hover:bg-[#171513]',
+        enabled ? 'text-green-500 hover:text-green-600' : 'text-red-400 hover:text-red-500'
       )}
       aria-label={enabled ? 'Hide roaming pet' : 'Show roaming pet'}
       aria-pressed={enabled}

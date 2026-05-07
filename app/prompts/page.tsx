@@ -75,7 +75,7 @@ export default async function PromptsPage({ searchParams }: Props) {
     <div className="flex min-h-screen flex-col">
       <Navbar docs={docs} />
       <CategoryTabs docs={docs} />
-      <main className="mx-auto w-full max-w-[1400px] px-4 py-6">
+      <main className="mx-auto w-full max-w-[1400px] px-4 py-6 md:px-0">
         <DeveloperSubnav />
         <Suspense fallback={<PromptsGridSkeleton />}>
           <PromptsContent searchParams={searchParams} />

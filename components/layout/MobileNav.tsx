@@ -2,13 +2,33 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { Bot, FileText, Images, Menu, MessageSquarePlus, Package, PawPrint, Sparkles, X, ChevronDown } from 'lucide-react'
+import { Bot, FileText, Images, Menu, MessageSquarePlus, Package, PawPrint, Sparkles, Tag, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSyncExternalStore } from 'react'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
 import { ConnectDialog } from '@/components/mcp/ConnectDialog'
+import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { cn } from '@/lib/utils'
 import type { DocMeta } from '@/types'
+
+function readPetEnabled() {
+  if (typeof window === 'undefined') return true
+  return window.localStorage.getItem(ROAMING_PET_STORAGE_KEY) !== 'false'
+}
+
+function subscribePet(callback: () => void) {
+  if (typeof window === 'undefined') return () => {}
+  function onStorage(event: StorageEvent) {
+    if (event.key === ROAMING_PET_STORAGE_KEY) callback()
+  }
+  window.addEventListener(ROAMING_PET_EVENT, callback)
+  window.addEventListener('storage', onStorage)
+  return () => {
+    window.removeEventListener(ROAMING_PET_EVENT, callback)
+    window.removeEventListener('storage', onStorage)
+  }
+}
 
 function MobileCategoryGroup({
   category,
@@ -66,6 +86,13 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const [connectOpen, setConnectOpen] = useState(false)
   const pathname = usePathname()
+  const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
+
+  function togglePet() {
+    const next = !readPetEnabled()
+    window.localStorage.setItem(ROAMING_PET_STORAGE_KEY, String(next))
+    window.dispatchEvent(new Event(ROAMING_PET_EVENT))
+  }
 
   useEffect(() => {
     const timer = window.setTimeout(() => setOpen(false), 0)
@@ -198,12 +225,21 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
               </div>
 
               <div className="mb-3 space-y-1 border-b border-border pb-3">
+                <Link
+                  href="/pricing"
+                  className={cn(
+                    'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
+                    pathname === '/pricing'
+                      ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
+                      : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
+                  )}
+                >
+                  <Tag className="h-4 w-4" />
+                  Pricing
+                </Link>
                 <button
                   type="button"
-                  onClick={() => {
-                    setOpen(false)
-                    setFeedbackOpen(true)
-                  }}
+                  onClick={() => { setOpen(false); setFeedbackOpen(true) }}
                   className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
                 >
                   <MessageSquarePlus className="h-4 w-4" />
@@ -211,14 +247,24 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setOpen(false)
-                    setConnectOpen(true)
-                  }}
+                  onClick={() => { setOpen(false); setConnectOpen(true) }}
                   className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
                 >
                   <Bot className="h-4 w-4" />
                   MCP
+                </button>
+                <button
+                  type="button"
+                  onClick={togglePet}
+                  className="flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
+                >
+                  <span className="flex items-center gap-2">
+                    <PawPrint className={`h-4 w-4 ${petEnabled ? 'text-green-500' : 'text-red-400'}`} />
+                    Pet
+                  </span>
+                  <span className={`text-xs font-medium ${petEnabled ? 'text-green-500' : 'text-red-400'}`}>
+                    {petEnabled ? 'ON' : 'OFF'}
+                  </span>
                 </button>
               </div>
 

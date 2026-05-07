@@ -7,7 +7,6 @@ import { getProductTemplates } from '@/lib/product-templates'
 
 export default async function LandingPage() {
   const [docs, templates] = await Promise.all([getDocs(), getProductTemplates()])
-  const previewTemplates = templates.slice(0, 6)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -79,7 +78,7 @@ export default async function LandingPage() {
             href="/product-studio/templates"
             className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
           >
-            <div className="flex flex-col p-6 pb-5">
+            <div className="flex flex-1 flex-col p-6 pb-5">
               <div className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
                 <Camera className="h-3 w-3" />
                 Product Studio
@@ -109,21 +108,21 @@ export default async function LandingPage() {
               </div>
             </div>
 
-            {/* Template image grid */}
-            {previewTemplates.length > 0 && (
-              <div className="mt-auto grid grid-cols-3 gap-px border-t border-border bg-border">
-                {previewTemplates.map((t) => (
-                  <div key={t.id} className="aspect-[4/3] overflow-hidden bg-muted">
-                    <img
-                      src={t.image_url}
-                      alt={t.name}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                    />
-                  </div>
-                ))}
+            {/* Example output */}
+            <div className="border-t border-border bg-muted/30">
+              <div className="flex items-center justify-between px-4 py-2">
+                <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Generated result</span>
+                <span className="text-[10px] text-muted-foreground/60">AI · product photo</span>
               </div>
-            )}
+              <div className="flex h-80 items-center justify-center px-6 pb-5">
+                <img
+                  src="/product-workflow-example.webp"
+                  alt="Example AI-generated product photo"
+                  loading="lazy"
+                  className="h-full w-auto rounded-lg object-contain shadow-md transition-transform duration-700 group-hover:scale-[1.02]"
+                />
+              </div>
+            </div>
           </Link>
 
           {/* Developer */}
@@ -159,11 +158,9 @@ export default async function LandingPage() {
                 Explore developer tools
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
               </div>
-            </div>
 
-            {/* Code terminal */}
-            <div className="mt-auto border-t border-border">
-              <div className="font-mono text-xs">
+              {/* Code terminal */}
+              <div className="mt-5 overflow-hidden rounded-xl border border-border font-mono text-xs">
                 <div className="flex items-center gap-1.5 border-b border-border bg-muted/40 px-4 py-2.5">
                   <span className="h-2 w-2 rounded-full bg-red-400" />
                   <span className="h-2 w-2 rounded-full bg-yellow-400" />

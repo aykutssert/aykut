@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton'
 import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronDown, Edit2, ImageIcon, Loader2, PackagePlus, Plus, Trash2, UserRound, X } from 'lucide-react'
@@ -147,7 +148,7 @@ export function ProductProductsClient({
               <div className="space-y-4">
                 {preview ? (
                   <div className="relative overflow-hidden rounded-md border border-border bg-muted">
-                    <img src={preview} alt="" className="block w-full" />
+                    <ImageWithSkeleton src={preview} alt="" skeletonAspect="1/1" />
                     {editingId && !image && (
                       <button
                         type="button"
@@ -262,7 +263,11 @@ export function ProductProductsClient({
                 >
                   <Link href={`/product-studio/create?product=${product.id}`} className="group block">
                     <div className="relative overflow-hidden rounded-t-md bg-muted">
-                      <img src={product.image_url} alt={product.name} className="block w-full" />
+                      <ImageWithSkeleton
+                        src={product.image_url}
+                        alt={product.name}
+                        skeletonAspect="1/1"
+                      />
                       <div className="absolute inset-0 flex items-center justify-center bg-background/50 opacity-0 transition-opacity group-hover:opacity-100">
                         <span className="rounded-lg bg-foreground px-3 py-1.5 text-xs font-semibold text-background">Use</span>
                       </div>

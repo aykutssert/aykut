@@ -97,6 +97,25 @@ body {
   font-family: var(--font-sans);
 }
 
+::selection {
+  background: #F4C9B7;
+}
+
+.dark ::selection {
+  background: #53361E;
+}
+
+/* Gradient clip text loses color on selection — restore foreground */
+.animate-gradient::selection {
+  color: hsl(var(--foreground));
+  background: #F4C9B7;
+}
+
+.dark .animate-gradient::selection {
+  color: hsl(var(--foreground));
+  background: #53361E;
+}
+
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }

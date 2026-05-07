@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useState, type ReactNode } from 'react'
+import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton'
 import { useRouter } from 'next/navigation'
 import { ChevronDown, Loader2, Plus, Zap } from 'lucide-react'
 import { toast } from 'sonner'
@@ -325,8 +326,8 @@ export function ProductCreateForm({
         <aside className="grid h-fit gap-5 md:grid-cols-2">
           <div className="rounded-md border border-border bg-background p-3">
             <p className="mb-2 text-xs font-medium text-muted-foreground">Selected template</p>
-            <div className="overflow-hidden rounded-sm bg-muted">
-              <img src={template.image_url} alt={template.name} className="block w-full" />
+            <div className="overflow-hidden rounded-sm">
+              <ImageWithSkeleton src={template.image_url} alt={template.name} skeletonAspect="3/4" />
             </div>
             <p className="mt-3 truncate text-sm font-medium">{template.name}</p>
             <p className="mt-1 text-xs text-muted-foreground">{PRODUCT_TEMPLATE_CATEGORY_LABELS[template.category]}</p>
@@ -335,8 +336,8 @@ export function ProductCreateForm({
           {product && (
             <div className="rounded-md border border-border bg-background p-3">
               <p className="mb-2 text-xs font-medium text-muted-foreground">Selected product</p>
-              <div className="overflow-hidden rounded-sm bg-muted">
-                <img src={product.image_url} alt={product.name} className="block w-full" />
+              <div className="overflow-hidden rounded-sm">
+                <ImageWithSkeleton src={product.image_url} alt={product.name} skeletonAspect="1/1" />
               </div>
               <p className="mt-3 truncate text-sm font-medium">{product.name}</p>
               {product.product_note && (

@@ -96,25 +96,53 @@ export function AccountLikesClient({
       </div>
 
       {filteredCount === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="mb-4 rounded-full bg-muted p-4">
-            {query ? <Search className="h-8 w-8 text-muted-foreground/50" /> : <Heart className="h-8 w-8 text-muted-foreground/30" />}
+        query ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="mb-4 rounded-full bg-muted p-4">
+              <Search className="h-6 w-6 text-muted-foreground/50" />
+            </div>
+            <p className="mb-1 text-sm font-medium">No results for &ldquo;{query}&rdquo;</p>
+            <p className="text-xs text-muted-foreground">Try a different keyword or clear the search.</p>
           </div>
-          <p className="mb-1 text-sm font-medium">
-            {query ? `No results for "${query}"` : `No liked ${type === 'prompts' ? 'prompts' : 'pets'} yet.`}
-          </p>
-          <p className="mb-6 text-xs text-muted-foreground">
-            {query ? 'Try a different keyword or clear the search.' : `Like ${type === 'prompts' ? 'prompts' : 'pets'} while signed in to see them here.`}
-          </p>
-          {!query && (
-            <Link
-              href={type === 'prompts' ? '/prompts' : '/pets'}
-              className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-            >
-              Browse {type === 'prompts' ? 'prompts' : 'pets'}
-            </Link>
-          )}
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border px-6 py-14 text-center">
+            <Heart className="mb-4 h-8 w-8 text-muted-foreground/25" />
+            <p className="mb-1 text-sm font-semibold">
+              {type === 'prompts' ? 'No liked prompts yet' : 'No liked pets yet'}
+            </p>
+            <p className="mb-8 max-w-xs text-xs leading-5 text-muted-foreground">
+              {type === 'prompts'
+                ? 'Hit the heart on any prompt to save it here for quick access later.'
+                : 'Tap the heart on any pet to keep your favorites in one place.'}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <Link
+                href={type === 'prompts' ? '/prompts' : '/pets'}
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-4 text-xs font-medium text-background transition-opacity hover:opacity-85"
+              >
+                <Heart className="h-3.5 w-3.5" />
+                Browse {type === 'prompts' ? 'prompts' : 'pets'}
+              </Link>
+              {type === 'prompts' ? (
+                <Link
+                  href="/account/likes?type=pets"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border px-4 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
+                >
+                  <PawPrint className="h-3.5 w-3.5" />
+                  View liked pets
+                </Link>
+              ) : (
+                <Link
+                  href="/account/likes?type=prompts"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border px-4 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
+                >
+                  <Heart className="h-3.5 w-3.5" />
+                  View liked prompts
+                </Link>
+              )}
+            </div>
+          </div>
+        )
       ) : type === 'prompts' ? (
         <div className="grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {(filteredItems as LikedDoc[]).map((doc) => (

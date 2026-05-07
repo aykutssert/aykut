@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Clock3, Download, ImageIcon, Loader2, PackagePlus, Play, RotateCcw, Sparkles, Trash2, X, XCircle, Zap } from 'lucide-react'
+import { ArrowRight, Clock3, Download, ImageIcon, Loader2, Package, PackagePlus, Play, RotateCcw, Sparkles, Trash2, X, XCircle, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/admin/ConfirmDialog'
 import { UpgradeDialog } from '@/components/product-templates/UpgradeDialog'
+import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton'
 import {
   PRODUCT_IMAGE_SIZE_MAP,
   PRODUCT_IMAGE_QUALITY_OPTIONS,
@@ -389,18 +390,48 @@ export function ProductResultsList({
 
   if (results.length === 0) {
     return (
-      <div className="flex min-h-[360px] flex-col items-center justify-center rounded-md border border-dashed border-border text-center">
-        <ImageIcon className="mb-4 h-10 w-10 text-muted-foreground/30" />
-        <p className="text-sm font-medium">No results yet.</p>
-        <p className="mt-1 max-w-sm text-xs text-muted-foreground">
-          Prepare a product with a template to collect drafts here.
-        </p>
-        <Link
-          href="/product-studio/templates"
-          className="mt-5 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
-        >
-          Browse templates
-        </Link>
+      <div className="flex min-h-[420px] flex-col items-center justify-center rounded-xl border border-dashed border-border px-6 py-12 text-center">
+        <p className="mb-1 text-sm font-semibold">Your generated photos will appear here</p>
+        <p className="mb-10 text-xs text-muted-foreground">Follow these three steps to create your first result</p>
+
+        <div className="flex w-full max-w-lg flex-col items-center gap-2 sm:flex-row sm:gap-0">
+          <Link
+            href="/product-studio/templates"
+            className="group flex w-full flex-col items-center gap-2.5 rounded-xl border border-border bg-background px-4 py-5 transition-colors hover:border-foreground/20 hover:bg-muted/40 sm:flex-1"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">1</span>
+            <Sparkles className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-foreground" />
+            <div>
+              <p className="text-xs font-semibold">Pick a template</p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">Choose a scene</p>
+            </div>
+          </Link>
+
+          <ArrowRight className="h-4 w-4 shrink-0 rotate-90 text-muted-foreground/30 sm:rotate-0 sm:mx-2" />
+
+          <Link
+            href="/product-studio/products"
+            className="group flex w-full flex-col items-center gap-2.5 rounded-xl border border-border bg-background px-4 py-5 transition-colors hover:border-foreground/20 hover:bg-muted/40 sm:flex-1"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">2</span>
+            <Package className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-foreground" />
+            <div>
+              <p className="text-xs font-semibold">Add your product</p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">Upload a product photo</p>
+            </div>
+          </Link>
+
+          <ArrowRight className="h-4 w-4 shrink-0 rotate-90 text-muted-foreground/30 sm:rotate-0 sm:mx-2" />
+
+          <div className="flex w-full flex-col items-center gap-2.5 rounded-xl border border-dashed border-border px-4 py-5 opacity-50 sm:flex-1">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-muted text-[11px] font-bold text-muted-foreground">3</span>
+            <Zap className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="text-xs font-semibold">Generate</p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">Get studio-quality photos</p>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
@@ -506,10 +537,10 @@ export function ProductResultsList({
                 className="w-full shrink-0 border-b border-border bg-muted md:w-64 md:border-b-0 md:border-r"
                 aria-label="Preview result image"
               >
-                <img
+                <ImageWithSkeleton
                   src={result.image_url}
                   alt={result.product?.name ? `Generated product photo for ${result.product.name}` : 'Generated product photo'}
-                  className="block w-full"
+                  skeletonAspect="1/1"
                 />
               </button>
             )}
@@ -526,8 +557,12 @@ export function ProductResultsList({
                     <div className="flex min-w-0 flex-1 items-center gap-2.5 border-r border-border p-3">
                       {result.template ? (
                         <>
-                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-sm bg-muted">
-                            <img src={result.template.image_url} alt={result.template.name} className="h-full w-full object-cover" />
+                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-sm">
+                            <ImageWithSkeleton
+                              src={result.template.image_url}
+                              alt={result.template.name}
+                              fixedContainer
+                            />
                           </div>
                           <div className="min-w-0">
                             <p className="mb-0.5 text-xs text-muted-foreground">Template</p>
@@ -541,8 +576,12 @@ export function ProductResultsList({
                     <div className="flex min-w-0 flex-1 items-center gap-2.5 p-3">
                       {result.product ? (
                         <>
-                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-sm bg-muted">
-                            <img src={result.product.image_url} alt={result.product.name} className="h-full w-full object-cover" />
+                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-sm">
+                            <ImageWithSkeleton
+                              src={result.product.image_url}
+                              alt={result.product.name}
+                              fixedContainer
+                            />
                           </div>
                           <div className="min-w-0">
                             <p className="mb-0.5 text-xs text-muted-foreground">Product</p>

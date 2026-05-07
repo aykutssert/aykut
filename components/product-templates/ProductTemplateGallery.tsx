@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { AlertCircle, X } from 'lucide-react'
 import { PRODUCT_TEMPLATE_CATEGORIES, PRODUCT_TEMPLATE_CATEGORY_LABELS } from '@/lib/product-template-categories'
+import { ImageWithSkeleton } from '@/components/ui/ImageWithSkeleton'
 import type { ProductTemplate } from '@/types'
 
 function ProductTemplateCard({
@@ -21,12 +22,10 @@ function ProductTemplateCard({
         className="block w-full p-0"
         aria-label={`Preview ${template.name}`}
       >
-        <img
+        <ImageWithSkeleton
           src={template.image_url}
           alt={template.name}
-          loading="lazy"
-          decoding="async"
-          className="block w-full"
+          skeletonAspect="3/4"
         />
       </button>
     </article>

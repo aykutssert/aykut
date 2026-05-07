@@ -6,18 +6,20 @@ import { Footer } from '@/components/layout/Footer'
 import { ProductSubnav } from '@/components/product-templates/ProductSubnav'
 import { ProductCreateForm } from '@/components/product-templates/ProductCreateForm'
 import { getDocs } from '@/lib/docs'
+import { getMyProductProducts } from '@/lib/product-products'
 import { getProductTemplate, getProductTemplates } from '@/lib/product-templates'
 import { createClient } from '@/lib/supabase/server'
 
 interface Props {
-  searchParams: Promise<{ template?: string }>
+  searchParams: Promise<{ template?: string; product?: string }>
 }
 
 async function ProductCreateContent({ searchParams }: Props) {
   const params = await searchParams
-  const [templates, selectedTemplate, supabase] = await Promise.all([
+  const [templates, selectedTemplate, products, supabase] = await Promise.all([
     getProductTemplates(),
     params.template ? getProductTemplate(params.template) : Promise.resolve(null),
+    getMyProductProducts(),
     createClient(),
   ])
   const { data: { user } } = await supabase.auth.getUser()
@@ -27,7 +29,14 @@ async function ProductCreateContent({ searchParams }: Props) {
 
   const initialTemplate = selectedTemplate ?? templates[0]
 
-  return <ProductCreateForm templates={templates} initialTemplate={initialTemplate} />
+  return (
+    <ProductCreateForm
+      templates={templates}
+      initialTemplate={initialTemplate}
+      products={products}
+      initialProductId={params.product}
+    />
+  )
 }
 
 function ProductCreateSkeleton() {

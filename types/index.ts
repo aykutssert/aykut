@@ -75,6 +75,21 @@ export interface ProductProduct {
   category: string
   name: string
   image_url: string
-  product_prompt: string | null
+  product_note: string | null
   created_at: string
+}
+
+export interface ProductResult {
+  id: string
+  user_id: string
+  product_id: string
+  template_id: string | null
+  image_size: string
+  final_prompt: string
+  negative_prompt: string
+  image_url: string | null
+  status: 'pending' | 'completed' | 'failed'
+  created_at: string
+  product: Pick<ProductProduct, 'id' | 'name' | 'image_url'> | null
+  template: Pick<ProductTemplate, 'id' | 'name' | 'category' | 'image_url'> | null
 }

@@ -1,70 +1,105 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import Image from 'next/image'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronDown, ImageIcon, Loader2, Plus, X } from 'lucide-react'
+import { ChevronDown, Loader2, Plus } from 'lucide-react'
 import { toast } from 'sonner'
+import { PRODUCT_IMAGE_SIZE_OPTIONS, type ProductImageSize } from '@/lib/product-image-sizes'
 import { PRODUCT_TEMPLATE_CATEGORY_LABELS } from '@/lib/product-template-categories'
-import type { ProductTemplate } from '@/types'
+import type { ProductProduct, ProductTemplate } from '@/types'
 
 export function ProductCreateForm({
   templates,
   initialTemplate,
+  products,
+  initialProductId,
 }: {
   templates: ProductTemplate[]
   initialTemplate: ProductTemplate
+  products: ProductProduct[]
+  initialProductId?: string
 }) {
   const router = useRouter()
-  const fileRef = useRef<HTMLInputElement>(null)
   const [template, setTemplate] = useState(initialTemplate)
-  const [image, setImage] = useState<File | null>(null)
-  const [preview, setPreview] = useState('')
-  const [name, setName] = useState('')
-  const [userPrompt, setUserPrompt] = useState('')
+  const [productId, setProductId] = useState(
+    initialProductId && products.some((item) => item.id === initialProductId)
+      ? initialProductId
+      : products[0]?.id ?? ''
+  )
+  const [imageSize, setImageSize] = useState<ProductImageSize>('1:1')
+  const [prompt, setPrompt] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  const product = products.find((item) => item.id === productId) ?? null
 
   function handleTemplateChange(templateId: string) {
     const nextTemplate = templates.find((item) => item.id === templateId)
     if (!nextTemplate) return
     setTemplate(nextTemplate)
-    router.replace(`/product-studio/create?template=${nextTemplate.id}`, { scroll: false })
+    const params = new URLSearchParams()
+    params.set('template', nextTemplate.id)
+    if (productId) params.set('product', productId)
+    router.replace(`/product-studio/create?${params.toString()}`, { scroll: false })
   }
 
-  function handleFile(file: File | null) {
-    if (!file) return
-    setError('')
-    setImage(file)
-    setPreview(URL.createObjectURL(file))
+  function handleProductChange(nextProductId: string) {
+    setProductId(nextProductId)
+    const params = new URLSearchParams()
+    params.set('template', template.id)
+    params.set('product', nextProductId)
+    router.replace(`/product-studio/create?${params.toString()}`, { scroll: false })
   }
 
-  async function handleSave() {
-    if (!image || !name.trim()) return
+  async function handlePrepare() {
+    if (!productId) return
     setSaving(true)
     setError('')
 
-    const formData = new FormData()
-    formData.append('image', image)
-    formData.append('template_id', template.id)
-    formData.append('name', name)
-    formData.append('user_prompt', userPrompt)
-
-    const response = await fetch('/api/product-products/save', { method: 'POST', body: formData })
+    const response = await fetch('/api/product-results/prepare', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        product_id: productId,
+        template_id: template.id,
+        final_prompt: prompt,
+        image_size: imageSize,
+      }),
+    })
     const payload = await response.json().catch(() => null) as { error?: string } | null
     setSaving(false)
 
     if (!response.ok) {
-      setError(payload?.error ?? 'Save failed')
+      setError(payload?.error ?? 'Prepare failed')
       return
     }
 
-    toast.success('Product saved.')
-    router.push('/product-studio/products')
+    toast.success('Result draft created.')
+    router.push('/product-studio/results')
     router.refresh()
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="flex min-h-[360px] flex-col items-center justify-center rounded-md border border-dashed border-border text-center">
+        <p className="text-sm font-medium">Add a product first.</p>
+        <p className="mt-1 max-w-sm text-xs text-muted-foreground">
+          Save a product in My Products, then use it with a template.
+        </p>
+        <button
+          type="button"
+          onClick={() => router.push('/product-studio/products')}
+          className="mt-5 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
+        >
+          Go to My Products
+        </button>
+      </div>
+    )
+  }
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+    <div className="grid gap-8 xl:grid-cols-[minmax(420px,0.85fr)_minmax(560px,1fr)]">
       <div className="max-w-xl space-y-4">
         <label className="block">
           <span className="mb-1.5 block text-xs font-medium">Template</span>
@@ -84,66 +119,65 @@ export function ProductCreateForm({
           </div>
         </label>
 
-        {preview ? (
-          <div className="relative overflow-hidden rounded-md border border-border bg-muted">
-            <img src={preview} alt="" className="max-h-[320px] w-full object-contain" />
-            <button
-              type="button"
-              onClick={() => {
-                setImage(null)
-                setPreview('')
-              }}
-              className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-background/90 text-foreground shadow"
-              aria-label="Remove image"
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-medium">Product</span>
+          <div className="relative">
+            <select
+              value={productId}
+              onChange={(event) => handleProductChange(event.target.value)}
+              className="h-10 w-full appearance-none rounded-lg border border-border bg-background px-3 pr-9 text-sm outline-none focus:border-foreground/40"
             >
-              <X className="h-3.5 w-3.5" />
-            </button>
+              {products.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => fileRef.current?.click()}
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={(event) => {
-              event.preventDefault()
-              handleFile(event.dataTransfer.files[0] ?? null)
-            }}
-            className="flex h-56 w-full flex-col items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
-          >
-            <ImageIcon className="mb-2 h-7 w-7 text-muted-foreground/50" />
-            Upload product image
-          </button>
-        )}
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(event) => handleFile(event.target.files?.[0] ?? null)}
-        />
-
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-medium">Product name</span>
-          <input
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-foreground/40"
-          />
         </label>
 
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium">User prompt</span>
+          <span className="mb-1.5 block text-xs font-medium">Prompt</span>
           <textarea
-            value={userPrompt}
-            onChange={(event) => setUserPrompt(event.target.value)}
-            placeholder="Example: make this product feel premium, clean, and bright"
-            className="min-h-28 w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-muted-foreground/60 focus:border-foreground/40"
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
+            placeholder="Example: place the product in this scene with bright natural light"
+            className="min-h-32 w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-muted-foreground/60 focus:border-foreground/40"
           />
         </label>
+
+        <div>
+          <span className="mb-1.5 block text-xs font-medium">Image size</span>
+          <div className="grid grid-cols-3 gap-2">
+            {PRODUCT_IMAGE_SIZE_OPTIONS.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setImageSize(option.value)}
+                className={`rounded-lg border px-3 py-2 text-left transition-colors ${
+                  imageSize === option.value
+                    ? 'border-foreground bg-muted text-foreground'
+                    : 'border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground'
+                }`}
+              >
+                <span className="block text-xs font-medium">{option.label}</span>
+                <span className="mt-0.5 block text-[11px]">{option.detail}</span>
+              </button>
+            ))}
+          </div>
+          <Image
+            src="/size-comparison.webp"
+            alt="Image size comparison"
+            width={1200}
+            height={800}
+            className="mt-3 w-full rounded-md border border-border"
+          />
+        </div>
 
         {error && <p className="text-xs text-red-500">{error}</p>}
 
-        <div className="flex items-center justify-end gap-3 pt-2">
+        <div className="flex justify-end gap-3 pt-2">
           <button
             type="button"
             onClick={() => router.push('/product-studio/templates')}
@@ -153,21 +187,34 @@ export function ProductCreateForm({
           </button>
           <button
             type="button"
-            onClick={handleSave}
-            disabled={saving || !image || !name.trim()}
+            onClick={handlePrepare}
+            disabled={saving || !productId}
             className="inline-flex h-9 items-center gap-2 rounded-lg bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Plus className="h-3.5 w-3.5" />}
-            Save
+            Prepare
           </button>
         </div>
       </div>
 
-      <aside className="h-fit rounded-md border border-border bg-background p-3">
-        <p className="mb-2 text-xs font-medium text-muted-foreground">Selected template</p>
-        <img src={template.image_url} alt={template.name} className="aspect-square w-full rounded-sm object-cover" />
-        <p className="mt-3 truncate text-sm font-medium">{template.name}</p>
-        <p className="mt-1 text-xs text-muted-foreground">{PRODUCT_TEMPLATE_CATEGORY_LABELS[template.category]}</p>
+      <aside className="grid h-fit gap-5 md:grid-cols-2">
+        <div className="rounded-md border border-border bg-background p-3">
+          <p className="mb-2 text-xs font-medium text-muted-foreground">Selected template</p>
+          <img src={template.image_url} alt={template.name} className="aspect-[4/3] w-full rounded-sm object-cover" />
+          <p className="mt-3 truncate text-sm font-medium">{template.name}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{PRODUCT_TEMPLATE_CATEGORY_LABELS[template.category]}</p>
+        </div>
+
+        {product && (
+          <div className="rounded-md border border-border bg-background p-3">
+            <p className="mb-2 text-xs font-medium text-muted-foreground">Selected product</p>
+            <img src={product.image_url} alt={product.name} className="aspect-[4/3] w-full rounded-sm object-contain" />
+            <p className="mt-3 truncate text-sm font-medium">{product.name}</p>
+            {product.product_note && (
+              <p className="mt-1 line-clamp-3 text-xs leading-5 text-muted-foreground">{product.product_note}</p>
+            )}
+          </div>
+        )}
       </aside>
     </div>
   )

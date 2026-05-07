@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Heart, LogOut, UserRound } from 'lucide-react'
 import { AuthDialog } from './AuthDialog'
 import { createClient } from '@/lib/supabase/client'
@@ -15,6 +16,7 @@ type AuthUser = {
 }
 
 export function AuthButton() {
+  const router = useRouter()
   const menuRef = useRef<HTMLDivElement>(null)
   const [user, setUser] = useState<AuthUser | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -77,6 +79,7 @@ export function AuthButton() {
     await fetch('/api/auth/signout', { method: 'POST' })
     setUser(null)
     setMenuOpen(false)
+    router.refresh()
   }
 
   if (!user) {
@@ -96,7 +99,10 @@ export function AuthButton() {
             mode={mode}
             onModeChange={setMode}
             onOpenChange={setDialogOpen}
-            onAuthenticated={setUser}
+            onAuthenticated={(nextUser) => {
+              setUser(nextUser)
+              router.refresh()
+            }}
           />
         )}
       </>

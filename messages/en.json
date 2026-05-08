@@ -1,0 +1,107 @@
+{
+  "nav": {
+    "pricing": "Pricing"
+  },
+  "footer": {
+    "builtBy": "Built by",
+    "links": {
+      "productStudio": "Product Studio",
+      "prompts": "Prompts",
+      "codexPets": "Codex Pets",
+      "docs": "Docs",
+      "feedback": "Feedback"
+    },
+    "thanks": "Special thanks to <promptsChat>Awesome ChatGPT Prompts</promptsChat> and <codexPets>Codex Pets</codexPets> for prompt data and assets.",
+    "petsDisclaimer": "Pets are shared by the community. Some may be inspired by existing characters or brands. We don't claim rights to those characters or brands. Formal takedown requests can be sent <email>here</email>."
+  },
+  "landing": {
+    "badge": "AI-powered workflows",
+    "title": "Tools that get out of the way",
+    "subtitle": "Product photography and developer resources — pick a workflow, get to work.",
+    "cta": {
+      "primary": "Studio-quality product photos, instantly",
+      "primaryShort": "Start creating",
+      "secondary": "See how it works"
+    },
+    "stats": {
+      "templates": "{count} scene templates",
+      "free": "Free to start",
+      "speed": "Generate in seconds"
+    },
+    "productStudio": {
+      "badge": "Product Studio",
+      "title": "AI product photography",
+      "description": "Upload your product, pick a scene template, generate studio-quality photos in seconds.",
+      "features": {
+        "upload": "Upload once, generate many variations",
+        "templates": "{count} curated scene templates",
+        "quality": "Multiple sizes & quality tiers"
+      },
+      "cta": "Open Product Studio",
+      "beforeAfterLabel": "Before & After",
+      "pauseHint": "click to pause"
+    },
+    "developer": {
+      "badge": "Developer",
+      "title": "Docs, prompts & pets",
+      "description": "Structured reference docs, a reusable prompt library, and pixel-art companion pets accessible via REST API.",
+      "features": {
+        "docs": "Searchable documentation with full-text search",
+        "prompts": "Curated & community prompt library",
+        "pets": "Codex pets — sprites with REST API"
+      },
+      "cta": "Browse prompts",
+      "comingSoon": {
+        "badge": "Coming soon",
+        "title": "More workflows on the way",
+        "description": "Social media content, editing tools, and much more."
+      }
+    }
+  },
+  "pricing": {
+    "label": "Pricing",
+    "title": "Simple, transparent pricing",
+    "subtitle": "Start free. Upgrade when you need more generations.",
+    "units": "units / month",
+    "photos": "photos / month",
+    "whatIsUnit": {
+      "title": "What is a unit?",
+      "description": "Each photo generation costs units based on size and quality. A medium-quality 1:1 photo costs 8 units. Low quality costs 1 unit, high quality costs 20–25 units. Units reset monthly."
+    },
+    "comingSoon": {
+      "title": "Paid plans launching soon",
+      "description": "Starter and Pro plans are on the way."
+    },
+    "plans": {
+      "free": {
+        "cta": "Get started"
+      },
+      "starter": {
+        "cta": "Coming soon"
+      },
+      "pro": {
+        "cta": "Coming soon"
+      }
+    },
+    "features": {
+      "allSizes": "All sizes & quality",
+      "allTemplates": "All templates",
+      "prioritySupport": "Priority support"
+    },
+    "popular": "Most popular"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "cta": {
+      "browse": "Browse Pets",
+      "docs": "Read Docs"
+    }
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "account": "Account"
+  }
+}

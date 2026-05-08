@@ -1,0 +1,107 @@
+{
+  "nav": {
+    "pricing": "Fiyatlar"
+  },
+  "footer": {
+    "builtBy": "Geliştiren",
+    "links": {
+      "productStudio": "Ürün Stüdyosu",
+      "prompts": "Promptlar",
+      "codexPets": "Codex Pets",
+      "docs": "Dokümantasyon",
+      "feedback": "Geri Bildirim"
+    },
+    "thanks": "Prompt verileri ve görseller için <promptsChat>Awesome ChatGPT Prompts</promptsChat> ve <codexPets>Codex Pets</codexPets>'e teşekkürler.",
+    "petsDisclaimer": "Evcil hayvanlar topluluk tarafından paylaşılmaktadır. Bazıları mevcut karakterlerden veya markalardan ilham almış olabilir. Bu karakterler veya markalar üzerinde herhangi bir hak iddia etmiyoruz. Resmi kaldırma talepleri <email>buraya</email> gönderilebilir."
+  },
+  "landing": {
+    "badge": "Yapay zeka destekli iş akışları",
+    "title": "İşine odaklan",
+    "subtitle": "Ürün fotoğrafçılığı ve geliştirici kaynakları — bir iş akışı seç, hemen başla.",
+    "cta": {
+      "primary": "Stüdyo kalitesinde ürün fotoğrafları",
+      "primaryShort": "Oluşturmaya başla",
+      "secondary": "Nasıl çalışır"
+    },
+    "stats": {
+      "templates": "{count} sahne şablonu",
+      "free": "Ücretsiz başla",
+      "speed": "Saniyeler içinde oluştur"
+    },
+    "productStudio": {
+      "badge": "Ürün Stüdyosu",
+      "title": "Yapay zeka ürün fotoğrafçılığı",
+      "description": "Ürününü yükle, sahne şablonu seç, saniyeler içinde stüdyo kalitesinde fotoğraflar oluştur.",
+      "features": {
+        "upload": "Bir kez yükle, çok sayıda varyasyon oluştur",
+        "templates": "{count} özenle seçilmiş sahne şablonu",
+        "quality": "Çoklu boyut ve kalite seçenekleri"
+      },
+      "cta": "Ürün Stüdyosu'nu aç",
+      "beforeAfterLabel": "Önce & Sonra",
+      "pauseHint": "duraklatmak için tıkla"
+    },
+    "developer": {
+      "badge": "Geliştirici",
+      "title": "Dokümantasyon, promptlar & evcil hayvanlar",
+      "description": "Yapılandırılmış referans belgeler, yeniden kullanılabilir prompt kütüphanesi ve REST API aracılığıyla erişilebilen pixel-art evcil hayvanlar.",
+      "features": {
+        "docs": "Tam metin arama ile aranabilir dokümantasyon",
+        "prompts": "Özenle seçilmiş & topluluk prompt kütüphanesi",
+        "pets": "Codex Pets — REST API ile sprite karakterler"
+      },
+      "cta": "Promptlara göz at",
+      "comingSoon": {
+        "badge": "Yakında",
+        "title": "Daha fazlası geliyor",
+        "description": "Sosyal medya içeriği, düzenleme araçları ve çok daha fazlası."
+      }
+    }
+  },
+  "pricing": {
+    "label": "Fiyatlar",
+    "title": "Basit, şeffaf fiyatlandırma",
+    "subtitle": "Ücretsiz başla. Daha fazla üretim gerektiğinde yükselt.",
+    "units": "birim / ay",
+    "photos": "fotoğraf / ay",
+    "whatIsUnit": {
+      "title": "Birim nedir?",
+      "description": "Her fotoğraf üretimi boyut ve kaliteye göre birim harcar. Orta kaliteli 1:1 fotoğraf 8 birim harcar. Düşük kalite 1 birim, yüksek kalite 20–25 birim harcar. Birimler aylık sıfırlanır."
+    },
+    "comingSoon": {
+      "title": "Ücretli planlar yakında geliyor",
+      "description": "Starter ve Pro planları yolda."
+    },
+    "plans": {
+      "free": {
+        "cta": "Başla"
+      },
+      "starter": {
+        "cta": "Yakında"
+      },
+      "pro": {
+        "cta": "Yakında"
+      }
+    },
+    "features": {
+      "allSizes": "Tüm boyut ve kaliteler",
+      "allTemplates": "Tüm şablonlar",
+      "prioritySupport": "Öncelikli destek"
+    },
+    "popular": "En popüler"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Sayfa bulunamadı",
+    "description": "Aradığınız sayfa mevcut değil veya taşınmış.",
+    "cta": {
+      "browse": "Petlere Göz At",
+      "docs": "Belgeleri Oku"
+    }
+  },
+  "auth": {
+    "signIn": "Giriş Yap",
+    "signOut": "Çıkış Yap",
+    "account": "Hesap"
+  }
+}

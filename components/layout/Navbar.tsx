@@ -5,6 +5,7 @@ import { SearchTrigger } from '@/components/search/SearchTrigger'
 import { MobileNav } from './MobileNav'
 import { MoreMenu } from './MoreMenu'
 import { AuthButton } from '@/components/auth/AuthButton'
+import { LocaleSwitcher } from './LocaleSwitcher'
 import type { DocMeta } from '@/types'
 
 export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
@@ -42,6 +43,7 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
         >
           Pricing
         </Link>
+        <LocaleSwitcher />
         <AuthButton />
         <ThemeToggle />
       </div>

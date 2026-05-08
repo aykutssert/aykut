@@ -16,17 +16,31 @@ const PUBLIC_API_PREFIXES = [
   '/api/product-results',
 ]
 
+// Locale detection from URL prefix
+function getLocaleFromPath(pathname: string): 'tr' | 'en' {
+  if (pathname === '/en' || pathname.startsWith('/en/')) return 'en'
+  return 'tr'
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // Root redirect → /tr/
+  if (pathname === '/') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/tr'
+    return NextResponse.redirect(url, 308)
+  }
 
   if (LOCK_PRODUCTION_SITE && process.env.VERCEL_ENV === 'production') {
     if (pathname.startsWith('/api/')) {
       return NextResponse.json({ error: 'Site temporarily locked' }, { status: 503 })
     }
 
-    if (pathname !== '/locked') {
+    const lockedPath = pathname === '/tr/locked' || pathname === '/en/locked' || pathname === '/locked'
+    if (!lockedPath) {
       const url = request.nextUrl.clone()
-      url.pathname = '/locked'
+      url.pathname = '/tr/locked'
       return NextResponse.rewrite(url)
     }
   }
@@ -39,7 +53,9 @@ export async function proxy(request: NextRequest) {
   }
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return NextResponse.next({ request })
+    const res = NextResponse.next({ request })
+    res.headers.set('x-next-intl-locale', getLocaleFromPath(pathname))
+    return res
   }
 
   let supabaseResponse = NextResponse.next({ request })
@@ -75,27 +91,30 @@ export async function proxy(request: NextRequest) {
     isAdmin = Boolean(profile?.is_admin)
   }
 
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !user) {
+  // Strip locale prefix for admin path checks
+  const barePath = pathname.replace(/^\/(tr|en)/, '') || '/'
+
+  if (barePath.startsWith('/admin') && barePath !== '/admin/login' && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login'
     return NextResponse.redirect(url)
   }
 
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login' && user && !isAdmin) {
+  if (barePath.startsWith('/admin') && barePath !== '/admin/login' && user && !isAdmin) {
     const url = request.nextUrl.clone()
-    url.pathname = '/prompts'
+    url.pathname = '/tr/prompts'
     return NextResponse.redirect(url)
   }
 
-  if (pathname === '/admin/login' && user && isAdmin) {
+  if (barePath === '/admin/login' && user && isAdmin) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin'
     return NextResponse.redirect(url)
   }
 
-  if (pathname === '/admin/login' && user && !isAdmin) {
+  if (barePath === '/admin/login' && user && !isAdmin) {
     const url = request.nextUrl.clone()
-    url.pathname = '/prompts'
+    url.pathname = '/tr/prompts'
     return NextResponse.redirect(url)
   }
 
@@ -104,6 +123,9 @@ export async function proxy(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
   }
+
+  // Set locale header for next-intl
+  supabaseResponse.headers.set('x-next-intl-locale', getLocaleFromPath(pathname))
 
   return supabaseResponse
 }

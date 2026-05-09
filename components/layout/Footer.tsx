@@ -6,13 +6,7 @@ export function Footer() {
     <footer className="border-t border-border mt-auto">
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pt-5 pb-3">
         <p className="text-xs text-muted-foreground/50 text-center leading-relaxed mb-5">
-          Special thanks to <a href="https://prompts.chat/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">Awesome ChatGPT Prompts</a> and <a href="https://codex-pets.net/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">Codex Pets</a> for prompt data and assets.
-          <br className="hidden sm:block" />
-          Pets are shared by the community. Some may be inspired by existing characters or brands. We don&apos;t claim rights to those characters or brands.{' '}
-          Formal takedown requests can be sent to{' '}
-          <a href="mailto:aykutssert@gmail.com" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">
-            here
-          </a>.
+          Prompt data via <a href="https://prompts.chat/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">Awesome ChatGPT Prompts</a>. Pets shared by the community — some may reference existing characters or brands; takedown requests to <a href="mailto:aykutssert@gmail.com" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">aykutssert@gmail.com</a>.
         </p>
       </div>
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -32,17 +26,14 @@ export function Footer() {
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-          <Link href="/product-studio/templates" className="hover:text-foreground transition-colors">
-            Product Studio
+          <Link href="/tshirt-studio" className="hover:text-foreground transition-colors">
+            T-Shirt Studio
           </Link>
           <Link href="/prompts" className="hover:text-foreground transition-colors">
             Prompts
           </Link>
           <Link href="/pets" className="hover:text-foreground transition-colors">
             Codex Pets
-          </Link>
-          <Link href="/docs" className="hover:text-foreground transition-colors">
-            Docs
           </Link>
           <Link href="/feedback" className="hover:text-foreground transition-colors">
             Feedback

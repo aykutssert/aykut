@@ -22,26 +22,14 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
             className="md:w-6 md:h-6"
             priority
           />
-          <span className="font-semibold text-sm hidden xs:inline-block">Kernel</span>
+          <span className="font-semibold text-sm hidden md:inline-block">Kernel</span>
         </Link>
 
         <div className="flex-1">
           <SearchTrigger allTags={[...new Set(docs.flatMap((d) => d.tags ?? []))].sort()} />
         </div>
 
-        <Link
-          href="/pricing"
-          className="hidden md:flex h-8 items-center rounded-lg px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Pricing
-        </Link>
         <MoreMenu />
-        <Link
-          href="/pricing"
-          className="md:hidden flex h-8 items-center rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Pricing
-        </Link>
         <AuthButton />
         <ThemeToggle />
       </div>

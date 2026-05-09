@@ -1,6 +1,3 @@
-import type { ProductTemplateCategory } from '@/lib/product-template-categories'
-import type { ProductImageQuality, ProductImageSize } from '@/lib/product-image-sizes'
-
 export interface Doc {
   id: string
   title: string
@@ -60,40 +57,4 @@ export interface DocVersion {
   created_at: string
 }
 
-export interface ProductTemplate {
-  id: string
-  category: ProductTemplateCategory
-  name: string
-  image_url: string
-  sort_order: number
-  is_active: boolean
-  created_at: string
-}
 
-export interface ProductProduct {
-  id: string
-  user_id: string
-  category: string
-  name: string
-  image_url: string
-  product_note: string | null
-  created_at: string
-}
-
-export interface ProductResult {
-  id: string
-  user_id: string
-  product_id: string
-  template_id: string | null
-  image_size: ProductImageSize
-  image_quality: ProductImageQuality
-  final_prompt: string
-  negative_prompt: string
-  image_url: string | null
-  status: 'pending' | 'queued' | 'processing' | 'completed' | 'failed'
-  error_message: string | null
-  created_at: string
-  updated_at: string
-  product: Pick<ProductProduct, 'id' | 'name' | 'image_url'> | null
-  template: Pick<ProductTemplate, 'id' | 'name' | 'category' | 'image_url'> | null
-}

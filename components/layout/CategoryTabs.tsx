@@ -13,8 +13,7 @@ export function CategoryTabs({ docs: _docs }: { docs: DocMeta[] }) {
   const [showLeft, setShowLeft] = useState(false)
   const [showRight, setShowRight] = useState(false)
 
-  const isProduct = pathname.startsWith('/product-studio')
-  const isDevelopers = !isProduct
+  const isDevelopers = true
 
   const update = useCallback(() => {
     const el = navRef.current
@@ -48,20 +47,6 @@ export function CategoryTabs({ docs: _docs }: { docs: DocMeta[] }) {
           onScroll={update}
           className="flex overflow-x-auto scrollbar-none gap-x-6 h-12"
         >
-          <Link
-            href="/product-studio/templates"
-            className={cn(
-              'group relative h-full flex items-center text-sm font-medium transition-colors whitespace-nowrap shrink-0',
-              isProduct ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
-            )}
-          >
-            Product Studio
-            <div className={cn(
-              'absolute bottom-0 left-0 w-full h-[1.5px] transition-colors',
-              isProduct ? 'bg-foreground dark:bg-[#D5A27F]' : 'bg-transparent group-hover:bg-border'
-            )} />
-          </Link>
-
           <Link
             href="/prompts"
             className={cn(

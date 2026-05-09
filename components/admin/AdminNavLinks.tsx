@@ -10,8 +10,6 @@ export function AdminNavLinks() {
   const overviewActive = pathname === '/admin'
   const docsActive = pathname.startsWith('/admin/docs') || pathname.startsWith('/admin/edit') || pathname.startsWith('/admin/new') || (pathname.startsWith('/admin/preview') && !pathname.startsWith('/admin/preview/pet'))
   const petsActive = pathname.startsWith('/admin/pets') || pathname.startsWith('/admin/preview/pet')
-  const productTemplatesActive = pathname.startsWith('/admin/product-templates')
-
   const linkClass = (active: boolean) =>
     cn(
       'text-sm px-2 py-1 rounded-md transition-colors',
@@ -23,7 +21,6 @@ export function AdminNavLinks() {
       <Link href="/admin" className={linkClass(overviewActive)}>Overview</Link>
       <Link href="/admin/docs" className={linkClass(docsActive)}>Docs</Link>
       <Link href="/admin/pets" className={linkClass(petsActive)}>Pets</Link>
-      <Link href="/admin/product-templates" className={linkClass(productTemplatesActive)}>Product Templates</Link>
       <Link href="/admin/feedback" className={linkClass(pathname.startsWith('/admin/feedback'))}>Feedback</Link>
     </div>
   )

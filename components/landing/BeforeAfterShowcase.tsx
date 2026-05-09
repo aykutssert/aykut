@@ -36,15 +36,9 @@ export function BeforeAfterShowcase({
     return () => { clearTimeout(stay); clearTimeout(fade) }
   }, [])
 
-  function handleClick() {
-    pausedRef.current = !pausedRef.current
-  }
-
   return (
     <div
-      className="relative h-96 cursor-pointer overflow-hidden select-none bg-muted"
-      onClick={handleClick}
-      title="Click to pause / resume"
+      className="relative h-96 overflow-hidden select-none bg-muted/30"
     >
       {/* Before */}
       <img

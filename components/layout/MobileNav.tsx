@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { Bot, FileText, Images, Menu, MessageSquarePlus, Package, PawPrint, Sparkles, Tag, X, ChevronDown } from 'lucide-react'
+import { Bot, FileText, Menu, MessageSquarePlus, PawPrint, Sparkles, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSyncExternalStore } from 'react'
@@ -142,43 +142,19 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
             <nav className="flex-1 overflow-y-auto p-4 space-y-1">
               <div className="mb-4 border-b border-border pb-3">
                 <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                  Product Studio
+                  Studio
                 </p>
                 <Link
-                  href="/product-studio/templates"
+                  href="/tshirt-studio"
                   className={cn(
                     'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
-                    pathname.startsWith('/product-studio/templates')
-                      ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
-                      : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
-                  )}
-                >
-                  <Images className="h-4 w-4" />
-                  Templates
-                </Link>
-                <Link
-                  href="/product-studio/products"
-                  className={cn(
-                    'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
-                    pathname.startsWith('/product-studio/products') || pathname.startsWith('/product-studio/create')
-                      ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
-                      : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
-                  )}
-                >
-                  <Package className="h-4 w-4" />
-                  My Products
-                </Link>
-                <Link
-                  href="/product-studio/results"
-                  className={cn(
-                    'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
-                    pathname.startsWith('/product-studio/results')
+                    pathname.startsWith('/tshirt-studio')
                       ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
                       : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
                   )}
                 >
                   <Sparkles className="h-4 w-4" />
-                  Results
+                  T-Shirt Studio
                 </Link>
               </div>
 
@@ -225,18 +201,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
               </div>
 
               <div className="mb-3 space-y-1 border-b border-border pb-3">
-                <Link
-                  href="/pricing"
-                  className={cn(
-                    'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
-                    pathname === '/pricing'
-                      ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
-                      : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
-                  )}
-                >
-                  <Tag className="h-4 w-4" />
-                  Pricing
-                </Link>
                 <button
                   type="button"
                   onClick={() => { setOpen(false); setFeedbackOpen(true) }}

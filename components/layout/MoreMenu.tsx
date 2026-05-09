@@ -73,7 +73,7 @@ export function MoreMenu() {
 
       {open && (
         <div className="absolute right-0 top-[calc(100%+8px)] z-[80] w-44 overflow-hidden rounded-lg border border-border bg-background shadow-xl">
-          <button
+<button
             type="button"
             onClick={() => { setOpen(false); setFeedbackOpen(true) }}
             className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { getDocs } from '@/lib/docs'
 import { FadeInSection } from '@/components/landing/FadeInSection'
 import { StaggeredGrid } from '@/components/landing/StaggeredGrid'
+import { TerminalTyper } from '@/components/landing/TerminalTyper'
 import { KitchenShowcaseLazy as KitchenShowcase, TshirtMiniPreviewLazy as TshirtMiniPreviewWrapper } from '@/components/landing/LazyDemos'
 
 export const metadata: Metadata = {
@@ -284,14 +285,7 @@ export default async function LandingPage() {
                 <span className="h-2 w-2 rounded-full bg-green-400" />
                 <span className="ml-2 text-[10px] tracking-wide text-muted-foreground/60">terminal</span>
               </div>
-              <div className="space-y-1 bg-muted/20 px-4 py-4 leading-5 text-muted-foreground">
-                <p>
-                  <span className="text-foreground/50">$</span>{' '}
-                  <span className="text-foreground/80">npx</span>{' '}
-                  kernel-pets add gutsy
-                </p>
-                <p className="mt-2 text-foreground/35"># installs a Codex pet into ~/.codex/pets</p>
-              </div>
+              <TerminalTyper />
               <div className="flex items-center gap-2 border-t border-border bg-muted/40 px-4 py-2">
                 <PawPrint className="h-3 w-3 text-muted-foreground/50" />
                 <span className="text-[10px] text-muted-foreground/60">published npm cli for one-command installs</span>

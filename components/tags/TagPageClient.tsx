@@ -235,7 +235,6 @@ export function TagPageClient({
   return (
     <div className="grid gap-x-8 gap-y-3 lg:grid-cols-[240px_1fr]">
       <div className="flex min-h-5 items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tp('prompts_heading')}</p>
           <span className="text-xs text-muted-foreground">
             {tp('result_count', { count: docs.length })}
           </span>

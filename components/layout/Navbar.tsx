@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { Layers, User, Mail, BookOpen } from 'lucide-react'
@@ -8,11 +10,12 @@ import { MoreMenu } from './MoreMenu'
 import { AuthButton } from '@/components/auth/AuthButton'
 import { HomeLink } from './HomeLink'
 import { LanguageToggle } from './LanguageToggle'
-import { getLocale, getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 import type { DocMeta } from '@/types'
 
-export async function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
-  const [locale, t] = await Promise.all([getLocale(), getTranslations('nav')])
+export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
+  const t = useTranslations('nav')
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-[57px] items-center gap-1.5 px-3 md:px-0 md:gap-4 max-w-[1400px] mx-auto w-full">
@@ -54,7 +57,7 @@ export async function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
           <MoreMenu />
           <AuthButton />
         </div>
-        <LanguageToggle locale={locale} />
+        <LanguageToggle />
         <ThemeToggle />
       </div>
     </header>

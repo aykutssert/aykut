@@ -17,6 +17,10 @@ export function HeroTyper({ className }: { className?: string }) {
   const index = useRef(0)
 
   useEffect(() => {
+    phase.current = 'typing'
+    index.current = 0
+    setDisplayed('')
+
     let timer: ReturnType<typeof setTimeout>
 
     function tick() {
@@ -49,7 +53,7 @@ export function HeroTyper({ className }: { className?: string }) {
 
     timer = setTimeout(tick, TYPE_SPEED)
     return () => clearTimeout(timer)
-  }, [])
+  }, [TEXT])
 
   return (
     <span className={className}>

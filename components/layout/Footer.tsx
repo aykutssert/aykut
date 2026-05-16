@@ -1,9 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
-export async function Footer() {
-  const t = await getTranslations('footer')
+export function Footer() {
+  const t = useTranslations('footer')
   return (
     <footer className="border-t border-border mt-auto">
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pt-5 pb-3">

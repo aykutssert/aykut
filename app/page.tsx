@@ -184,6 +184,7 @@ export default async function LandingPage() {
             rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
           >
+            <Image src="/logos/mypetroutine.png" alt="My Pet Routine" width={40} height={40} className="rounded-xl" />
             <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-pink-700 dark:border-pink-800/40 dark:bg-pink-950/40 dark:text-pink-300">
               <PawPrint className="h-3 w-3" />
               My Pet Routine
@@ -210,6 +211,7 @@ export default async function LandingPage() {
             rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
           >
+            <Image src="/logos/localseo.png" alt="Local SEO" width={40} height={40} className="rounded-xl" />
             <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-stone-700 dark:border-stone-800/40 dark:bg-stone-950/40 dark:text-stone-300">
               <Code2 className="h-3 w-3" />
               Local SEO
@@ -236,6 +238,7 @@ export default async function LandingPage() {
             rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
           >
+            <Image src="/logos/surge.png" alt="Surge" width={40} height={40} className="rounded-xl" />
             <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
               <Code2 className="h-3 w-3" />
               Surge
@@ -262,6 +265,7 @@ export default async function LandingPage() {
             rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
           >
+            <Image src="/logos/uptime.svg" alt="Uptime Monitor" width={40} height={40} className="rounded-xl" unoptimized />
             <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-green-700 dark:border-green-800/40 dark:bg-green-950/40 dark:text-green-300">
               <Activity className="h-3 w-3" />
               Uptime Monitor
@@ -288,6 +292,7 @@ export default async function LandingPage() {
             rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
           >
+            <Image src="/logos/cadie.png" alt="Cadie" width={40} height={40} className="rounded-xl" />
             <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
               <Sparkles className="h-3 w-3" />
               Cadie
@@ -313,14 +318,14 @@ export default async function LandingPage() {
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">In progress</p>
           <div className="flex flex-wrap gap-3">
             <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
-              <Clock className="h-4 w-4 shrink-0 text-sky-500" />
+              <Image src="/logos/trippack.png" alt="TripPack" width={32} height={32} className="rounded-lg shrink-0" />
               <div>
                 <p className="text-sm font-medium">TripPack</p>
                 <p className="text-xs text-muted-foreground">Travel packing app · Swift · SwiftUI · AI</p>
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
-              <Code2 className="h-4 w-4 shrink-0 text-blue-500" />
+              <Image src="/logos/securebank.svg" alt="SecureBank" width={32} height={32} className="rounded-lg shrink-0" unoptimized />
               <div>
                 <p className="text-sm font-medium">SecureBank</p>
                 <p className="text-xs text-muted-foreground">Banking API &amp; dashboard · Go · Next.js · PostgreSQL</p>

@@ -137,58 +137,6 @@ export default async function LandingPage() {
         {/* Top row: personal projects */}
         <StaggeredGrid id="projects" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" style={{ scrollMarginTop: '72px' }}>
 
-          {/* Surge */}
-          <TiltCard>
-          <a
-            href="https://loadtest.kernelgallery.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
-          >
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
-              <Code2 className="h-3 w-3" />
-              Surge
-            </div>
-            <div>
-              <h3 className="font-semibold tracking-tight">Distributed load tester</h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                HTTP load testing engine — up to 5,000 requests, configurable concurrency, live latency percentiles.
-              </p>
-            </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · C# .NET 8 · RabbitMQ · MongoDB</p>
-            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
-              <ExternalLink className="h-3 w-3" />
-            </div>
-          </a>
-          </TiltCard>
-
-          {/* Cadie */}
-          <TiltCard>
-          <a
-            href="https://aykutssert.github.io/cadie/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
-          >
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
-              <Sparkles className="h-3 w-3" />
-              Cadie
-            </div>
-            <div>
-              <h3 className="font-semibold tracking-tight">Language learning app</h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Mobile app for learning new languages with spaced repetition and AI-powered feedback.
-              </p>
-            </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
-            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
-              <ExternalLink className="h-3 w-3" />
-            </div>
-          </a>
-          </TiltCard>
-
           {/* My Pet Routine */}
           <TiltCard>
           <a
@@ -215,6 +163,23 @@ export default async function LandingPage() {
           </a>
           </TiltCard>
 
+          {/* TripPack */}
+          <TiltCard>
+          <div className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 opacity-70 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
+            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
+              <Clock className="h-3 w-3" />
+              TripPack
+            </div>
+            <div>
+              <h3 className="font-semibold tracking-tight">Travel packing app <span className="ml-1.5 text-[10px] font-normal text-muted-foreground/60 uppercase tracking-wider">upcoming</span></h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                Smart packing list generator — recommendations based on destination, weather, and trip type.
+              </p>
+            </div>
+            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
+          </div>
+          </TiltCard>
+
           {/* Bagcilar Mermerci */}
           <TiltCard>
           <a
@@ -234,6 +199,32 @@ export default async function LandingPage() {
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Next.js · SEO · Structured Data</p>
+            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+              <span className="group-hover:underline underline-offset-2">Open</span>
+              <ExternalLink className="h-3 w-3" />
+            </div>
+          </a>
+          </TiltCard>
+
+          {/* Surge */}
+          <TiltCard>
+          <a
+            href="https://loadtest.kernelgallery.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
+          >
+            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
+              <Code2 className="h-3 w-3" />
+              Surge
+            </div>
+            <div>
+              <h3 className="font-semibold tracking-tight">Distributed load tester</h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                HTTP load testing engine — up to 5,000 requests, configurable concurrency, live latency percentiles.
+              </p>
+            </div>
+            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · C# .NET 8 · RabbitMQ · MongoDB</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
               <span className="group-hover:underline underline-offset-2">Open</span>
               <ExternalLink className="h-3 w-3" />
@@ -267,20 +258,46 @@ export default async function LandingPage() {
           </a>
           </TiltCard>
 
-          {/* TripPack */}
+          {/* Cadie */}
           <TiltCard>
-          <div className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 opacity-70 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
-              <Clock className="h-3 w-3" />
-              TripPack
+          <a
+            href="https://aykutssert.github.io/cadie/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
+          >
+            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <Sparkles className="h-3 w-3" />
+              Cadie
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Travel packing app <span className="ml-1.5 text-[10px] font-normal text-muted-foreground/60 uppercase tracking-wider">upcoming</span></h3>
+              <h3 className="font-semibold tracking-tight">Language learning app</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Smart packing list generator — recommendations based on destination, weather, and trip type.
+                Mobile app for learning new languages with spaced repetition and AI-powered feedback.
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
+            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+              <span className="group-hover:underline underline-offset-2">Open</span>
+              <ExternalLink className="h-3 w-3" />
+            </div>
+          </a>
+          </TiltCard>
+
+          {/* SecureBank */}
+          <TiltCard>
+          <div className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 opacity-70 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
+            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-700 dark:border-blue-800/40 dark:bg-blue-950/40 dark:text-blue-300">
+              <Code2 className="h-3 w-3" />
+              SecureBank
+            </div>
+            <div>
+              <h3 className="font-semibold tracking-tight">Banking API &amp; dashboard <span className="ml-1.5 text-[10px] font-normal text-muted-foreground/60 uppercase tracking-wider">upcoming</span></h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                Multi-currency banking backend with JWT auth, atomic transfers, rate limiting, and a Next.js dashboard.
+              </p>
+            </div>
+            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · Next.js · PostgreSQL · Prometheus</p>
           </div>
           </TiltCard>
 

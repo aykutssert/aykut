@@ -96,7 +96,7 @@ export default async function LandingPage() {
               },
               {
                 label: 'Frameworks',
-                items: ['ASP.NET Core', 'Next.js', 'SwiftUI', 'React Native', 'Tailwind CSS', 'Three.js'],
+                items: ['ASP.NET Core', 'Entity Framework', 'SignalR', 'Next.js', 'SwiftUI', 'React Native', 'Tailwind CSS', 'Three.js'],
               },
               {
                 label: 'Data & Messaging',
@@ -369,7 +369,12 @@ export default async function LandingPage() {
                 </p>
               </div>
               <div className="relative flex flex-1 overflow-hidden border-t border-border bg-[#111111]" style={{ minHeight: 450 }}>
-                <TshirtMiniPreviewWrapper />
+                <div className="hidden md:block h-full w-full">
+                  <TshirtMiniPreviewWrapper />
+                </div>
+                <div className="md:hidden flex items-center justify-center h-full w-full">
+                  <Shirt className="w-20 h-20 text-white/15" />
+                </div>
                 <div className="absolute left-3 bottom-3 z-10">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
                     Live demo

@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FileText, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 export function DiscoverWidget() {
   const [visible, setVisible] = useState(false)
+  const t = useTranslations('nav')
 
   useEffect(() => {
     function onScroll() {
@@ -28,14 +30,14 @@ export function DiscoverWidget() {
         className="group flex items-center gap-2.5 rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm font-medium text-foreground shadow-md hover:bg-[#EEEEE8] dark:hover:bg-[#171513] hover:shadow-lg transition-all"
       >
         <Sparkles className="w-4 h-4 shrink-0 text-violet-500" />
-        Prompts
+        {t('prompts')}
       </Link>
       <Link
         href="/docs"
         className="group flex items-center gap-2.5 rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm font-medium text-foreground shadow-md hover:bg-[#EEEEE8] dark:hover:bg-[#171513] hover:shadow-lg transition-all"
       >
         <FileText className="w-4 h-4 shrink-0 text-blue-500" />
-        Blog
+        {t('blog')}
       </Link>
     </div>
   )

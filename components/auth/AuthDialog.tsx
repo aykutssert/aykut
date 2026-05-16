@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AlertCircle, CheckCircle2, Loader2, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 type AuthMode = 'signin' | 'signup' | 'forgot'
 
@@ -70,6 +71,7 @@ export function AuthDialog({
   onOpenChange,
   onAuthenticated,
 }: AuthDialogProps) {
+  const t = useTranslations('auth')
   const backdropRef = useRef<HTMLDivElement>(null)
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -100,12 +102,8 @@ export function AuthDialog({
   const isSignup = mode === 'signup'
   const isForgot = mode === 'forgot'
 
-  const title = isSignup ? 'Create account' : isForgot ? 'Reset password' : 'Sign in'
-  const description = isSignup
-    ? 'Save your account and keep Kernel features tied to your profile.'
-    : isForgot
-      ? 'Enter your email and we will send a reset link.'
-      : 'Continue with your Kernel account.'
+  const title = isSignup ? t('create_account') : isForgot ? t('reset_password') : t('sign_in')
+  const description = isSignup ? t('desc_signup') : isForgot ? t('desc_forgot') : t('desc_signin')
 
   function handleModeChange(nextMode: AuthMode) {
     setError('')
@@ -145,14 +143,14 @@ export function AuthDialog({
     }
 
     if (isSignup) {
-      setSuccess('Account created. Check your email to confirm your address.')
+      setSuccess(t('success_signup'))
       setPassword('')
       setLoading(false)
       return
     }
 
     if (isForgot) {
-      setSuccess('Password reset link sent. Check your email.')
+      setSuccess(t('success_reset'))
       setLoading(false)
       return
     }
@@ -164,7 +162,7 @@ export function AuthDialog({
       onAuthenticated(payload.user)
       onOpenChange(false)
     } else {
-      setError('Signed in, but user data could not be loaded.')
+      setError(t('error_load'))
     }
 
     setLoading(false)
@@ -204,7 +202,7 @@ export function AuthDialog({
                 isSignin ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              Sign in
+              {t('sign_in')}
             </button>
             <button
               type="button"
@@ -214,7 +212,7 @@ export function AuthDialog({
                 isSignup ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              Sign up
+              {t('sign_up')}
             </button>
           </div>
 
@@ -223,7 +221,7 @@ export function AuthDialog({
               <Field
                 id="auth-username"
                 name="username"
-                label="Username"
+                label={t('username')}
                 value={username}
                 autoComplete="username"
                 onChange={setUsername}
@@ -233,7 +231,7 @@ export function AuthDialog({
             <Field
               id="auth-email"
               name="email"
-              label="Email"
+              label={t('email')}
               type="email"
               value={email}
               autoComplete="email"
@@ -244,7 +242,7 @@ export function AuthDialog({
               <Field
                 id="auth-password"
                 name={isSignup ? 'new-password' : 'current-password'}
-                label="Password"
+                label={t('password')}
                 type="password"
                 value={password}
                 minLength={8}
@@ -273,7 +271,7 @@ export function AuthDialog({
               className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {isSignup ? 'Create account' : isForgot ? 'Send reset link' : 'Sign in'}
+              {isSignup ? t('create_account') : isForgot ? t('send_reset_link') : t('sign_in')}
             </button>
           </form>
 
@@ -283,7 +281,7 @@ export function AuthDialog({
               onClick={() => handleModeChange(isForgot ? 'signin' : 'forgot')}
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
-              {isForgot ? 'Back to sign in' : 'Forgot password?'}
+              {isForgot ? t('back_to_signin') : t('forgot_password')}
             </button>
 
             {!isForgot && (
@@ -292,7 +290,7 @@ export function AuthDialog({
                 onClick={() => handleModeChange(isSignin ? 'signup' : 'signin')}
                 className="font-medium text-foreground underline-offset-4 hover:underline"
               >
-                {isSignin ? 'Create account' : 'Have an account?'}
+                {isSignin ? t('create_account') : t('have_account')}
               </button>
             )}
           </div>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Heart, LogOut, UserRound } from 'lucide-react'
 import { AuthDialog } from './AuthDialog'
 import { useAuth } from './AuthContext'
+import { useTranslations } from 'next-intl'
 
 type AuthMode = 'signin' | 'signup' | 'forgot'
 
@@ -13,6 +14,7 @@ export function AuthButton() {
   const router = useRouter()
   const menuRef = useRef<HTMLDivElement>(null)
   const { user } = useAuth()
+  const t = useTranslations('auth')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [mode, setMode] = useState<AuthMode>('signin')
@@ -60,7 +62,7 @@ export function AuthButton() {
           className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
         >
           <UserRound className="h-3.5 w-3.5" />
-          <span>Sign in</span>
+          <span>{t('sign_in')}</span>
         </button>
         {dialogOpen && (
           <AuthDialog
@@ -102,7 +104,7 @@ export function AuthButton() {
             className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             <Heart className="h-3.5 w-3.5" />
-            Liked
+            {t('liked')}
           </Link>
           <button
             type="button"
@@ -110,7 +112,7 @@ export function AuthButton() {
             className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             <LogOut className="h-3.5 w-3.5" />
-            Logout
+            {t('logout')}
           </button>
         </div>
       )}

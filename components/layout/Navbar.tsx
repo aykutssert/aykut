@@ -7,9 +7,12 @@ import { MobileNav } from './MobileNav'
 import { MoreMenu } from './MoreMenu'
 import { AuthButton } from '@/components/auth/AuthButton'
 import { HomeLink } from './HomeLink'
+import { LanguageToggle } from './LanguageToggle'
+import { getLocale, getTranslations } from 'next-intl/server'
 import type { DocMeta } from '@/types'
 
-export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
+export async function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
+  const [locale, t] = await Promise.all([getLocale(), getTranslations('nav')])
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-[57px] items-center gap-1.5 px-3 md:px-0 md:gap-4 max-w-[1400px] mx-auto w-full">
@@ -34,23 +37,24 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
         <div className="hidden md:flex items-center gap-1.5">
           <Link href="/#projects" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
             <Layers className="w-3.5 h-3.5 text-violet-500" />
-            Projects
+            {t('projects')}
           </Link>
           <Link href="/#about" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
             <User className="w-3.5 h-3.5 text-blue-500" />
-            About
+            {t('about')}
           </Link>
           <Link href="/#contact" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
             <Mail className="w-3.5 h-3.5 text-orange-500" />
-            Contact
+            {t('contact')}
           </Link>
           <Link href="/prompts" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
             <BookOpen className="w-3.5 h-3.5 text-emerald-500" />
-            Blog
+            {t('blog')}
           </Link>
           <MoreMenu />
           <AuthButton />
         </div>
+        <LanguageToggle locale={locale} />
         <ThemeToggle />
       </div>
     </header>

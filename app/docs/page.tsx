@@ -6,6 +6,7 @@ import { DeveloperSubnav } from '@/components/layout/DeveloperSubnav'
 import { Footer } from '@/components/layout/Footer'
 import { getDocs } from '@/lib/docs'
 import { ArrowRight } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default async function DocsIndexPage() {
+  const t = await getTranslations('docs_page')
   let docs: Awaited<ReturnType<typeof getDocs>> = []
   try {
     docs = await getDocs()
@@ -36,7 +38,7 @@ export default async function DocsIndexPage() {
           <aside className="hidden lg:block">
             <div className="sticky top-[117px] space-y-1 rounded-md border border-border bg-background p-3">
               <p className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Categories
+                {t('categories')}
               </p>
               {categories.map((category) => (
                 <a
@@ -51,7 +53,7 @@ export default async function DocsIndexPage() {
                 href="/prompts"
                 className="mt-2 flex items-center justify-between rounded-md border border-border px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                Prompts
+                {t('prompts_link')}
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
@@ -60,18 +62,18 @@ export default async function DocsIndexPage() {
           <main className="min-w-0">
             <div className="mb-8">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Blog</p>
-              <h1 className="text-2xl font-bold tracking-tight">Articles and references</h1>
+              <h1 className="text-2xl font-bold tracking-tight">{t('articles_and_references')}</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                {docsOnly.length} article{docsOnly.length !== 1 ? 's' : ''} across {categories.length} categor{categories.length === 1 ? 'y' : 'ies'}.
+                {t('article_count', { count: docsOnly.length, cats: categories.length })}
               </p>
             </div>
 
             {docsOnly.length === 0 ? (
               <div className="rounded-md border border-border p-8 text-center">
-                <p className="text-sm font-medium">No posts yet</p>
-                <p className="mt-1 text-sm text-muted-foreground">The first article is on its way.</p>
+                <p className="text-sm font-medium">{t('no_posts_yet')}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{t('article_coming')}</p>
                 <Link href="/prompts" className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium hover:underline">
-                  Browse prompts
+                  {t('browse_prompts')}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
@@ -84,7 +86,7 @@ export default async function DocsIndexPage() {
                         {category}
                       </h2>
                       <span className="text-xs text-muted-foreground">
-                        {items.length} article{items.length !== 1 ? 's' : ''}
+                        {t('article_count_short', { count: items.length })}
                       </span>
                     </div>
                     <div className="divide-y divide-border rounded-md border border-border">

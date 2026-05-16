@@ -2,18 +2,19 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
-const TABS = [
-  { label: 'Newest', shortLabel: 'Newest', value: 'newest' },
-  { label: 'Most liked', shortLabel: 'Liked', value: 'liked' },
-  { label: 'Most viewed', shortLabel: 'Viewed', value: 'viewed' },
-] as const
-
-type SortValue = (typeof TABS)[number]['value']
+type SortValue = 'newest' | 'liked' | 'viewed'
 
 export function PetsSortTabs({ defaultSort, showNsfw }: { defaultSort: SortValue; showNsfw: boolean }) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const t = useTranslations('pets_page')
+  const TABS = [
+    { label: t('newest'), shortLabel: t('newest'), value: 'newest' as SortValue },
+    { label: t('most_liked'), shortLabel: t('liked_short'), value: 'liked' as SortValue },
+    { label: t('most_viewed'), shortLabel: t('viewed_short'), value: 'viewed' as SortValue },
+  ]
 
   function handleSort(value: SortValue) {
     const params = new URLSearchParams(searchParams.toString())
@@ -55,7 +56,7 @@ export function PetsSortTabs({ defaultSort, showNsfw }: { defaultSort: SortValue
         aria-label="Toggle NSFW content"
         className="flex shrink-0 items-center justify-between gap-2.5 sm:justify-start"
       >
-        <span className="text-xs text-muted-foreground select-none">Include NSFW</span>
+        <span className="text-xs text-muted-foreground select-none">{t('include_nsfw')}</span>
         <span className={cn(
           'relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200',
           showNsfw ? 'bg-foreground' : 'bg-muted border border-border'

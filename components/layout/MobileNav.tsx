@@ -11,6 +11,7 @@ import { ConnectDialog } from '@/components/mcp/ConnectDialog'
 import { useAuth } from '@/components/auth/AuthContext'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import type { DocMeta } from '@/types'
 
 function readPetEnabled() {
@@ -90,6 +91,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
   const { user } = useAuth()
   const isLoggedIn = !!user
+  const t = useTranslations('nav')
 
   function togglePet() {
     const next = !readPetEnabled()
@@ -145,34 +147,34 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
             <nav className="flex-1 overflow-y-auto p-4 space-y-1">
               <div className="mb-4 border-b border-border pb-3">
                 <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                  Navigate
+                  {t('navigate')}
                 </p>
                 <Link
                   href="/#projects"
                   className={cn('flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]')}
                 >
                   <Sparkles className="h-4 w-4" />
-                  Projects
+                  {t('projects')}
                 </Link>
                 <Link
                   href="/#about"
                   className={cn('flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]')}
                 >
                   <User className="h-4 w-4" />
-                  About
+                  {t('about')}
                 </Link>
                 <Link
                   href="/#contact"
                   className={cn('flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]')}
                 >
                   <FileText className="h-4 w-4" />
-                  Contact
+                  {t('contact')}
                 </Link>
               </div>
 
               <div className="mb-4 border-b border-border pb-3">
                 <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                  Studio
+                  {t('studio')}
                 </p>
                 <Link
                   href="/tshirt-studio"
@@ -190,7 +192,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
 
               <div className="mb-3 space-y-1 border-b border-border pb-3">
                 <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                  Developers
+                  {t('developers')}
                 </p>
                 <Link
                   href="/prompts"
@@ -202,7 +204,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                   )}
                 >
                   <Sparkles className="h-4 w-4" />
-                  Prompts
+                  {t('prompts')}
                 </Link>
                 <Link
                   href="/pets"
@@ -214,7 +216,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                   )}
                 >
                   <PawPrint className="w-4 h-4" />
-                  Codex Pets
+                  {t('pets')}
                 </Link>
                 <Link
                   href="/docs"
@@ -226,7 +228,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                   )}
                 >
                   <FileText className="h-4 w-4" />
-                  Blog
+                  {t('blog')}
                 </Link>
               </div>
 
@@ -238,7 +240,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                     className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
                   >
                     <UserRound className="h-4 w-4" />
-                    Sign in
+                    {t('sign_in')}
                   </button>
                 </div>
               )}
@@ -250,7 +252,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                   className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
                 >
                   <MessageSquarePlus className="h-4 w-4" />
-                  Suggest
+                  {t('suggest')}
                 </button>
                 <button
                   type="button"

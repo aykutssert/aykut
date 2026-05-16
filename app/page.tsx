@@ -5,6 +5,7 @@ import { Activity, ArrowRight, Code2, GraduationCap, Mail, MapPin, PawPrint, Shi
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { getDocs, getRecentPrompts } from '@/lib/docs'
+import { getTranslations } from 'next-intl/server'
 import { FadeInSection } from '@/components/landing/FadeInSection'
 import { StaggeredGrid } from '@/components/landing/StaggeredGrid'
 import { TerminalTyper } from '@/components/landing/TerminalTyper'
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 }
 
 export default async function LandingPage() {
-  const [docs, recentPrompts] = await Promise.all([getDocs(), getRecentPrompts(3)])
+  const [docs, recentPrompts, t] = await Promise.all([getDocs(), getRecentPrompts(3), getTranslations('landing')])
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -68,7 +69,7 @@ export default async function LandingPage() {
         <div className="relative mx-auto w-full max-w-[1400px] px-4 py-24 text-center md:px-0 md:py-32">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm">
             <Sparkles className="h-3 w-3" />
-            Full-stack · Backend · Mobile · AI
+            {t('hero.badge')}
           </div>
 
           <h1 className="mx-auto max-w-xl text-4xl font-bold tracking-tight sm:text-5xl md:text-[3.5rem] md:leading-[1.15] min-h-[1.15em]">
@@ -76,11 +77,11 @@ export default async function LandingPage() {
           </h1>
 
           <p className="mx-auto mt-3 text-sm text-muted-foreground/60">
-            by <a href="https://github.com/aykutssert" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors underline underline-offset-2">Aykut Sert</a>
+            {t('hero.by')} <a href="https://github.com/aykutssert" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors underline underline-offset-2">Aykut Sert</a>
           </p>
 
           <p className="mx-auto mt-4 max-w-sm text-sm leading-7 text-muted-foreground sm:max-w-md sm:text-[15px]">
-            Building production-grade software across the stack — microservice backends, iOS apps, and AI integrations.
+            {t('hero.description')}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -88,14 +89,14 @@ export default async function LandingPage() {
               href="#projects"
               className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
             >
-              View projects
+              {t('hero.cta_projects')}
               <ChevronDown className="h-3.5 w-3.5" />
             </a>
             <a
               href="#contact"
               className="inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/40"
             >
-              Contact me
+              {t('hero.cta_contact')}
               <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
@@ -117,7 +118,7 @@ export default async function LandingPage() {
             <div>
               <p className="text-sm font-semibold">Aykut Sert</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                Full-Stack Developer · 2+ yrs professional · C# · Go · Swift · TypeScript · İstanbul
+                {t('identity.role')}
               </p>
             </div>
           </div>
@@ -130,27 +131,27 @@ export default async function LandingPage() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:flex lg:justify-between">
             {[
               {
-                label: 'Languages',
+                label: t('stack.languages'),
                 items: ['C#', 'Python', 'Go', 'TypeScript', 'Swift'],
               },
               {
-                label: 'Frameworks',
+                label: t('stack.frameworks'),
                 items: ['ASP.NET Core', 'Entity Framework', 'SignalR', 'Next.js', 'SwiftUI', 'React Native', 'Tailwind CSS', 'Three.js'],
               },
               {
-                label: 'Data & Messaging',
+                label: t('stack.data'),
                 items: ['MongoDB', 'MSSQL', 'PostgreSQL', 'Redis', 'Supabase', 'RabbitMQ', 'Quartz', 'Dapper', 'Vector DB'],
               },
               {
-                label: 'AI & APIs',
+                label: t('stack.ai'),
                 items: ['OpenAI API', 'Fal AI', 'Deepgram', 'Inworld AI', 'Google Gen AI', 'LLM', 'RAG', 'Prompt Engineering', 'STT/TTS'],
               },
               {
-                label: 'Architecture',
+                label: t('stack.architecture'),
                 items: ['Microservices', 'CQRS', 'Clean Architecture', 'MediatR', 'REST API', 'WebSocket'],
               },
               {
-                label: 'Cloud & Infra',
+                label: t('stack.cloud'),
                 items: ['Docker', 'CI/CD', 'Vercel', 'Cloudflare', 'Railway', 'Hetzner', 'Contabo', 'Self-hosted VPS'],
               },
             ].map(({ label, items }) => (
@@ -192,14 +193,14 @@ export default async function LandingPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Pet care tracker</h3>
+              <h3 className="font-semibold tracking-tight">{t('projects.mypetroutine.title')}</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                iOS app on the App Store for tracking daily pet care — feeding, grooming, vet visits.
+                {t('projects.mypetroutine.description')}
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · App Store</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">App Store</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.app_store')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
@@ -221,14 +222,14 @@ export default async function LandingPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Travel packing app</h3>
+              <h3 className="font-semibold tracking-tight">{t('projects.trippack.title')}</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                iOS app that generates AI-powered packing lists based on your destination, trip duration, and activities.
+                {t('projects.trippack.description')}
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
@@ -250,14 +251,14 @@ export default async function LandingPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Local SEO site</h3>
+              <h3 className="font-semibold tracking-tight">{t('projects.localseo.title')}</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Multi-district landing page structure targeting Istanbul&apos;s countertop market on Google.
+                {t('projects.localseo.description')}
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Next.js · SEO · Structured Data</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
@@ -279,14 +280,14 @@ export default async function LandingPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Distributed load tester</h3>
+              <h3 className="font-semibold tracking-tight">{t('projects.surge.title')}</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                HTTP load testing engine — up to 5,000 requests, configurable concurrency, live latency percentiles.
+                {t('projects.surge.description')}
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · C# .NET 8 · RabbitMQ · MongoDB</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
@@ -308,14 +309,14 @@ export default async function LandingPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Self-hosted uptime monitor</h3>
+              <h3 className="font-semibold tracking-tight">{t('projects.uptime.title')}</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Real-time uptime monitoring dashboard — response time charts, downtime alerts, and per-minute checks.
+                {t('projects.uptime.description')}
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · Next.js · PostgreSQL</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
@@ -337,14 +338,14 @@ export default async function LandingPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">Language learning app</h3>
+              <h3 className="font-semibold tracking-tight">{t('projects.cadie.title')}</h3>
               <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Mobile app for learning new languages with spaced repetition and AI-powered feedback.
+                {t('projects.cadie.description')}
               </p>
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Open</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
@@ -354,13 +355,13 @@ export default async function LandingPage() {
 
         {/* ── In progress ── */}
         <div className="mt-4 rounded-2xl border border-border bg-background px-5 py-4">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">In progress</p>
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">{t('in_progress.label')}</p>
           <div className="flex flex-wrap gap-3">
             <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
               <Image src="/logos/securebank.svg" alt="SecureBank" width={32} height={32} className="rounded-lg shrink-0" unoptimized />
               <div>
                 <p className="text-sm font-medium">SecureBank</p>
-                <p className="text-xs text-muted-foreground">Banking API &amp; dashboard · Go · Next.js · PostgreSQL</p>
+                <p className="text-xs text-muted-foreground">{t('in_progress.securebank')}</p>
               </div>
             </div>
           </div>
@@ -375,18 +376,18 @@ export default async function LandingPage() {
           <div className="flex flex-col p-6 pb-5 md:flex-1">
             <div className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
               <Code2 className="h-3 w-3" />
-              Developer
+              {t('toolkit.badge')}
             </div>
 
-            <h2 className="text-xl font-bold tracking-tight">Developer toolkit</h2>
+            <h2 className="text-xl font-bold tracking-tight">{t('toolkit.title')}</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Full-text searchable docs system, a curated prompt library, and pixel-art Codex pets with a public REST API and npm CLI.
+              {t('toolkit.description')}
             </p>
 
             <p className="mt-4 text-[11px] font-mono text-muted-foreground/60">Next.js · Supabase · REST API · npm</p>
 
             <div className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">Explore</span>
+              <span className="group-hover:underline underline-offset-2">{t('toolkit.explore')}</span>
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </div>
           </div>
@@ -403,7 +404,7 @@ export default async function LandingPage() {
               <TerminalTyper />
               <div className="flex items-center gap-2 border-t border-border bg-muted/40 px-4 py-2">
                 <PawPrint className="h-3 w-3 text-muted-foreground/50" />
-                <span className="text-[10px] text-muted-foreground/60">published npm cli for one-command installs</span>
+                <span className="text-[10px] text-muted-foreground/60">{t('toolkit.npm_cli')}</span>
               </div>
             </div>
           </div>
@@ -415,9 +416,9 @@ export default async function LandingPage() {
           <FadeInSection>
           <div className="mt-8">
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Latest posts</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('blog.latest')}</p>
               <Link href="/prompts" className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground">
-                All posts <ArrowRight className="h-3 w-3" />
+                {t('blog.all')} <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -429,7 +430,7 @@ export default async function LandingPage() {
                 >
                   <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
                     <BookOpen className="h-3 w-3" />
-                    Post
+                    {t('blog.post_label')}
                   </div>
                   <div>
                     <h3 className="font-semibold tracking-tight line-clamp-2">{post.title}</h3>
@@ -445,7 +446,7 @@ export default async function LandingPage() {
                     </div>
                   )}
                   <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-                    <span className="group-hover:underline underline-offset-2">Read</span>
+                    <span className="group-hover:underline underline-offset-2">{t('blog.read')}</span>
                     <ArrowRight className="h-3 w-3" />
                   </div>
                 </Link>
@@ -455,70 +456,12 @@ export default async function LandingPage() {
           </FadeInSection>
         )}
 
-        {/* ── Interactive demos ── */}
-        <FadeInSection>
-        <div className="mt-8">
-          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Interactive demos</p>
-          <div className="grid gap-4 md:grid-cols-2">
-
-            {/* Kitchen Studio */}
-            <div className="relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background">
-              <div className="flex flex-col p-6 pb-6">
-                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
-                  <Sparkles className="h-3 w-3" />
-                  Kitchen Studio
-                </div>
-                <h2 className="text-xl font-bold tracking-tight">AI countertop visualizer</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Upload a kitchen photo, generate realistic countertop alternatives with AI.
-                </p>
-              </div>
-              <div className="flex flex-1 flex-col overflow-hidden border-t border-border" style={{ minHeight: 450 }}>
-                <KitchenShowcase />
-              </div>
-            </div>
-
-            {/* T-Shirt Studio */}
-            <Link
-              href="/tshirt-studio"
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
-            >
-              <div className="flex flex-col p-6 pb-6">
-                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
-                  <Shirt className="h-3 w-3" />
-                  T-Shirt Studio
-                </div>
-                <h2 className="text-xl font-bold tracking-tight">3D t-shirt designer</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  UV canvas editor with drag, scale &amp; rotate — renders live on a real 3D shirt model with WebGL.
-                </p>
-              </div>
-              <div className="relative flex flex-1 overflow-hidden border-t border-border bg-[#111111]" style={{ minHeight: 450 }}>
-                <div className="hidden md:block h-full w-full">
-                  <TshirtMiniPreviewWrapper />
-                </div>
-                <div className="md:hidden flex items-center justify-center h-full w-full">
-                  <Shirt className="w-20 h-20 text-white/15" />
-                </div>
-                <div className="absolute left-3 bottom-3 z-10">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
-                    Live demo
-                    <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-          </div>
-        </div>
-
-        </FadeInSection>
       </main>
 
       {/* ── About ── */}
       <section id="about" className="border-t border-border" style={{ scrollMarginTop: '72px' }}>
         <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">About</p>
+          <p className="mb-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('about.label')}</p>
           <StaggeredGrid className="grid gap-6 md:grid-cols-2">
 
             <div className="rounded-2xl border border-border bg-background p-6">
@@ -532,47 +475,47 @@ export default async function LandingPage() {
                 />
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight">Aykut Sert</h2>
-                  <p className="mt-0.5 text-sm text-muted-foreground">Full-Stack Developer</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{t('about.role')}</p>
                   <div className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground/60">
                     <MapPin className="h-3 w-3" />
-                    İstanbul, Turkey
+                    {t('about.location')}
                   </div>
                 </div>
               </div>
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
-                2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.
+                {t('about.bio')}
               </p>
               <div className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
                 <GraduationCap className="h-3.5 w-3.5 shrink-0" />
-                Gebze Technical University — Computer Engineering, 2021–2026
+                {t('about.education')}
               </div>
             </div>
 
             <div className="rounded-2xl border border-border bg-background p-6">
-              <p className="mb-5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">Experience</p>
+              <p className="mb-5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">{t('about.experience.label')}</p>
               <div className="space-y-0">
                 <div className="pb-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-semibold text-sm">Borusan Otomotiv</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">Full-Stack Developer</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{t('about.experience.borusan_role')}</p>
                     </div>
                     <span className="shrink-0 text-[11px] font-mono text-muted-foreground/60">Jan 2025 – Jan 2026</span>
                   </div>
                   <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                    Microservice backend for a vehicle rental platform — C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.
+                    {t('about.experience.borusan_desc')}
                   </p>
                 </div>
                 <div className="border-t border-border pt-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-semibold text-sm">Negzel Teknoloji</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">Full-Stack Developer</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{t('about.experience.negzel_role')}</p>
                     </div>
                     <span className="shrink-0 text-[11px] font-mono text-muted-foreground/60">Jul 2023 – Aug 2024</span>
                   </div>
                   <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                    Internal project management APIs and an RAG-based document search module — embedding, vector database, LLM integration.
+                    {t('about.experience.negzel_desc')}
                   </p>
                 </div>
               </div>
@@ -585,7 +528,7 @@ export default async function LandingPage() {
       {/* ── Contact ── */}
       <section id="contact" className="border-t border-border" style={{ scrollMarginTop: '72px' }}>
         <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Contact</p>
+          <p className="mb-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('contact.label')}</p>
           <StaggeredGrid className="grid gap-4 sm:grid-cols-3">
 
             <a
@@ -596,7 +539,7 @@ export default async function LandingPage() {
                 <Mail className="h-4 w-4 text-muted-foreground" />
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">Email</p>
+                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">{t('contact.email')}</p>
                 <p className="mt-0.5 truncate text-sm font-medium">aykutssert@gmail.com</p>
               </div>
             </a>
@@ -613,7 +556,7 @@ export default async function LandingPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">GitHub</p>
+                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">{t('contact.github')}</p>
                 <p className="mt-0.5 text-sm font-medium">aykutssert</p>
               </div>
             </a>
@@ -630,12 +573,72 @@ export default async function LandingPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">LinkedIn</p>
+                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">{t('contact.linkedin')}</p>
                 <p className="mt-0.5 text-sm font-medium">Aykut Sert</p>
               </div>
             </a>
 
           </StaggeredGrid>
+        </div>
+      </section>
+
+      {/* ── Interactive demos ── */}
+      <section className="border-t border-border">
+        <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
+          <FadeInSection>
+          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('demos.title')}</p>
+          <div className="grid gap-4 md:grid-cols-2">
+
+            {/* Kitchen Studio */}
+            <div className="relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background">
+              <div className="flex flex-col p-6 pb-6">
+                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
+                  <Sparkles className="h-3 w-3" />
+                  {t('demos.kitchen.badge')}
+                </div>
+                <h2 className="text-xl font-bold tracking-tight">{t('demos.kitchen.title')}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {t('demos.kitchen.description')}
+                </p>
+              </div>
+              <div className="flex flex-1 flex-col overflow-hidden border-t border-border" style={{ minHeight: 450 }}>
+                <KitchenShowcase />
+              </div>
+            </div>
+
+            {/* T-Shirt Studio */}
+            <Link
+              href="/tshirt-studio"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
+            >
+              <div className="flex flex-col p-6 pb-6">
+                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
+                  <Shirt className="h-3 w-3" />
+                  {t('demos.tshirt.badge')}
+                </div>
+                <h2 className="text-xl font-bold tracking-tight">{t('demos.tshirt.title')}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {t('demos.tshirt.description')}
+                </p>
+              </div>
+              <div className="relative flex flex-1 overflow-hidden border-t border-border bg-[#111111]" style={{ minHeight: 450 }}>
+                <div className="hidden md:block h-full w-full">
+                  <TshirtMiniPreviewWrapper />
+                </div>
+                <div className="md:hidden flex items-center justify-center h-full w-full">
+                  <Shirt className="w-20 h-20 text-white/15" />
+                </div>
+                <div className="absolute left-3 bottom-3 z-10">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+                    {t('demos.tshirt.live')}
+                    <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+          </div>
+          </FadeInSection>
         </div>
       </section>
 

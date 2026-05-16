@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { PromptLikeButton } from '@/components/docs/PromptLikeButton'
 import { PromptRawPreview } from '@/components/docs/PromptRawPreview'
+import { useTranslations } from 'next-intl'
 import type { TaggedDocWithPreview } from '@/lib/prompt-preview'
 
 type SortOption = 'default' | 'alpha' | 'newest' | 'oldest'
@@ -49,9 +50,11 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
   const visibleTags = (doc.tags ?? []).slice(0, 3)
   const hiddenTags = Math.max(0, (doc.tags ?? []).length - visibleTags.length)
 
+  const tp = useTranslations('prompts_page')
+
   async function handleCopy() {
     await navigator.clipboard.writeText(doc.content)
-    toast.success('Prompt copied.')
+    toast.success(tp('prompt_copied'))
   }
 
   return (
@@ -72,7 +75,7 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
             />
             <div className="absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t from-background/75 via-background/25 to-transparent dark:h-20 dark:from-[#080808] dark:via-[#080808]/70" />
             <span className="absolute right-2.5 top-2.5 z-20 rounded-md border border-border bg-background/85 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur">
-              Image
+              {tp('badge_image')}
             </span>
           </div>
         ) : null}
@@ -85,7 +88,7 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
               </h2>
             </Link>
             {!doc.image_url && (
-              <span className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">Text</span>
+              <span className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{tp('badge_text')}</span>
             )}
           </div>
           {doc.description && (
@@ -161,6 +164,7 @@ export function TagPageClient({
   authStatus?: string
 }) {
   const router = useRouter()
+  const tp = useTranslations('prompts_page')
   const activeTags = useMemo(() => [...new Set(tags.filter(Boolean))], [tags])
   const [sort, setSort] = useState<SortOption>(initialSort)
   const [promptQuery, setPromptQuery] = useState(initialQuery)
@@ -231,9 +235,9 @@ export function TagPageClient({
   return (
     <div className="grid gap-x-8 gap-y-3 lg:grid-cols-[240px_1fr]">
       <div className="flex min-h-5 items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Prompts</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tp('prompts_heading')}</p>
           <span className="text-xs text-muted-foreground">
-            {docs.length} result{docs.length !== 1 ? 's' : ''}
+            {tp('result_count', { count: docs.length })}
           </span>
       </div>
       <div className="hidden min-h-5 lg:block" />
@@ -242,7 +246,7 @@ export function TagPageClient({
         <div className="space-y-5 rounded-md border border-border bg-background p-4 lg:max-h-[calc(100vh-133px)] lg:overflow-y-auto">
           <div>
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Filters</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tp('filters')}</p>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
@@ -250,7 +254,7 @@ export function TagPageClient({
                   className="inline-flex items-center gap-1 rounded border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent lg:hidden"
                 >
                   <SlidersHorizontal className="h-3 w-3" />
-                  Filter
+                  {tp('filter')}
                 </button>
                 {hasActiveFilters ? (
                   <Link
@@ -259,12 +263,12 @@ export function TagPageClient({
                     className="inline-flex items-center gap-1 rounded border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
                   >
                     <X className="h-3 w-3" />
-                    Clear
+                    {tp('clear')}
                   </Link>
                 ) : (
                   <span className="inline-flex items-center gap-1 rounded border border-border px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground opacity-40">
                     <X className="h-3 w-3" />
-                    Clear
+                    {tp('clear')}
                   </span>
                 )}
               </div>
@@ -273,7 +277,7 @@ export function TagPageClient({
 
           <div>
             <label htmlFor="prompt-search" className="mb-1.5 block text-xs font-medium text-muted-foreground">
-              Search prompts
+              {tp('search_prompts')}
             </label>
             <div className="relative">
               <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -281,7 +285,7 @@ export function TagPageClient({
                 id="prompt-search"
                 value={promptQuery}
                 onChange={(e) => setPromptQuery(e.target.value)}
-                placeholder="Title, content..."
+                placeholder={tp('placeholder_content')}
                 className="h-8 w-full rounded-md border border-border bg-background pl-8 pr-3 text-xs outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-foreground/40"
               />
             </div>
@@ -290,7 +294,7 @@ export function TagPageClient({
           <div className={cn('space-y-5 lg:block', mobileFiltersOpen ? 'block' : 'hidden')}>
             <div>
               <label htmlFor="tag-search" className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                Search tags
+                {tp('search_tags')}
               </label>
               <div className="relative">
                 <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -298,7 +302,7 @@ export function TagPageClient({
                   id="tag-search"
                   value={tagQuery}
                   onChange={(e) => setTagQuery(e.target.value)}
-                  placeholder="Filter tags..."
+                  placeholder={tp('placeholder_tags')}
                   className="h-8 w-full rounded-md border border-border bg-background pl-8 pr-3 text-xs outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-foreground/40"
                 />
               </div>
@@ -323,13 +327,13 @@ export function TagPageClient({
             </div>
 
           <div>
-            <p className="mb-1.5 text-xs font-medium text-muted-foreground">Sort</p>
+            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{tp('sort')}</p>
             <div className="grid grid-cols-2 gap-1.5 text-xs">
               {([
-                ['default', 'Default'],
-                ['alpha', 'A-Z'],
-                ['newest', 'Newest'],
-                ['oldest', 'Oldest'],
+                ['default', tp('sort_default')],
+                ['alpha', tp('sort_alpha')],
+                ['newest', tp('sort_newest')],
+                ['oldest', tp('sort_oldest')],
               ] as [SortOption, string][]).map(([val, label]) => (
                 <button
                   key={val}

@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { Heart } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 type PromptLikeButtonProps = {
   docId: string
@@ -22,6 +23,7 @@ export function PromptLikeButton({
   compact = false,
   onChange,
 }: PromptLikeButtonProps) {
+  const t = useTranslations('auth')
   const [liked, setLiked] = useState(initialLiked)
   const [count, setCount] = useState(initialCount ?? 0)
   const [loading, setLoading] = useState(false)
@@ -39,7 +41,7 @@ export function PromptLikeButton({
 
       if (response.status === 401) {
         window.dispatchEvent(new CustomEvent('kernel-auth-open'))
-        toast.message('Sign in to like prompts.')
+        toast.message(t('sign_in_to_like'))
         return
       }
 

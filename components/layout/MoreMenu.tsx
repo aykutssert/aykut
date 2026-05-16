@@ -6,6 +6,7 @@ import { Bot, ChevronDown, MessageSquarePlus, PawPrint } from 'lucide-react'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
 import { ConnectDialog } from '@/components/mcp/ConnectDialog'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
+import { useTranslations } from 'next-intl'
 
 function readPetEnabled() {
   if (typeof window === 'undefined') return true
@@ -31,6 +32,7 @@ export function MoreMenu() {
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const [connectOpen, setConnectOpen] = useState(false)
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
+  const t = useTranslations('nav')
 
   function togglePet() {
     const next = !readPetEnabled()
@@ -67,7 +69,7 @@ export function MoreMenu() {
         className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
         aria-expanded={open}
       >
-        More
+        {t('more')}
         <ChevronDown className="h-3.5 w-3.5" />
       </button>
 
@@ -79,7 +81,7 @@ export function MoreMenu() {
             className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             <MessageSquarePlus className="h-3.5 w-3.5" />
-            Suggest
+            {t('suggest')}
           </button>
           <button
             type="button"

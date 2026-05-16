@@ -5,6 +5,7 @@ import { ExternalLink } from 'lucide-react'
 import { PromptLikeButton } from '@/components/docs/PromptLikeButton'
 import { PromptRawPreview } from '@/components/docs/PromptRawPreview'
 import type { LikedDoc } from '@/lib/account'
+import { useTranslations } from 'next-intl'
 
 export function LikedPromptCard({
   doc,
@@ -13,6 +14,7 @@ export function LikedPromptCard({
   doc: LikedDoc
   onUnlike?: (id: string) => void
 }) {
+  const t = useTranslations('prompts_page')
   return (
     <article className="overflow-hidden rounded-md border border-border bg-background">
       {doc.image_url ? (
@@ -43,7 +45,7 @@ export function LikedPromptCard({
             </h2>
           </Link>
           {!doc.image_url && (
-            <span className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">Text</span>
+            <span className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t('badge_text')}</span>
           )}
         </div>
         {doc.description && (

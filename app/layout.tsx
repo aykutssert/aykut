@@ -6,7 +6,20 @@ import { RoamingPetWrapper } from '@/components/pets/RoamingPetWrapper'
 import { AuthProvider } from '@/components/auth/AuthContext'
 import { DiscoverWidget } from '@/components/layout/DiscoverWidget'
 import { siteUrl } from '@/lib/site'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
+import { Suspense } from 'react'
 import './globals.css'
+
+async function IntlProvider({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+  return (
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      {children}
+    </NextIntlClientProvider>
+  )
+}
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -52,14 +65,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <AuthProvider>
-          <div id="page-root">{children}</div>
-          <RoamingPetWrapper />
-          <DiscoverWidget />
-          <Toaster position="bottom-center" mobileOffset={16} richColors />
-          </AuthProvider>
-        </ThemeProvider>
+        <Suspense>
+          <IntlProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+              <AuthProvider>
+                <div id="page-root">{children}</div>
+                <RoamingPetWrapper />
+                <DiscoverWidget />
+                <Toaster position="bottom-center" mobileOffset={16} richColors />
+              </AuthProvider>
+            </ThemeProvider>
+          </IntlProvider>
+        </Suspense>
       </body>
     </html>
   )

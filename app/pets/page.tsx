@@ -17,12 +17,14 @@ import { getDocs } from '@/lib/docs'
 import { getPets, PER_PAGE } from '@/lib/pets-data'
 import { ChevronLeft, ChevronRight, Heart, SearchX, PawPrint } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 
 interface Props {
   searchParams: Promise<{ page?: string; q?: string; sort?: string; nsfw?: string }>
 }
 
 async function PetsList({ searchParams }: Props) {
+  const t = await getTranslations('pets_page')
   const { page: pageParam, q = '', sort = 'newest', nsfw } = await searchParams
   const page = Math.max(1, parseInt(pageParam ?? '1') || 1)
   const sortVal = sort === 'liked' ? 'liked' : sort === 'viewed' ? 'viewed' : 'newest'
@@ -47,7 +49,7 @@ async function PetsList({ searchParams }: Props) {
       <div className="flex items-start justify-between mb-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight mb-2">Codex Pets</h1>
-          <p className="text-sm text-muted-foreground">Pixel-art companion sprites generated with OpenAI Codex.</p>
+          <p className="text-sm text-muted-foreground">{t('description')}</p>
         </div>
         <div className="flex items-center gap-3 shrink-0 mt-1">
           {total > 0 && (
@@ -59,7 +61,7 @@ async function PetsList({ searchParams }: Props) {
                 </span>
               )}
               <p className="text-xs text-muted-foreground">
-                {total} pet{total !== 1 ? 's' : ''}{totalPages > 1 ? ` · Page ${page} / ${totalPages}` : ''}
+                {t('pet_count', { count: total })}{totalPages > 1 ? ` · ${t('page_of', { page, total: totalPages })}` : ''}
               </p>
             </>
           )}
@@ -84,8 +86,8 @@ async function PetsList({ searchParams }: Props) {
           {q ? (
             <>
               <SearchX className="w-10 h-10 text-muted-foreground/30 mb-4" />
-              <p className="text-sm font-medium mb-1">No pets found for &ldquo;{q}&rdquo;</p>
-              <p className="text-xs text-muted-foreground mb-6">Try a different search term.</p>
+              <p className="text-sm font-medium mb-1">{t('no_pets_found', { q })}</p>
+              <p className="text-xs text-muted-foreground mb-6">{t('try_different')}</p>
               <Link
                 href={(() => {
                   const p = new URLSearchParams()
@@ -96,13 +98,13 @@ async function PetsList({ searchParams }: Props) {
                 })()}
                 className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors"
               >
-                Clear search
+                {t('clear_search')}
               </Link>
             </>
           ) : (
             <>
               <PawPrint className="w-10 h-10 text-muted-foreground/30 mb-4" />
-              <p className="text-sm text-muted-foreground">No pets yet.</p>
+              <p className="text-sm text-muted-foreground">{t('no_pets_yet')}</p>
             </>
           )}
         </div>

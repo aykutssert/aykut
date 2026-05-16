@@ -1,0 +1,15 @@
+import { getRequestConfig } from 'next-intl/server'
+import { cookies } from 'next/headers'
+import { connection } from 'next/server'
+
+export default getRequestConfig(async () => {
+  await connection()
+  const cookieStore = await cookies()
+  const locale = cookieStore.get('locale')?.value ?? 'en'
+  const validLocale = ['en', 'tr'].includes(locale) ? locale : 'en'
+
+  return {
+    locale: validLocale,
+    messages: (await import(`../messages/${validLocale}.json`)).default,
+  }
+})

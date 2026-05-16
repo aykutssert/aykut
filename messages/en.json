@@ -1,0 +1,218 @@
+{
+  "nav": {
+    "search": "Search blog...",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "prompts": "Prompts",
+    "pets": "Codex Pets",
+    "sign_in": "Sign in",
+    "suggest": "Suggest",
+    "more": "More",
+    "navigate": "Navigate",
+    "studio": "Studio",
+    "developers": "Developers"
+  },
+  "footer": {
+    "built_by": "Built by",
+    "disclaimer": "Prompt data via <link>Awesome ChatGPT Prompts</link>. Pets shared by the community — some may reference existing characters or brands; takedown requests to <email>aykutssert@gmail.com</email>.",
+    "feedback": "Feedback",
+    "blog": "Blog"
+  },
+  "search": {
+    "recently_viewed": "Recently viewed",
+    "filtering_by_tag": "Filtering by tag:",
+    "no_results": "No results for \"{query}\""
+  },
+  "prompts_page": {
+    "filters": "Filters",
+    "filter": "Filter",
+    "clear": "Clear",
+    "search_prompts": "Search prompts",
+    "placeholder_content": "Title, content...",
+    "search_tags": "Search tags",
+    "placeholder_tags": "Filter tags...",
+    "sort": "Sort",
+    "sort_default": "Default",
+    "sort_alpha": "A-Z",
+    "sort_newest": "Newest",
+    "sort_oldest": "Oldest",
+    "prompts_heading": "Prompts",
+    "result_count": "{count, plural, one {# result} other {# results}}",
+    "prompt_copied": "Prompt copied.",
+    "badge_image": "Image",
+    "badge_text": "Text"
+  },
+  "docs_page": {
+    "articles_and_references": "Articles and references",
+    "article_count": "{count, plural, one {# article} other {# articles}} across {cats, plural, one {# category} other {# categories}}.",
+    "article_count_short": "{count, plural, one {# article} other {# articles}}",
+    "categories": "Categories",
+    "prompts_link": "Prompts",
+    "no_posts_yet": "No posts yet",
+    "article_coming": "The first article is on its way.",
+    "browse_prompts": "Browse prompts"
+  },
+  "auth": {
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "create_account": "Create account",
+    "reset_password": "Reset password",
+    "send_reset_link": "Send reset link",
+    "back_to_signin": "Back to sign in",
+    "forgot_password": "Forgot password?",
+    "have_account": "Have an account?",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "desc_signin": "Continue with your Kernel account.",
+    "desc_signup": "Save your account and keep Kernel features tied to your profile.",
+    "desc_forgot": "Enter your email and we will send a reset link.",
+    "success_signup": "Account created. Check your email to confirm your address.",
+    "success_reset": "Password reset link sent. Check your email.",
+    "error_load": "Signed in, but user data could not be loaded.",
+    "sign_in_to_like": "Sign in to like prompts.",
+    "liked": "Liked",
+    "logout": "Logout"
+  },
+  "account": {
+    "library": "Library",
+    "library_desc": "Manage your saved prompts and pet companions.",
+    "search_in_prompts": "Search in prompts...",
+    "search_in_pets": "Search in pets...",
+    "pets_tab": "Pets",
+    "prompts_tab": "Prompts",
+    "matched": "{count} matched",
+    "total_count": "{count} total",
+    "no_results": "No results for \"{query}\"",
+    "try_different": "Try a different keyword or clear the search.",
+    "no_liked_prompts": "No liked prompts yet",
+    "no_liked_pets": "No liked pets yet",
+    "heart_prompt_hint": "Hit the heart on any prompt to save it here for quick access later.",
+    "heart_pet_hint": "Tap the heart on any pet to keep your favorites in one place.",
+    "browse_prompts": "Browse prompts",
+    "browse_pets": "Browse pets",
+    "view_liked_pets": "View liked pets",
+    "view_liked_prompts": "View liked prompts"
+  },
+  "pets_page": {
+    "description": "Pixel-art companion sprites generated with OpenAI Codex.",
+    "no_pets_found": "No pets found for \"{q}\"",
+    "try_different": "Try a different search term.",
+    "clear_search": "Clear search",
+    "no_pets_yet": "No pets yet.",
+    "search_placeholder": "Search pets…",
+    "find": "Find",
+    "newest": "Newest",
+    "most_liked": "Most liked",
+    "most_viewed": "Most viewed",
+    "liked_short": "Liked",
+    "viewed_short": "Viewed",
+    "include_nsfw": "Include NSFW",
+    "pet_count": "{count, plural, one {# pet} other {# pets}}",
+    "page_of": "Page {page} / {total}"
+  },
+  "hero_text": "Things I've built",
+  "landing": {
+    "hero": {
+      "badge": "Full-stack · Backend · Mobile · AI",
+      "by": "by",
+      "description": "Building production-grade software across the stack — microservice backends, iOS apps, and AI integrations.",
+      "cta_projects": "View projects",
+      "cta_contact": "Contact me"
+    },
+    "identity": {
+      "role": "Full-Stack Developer · 2+ yrs professional · C# · Go · Swift · TypeScript · İstanbul"
+    },
+    "stack": {
+      "title": "Stack",
+      "languages": "Languages",
+      "frameworks": "Frameworks",
+      "data": "Data & Messaging",
+      "ai": "AI & APIs",
+      "architecture": "Architecture",
+      "cloud": "Cloud & Infra"
+    },
+    "projects": {
+      "title": "Projects",
+      "open": "Open",
+      "app_store": "App Store",
+      "mypetroutine": {
+        "title": "Pet care tracker",
+        "description": "iOS app on the App Store for tracking daily pet care — feeding, grooming, vet visits."
+      },
+      "trippack": {
+        "title": "Travel packing app",
+        "description": "iOS app that generates AI-powered packing lists based on your destination, trip duration, and activities."
+      },
+      "localseo": {
+        "title": "Local SEO site",
+        "description": "Multi-district landing page structure targeting Istanbul's countertop market on Google."
+      },
+      "surge": {
+        "title": "Distributed load tester",
+        "description": "HTTP load testing engine — up to 5,000 requests, configurable concurrency, live latency percentiles."
+      },
+      "uptime": {
+        "title": "Self-hosted uptime monitor",
+        "description": "Real-time uptime monitoring dashboard — response time charts, downtime alerts, and per-minute checks."
+      },
+      "cadie": {
+        "title": "Language learning app",
+        "description": "Mobile app for learning new languages with spaced repetition and AI-powered feedback."
+      }
+    },
+    "in_progress": {
+      "label": "In progress",
+      "securebank": "Banking API & dashboard · Go · Next.js · PostgreSQL"
+    },
+    "toolkit": {
+      "badge": "Developer",
+      "title": "Developer toolkit",
+      "description": "Full-text searchable docs system, a curated prompt library, and pixel-art Codex pets with a public REST API and npm CLI.",
+      "explore": "Explore",
+      "npm_cli": "published npm cli for one-command installs"
+    },
+    "blog": {
+      "latest": "Latest posts",
+      "all": "All posts",
+      "read": "Read",
+      "post_label": "Post"
+    },
+    "demos": {
+      "title": "Interactive demos",
+      "kitchen": {
+        "badge": "Kitchen Studio",
+        "title": "AI countertop visualizer",
+        "description": "Upload a kitchen photo, generate realistic countertop alternatives with AI."
+      },
+      "tshirt": {
+        "badge": "T-Shirt Studio",
+        "title": "3D t-shirt designer",
+        "description": "UV canvas editor with drag, scale & rotate — renders live on a real 3D shirt model with WebGL.",
+        "live": "Live demo"
+      }
+    },
+    "about": {
+      "label": "About",
+      "role": "Full-Stack Developer",
+      "location": "İstanbul, Turkey",
+      "bio": "2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.",
+      "education": "Gebze Technical University — Computer Engineering, 2021–2026",
+      "experience": {
+        "label": "Experience",
+        "borusan_role": "Full-Stack Developer",
+        "borusan_desc": "Microservice backend for a vehicle rental platform — C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
+        "negzel_role": "Full-Stack Developer",
+        "negzel_desc": "Internal project management APIs and an RAG-based document search module — embedding, vector database, LLM integration."
+      }
+    },
+    "contact": {
+      "label": "Contact",
+      "email": "Email",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
+  }
+}

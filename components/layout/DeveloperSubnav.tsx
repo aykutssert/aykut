@@ -3,15 +3,17 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-
-const links = [
-  { href: '/prompts', label: 'Prompts' },
-  { href: '/pets', label: 'Codex Pets' },
-  { href: '/docs', label: 'Blog' },
-]
+import { useTranslations } from 'next-intl'
 
 export function DeveloperSubnav() {
   const pathname = usePathname()
+  const t = useTranslations('nav')
+
+  const links = [
+    { href: '/prompts', label: t('prompts') },
+    { href: '/pets', label: t('pets') },
+    { href: '/docs', label: t('blog') },
+  ]
 
   return (
     <nav className="mb-6 flex items-center gap-1 border-b border-border">

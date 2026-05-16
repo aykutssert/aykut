@@ -3,11 +3,13 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useRef } from 'react'
 import { Search } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export function PetsSearchBar({ defaultValue = '' }: { defaultValue?: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const inputRef = useRef<HTMLInputElement>(null)
+  const t = useTranslations('pets_page')
 
   function handleFind() {
     const q = inputRef.current?.value.trim() ?? ''
@@ -31,7 +33,7 @@ export function PetsSearchBar({ defaultValue = '' }: { defaultValue?: string }) 
           type="text"
           defaultValue={defaultValue}
           onKeyDown={handleKeyDown}
-          placeholder="Search pets…"
+          placeholder={t('search_placeholder')}
           className="w-full pl-8 pr-3 py-1.5 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
         />
       </div>
@@ -39,7 +41,7 @@ export function PetsSearchBar({ defaultValue = '' }: { defaultValue?: string }) 
         onClick={handleFind}
         className="shrink-0 px-3 py-1.5 text-sm font-medium bg-foreground text-background rounded-lg hover:opacity-90 transition-opacity"
       >
-        Find
+        {t('find')}
       </button>
     </div>
   )

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Search, FileText, X, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getRecentDocs, type RecentDoc } from '@/components/docs/DocViewTracker'
+import { useTranslations } from 'next-intl'
 
 interface Result {
   id: string
@@ -25,6 +26,8 @@ interface SearchDialogProps {
 
 export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: SearchDialogProps) {
   const router = useRouter()
+  const t = useTranslations('nav')
+  const ts = useTranslations('search')
   const dialogRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -120,7 +123,7 @@ export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: S
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search blog..."
+              placeholder={t('search')}
               className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
             />
             {loading
@@ -131,7 +134,7 @@ export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: S
 
           {activeTag && (
             <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/30">
-              <span className="text-xs text-muted-foreground">Filtering by tag:</span>
+              <span className="text-xs text-muted-foreground">{ts('filtering_by_tag')}</span>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-foreground text-background text-xs font-mono">
                 {activeTag}
                 <button onClick={() => setActiveTag('')}><X className="w-3 h-3" /></button>
@@ -156,7 +159,7 @@ export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: S
           {!query && recentDocs.length > 0 && (
             <div className="py-2">
               <p className="px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                Recently viewed
+                {ts('recently_viewed')}
               </p>
               {recentDocs.map((doc) => (
                 <button
@@ -204,7 +207,7 @@ export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: S
 
           {!loading && query && results.length === 0 && (
             <div className="py-10 text-center text-sm text-muted-foreground">
-              No results for &ldquo;{query}&rdquo;
+              {ts('no_results', { query })}
             </div>
           )}
         </div>

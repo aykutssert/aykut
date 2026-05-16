@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Activity, ArrowRight, Code2, GraduationCap, Mail, MapPin, PawPrint, Shirt, Sparkles, ExternalLink, Clock } from 'lucide-react'
+import Image from 'next/image'
+import { Activity, ArrowRight, Code2, GraduationCap, Mail, MapPin, PawPrint, Shirt, Sparkles, ExternalLink, Clock, ChevronDown, BookOpen } from 'lucide-react'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { getDocs } from '@/lib/docs'
+import { getDocs, getRecentPrompts } from '@/lib/docs'
 import { FadeInSection } from '@/components/landing/FadeInSection'
 import { StaggeredGrid } from '@/components/landing/StaggeredGrid'
 import { TerminalTyper } from '@/components/landing/TerminalTyper'
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default async function LandingPage() {
-  const docs = await getDocs()
+  const [docs, recentPrompts] = await Promise.all([getDocs(), getRecentPrompts(3)])
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -82,6 +83,44 @@ export default async function LandingPage() {
             Building production-grade software across the stack — microservice backends, iOS apps, and AI integrations.
           </p>
 
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="#projects"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
+            >
+              View projects
+              <ChevronDown className="h-3.5 w-3.5" />
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-foreground/30 hover:bg-muted/40"
+            >
+              Contact me
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── Identity bar ── */}
+      <section className="border-b border-border">
+        <div className="mx-auto w-full max-w-[1400px] px-4 py-4 md:px-0">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/my-face.jpeg"
+              alt="Aykut Sert"
+              width={44}
+              height={44}
+              className="rounded-full object-cover ring-2 ring-border shrink-0"
+            />
+            <div>
+              <p className="text-sm font-semibold">Aykut Sert</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Full-Stack Developer · 2+ yrs professional · C# · Go · Swift · TypeScript · İstanbul
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -161,23 +200,6 @@ export default async function LandingPage() {
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
-          </TiltCard>
-
-          {/* TripPack */}
-          <TiltCard>
-          <div className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 opacity-70 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
-              <Clock className="h-3 w-3" />
-              TripPack
-            </div>
-            <div>
-              <h3 className="font-semibold tracking-tight">Travel packing app <span className="ml-1.5 text-[10px] font-normal text-muted-foreground/60 uppercase tracking-wider">upcoming</span></h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Smart packing list generator — recommendations based on destination, weather, and trip type.
-              </p>
-            </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
-          </div>
           </TiltCard>
 
           {/* Bagcilar Mermerci */}
@@ -284,24 +306,28 @@ export default async function LandingPage() {
           </a>
           </TiltCard>
 
-          {/* SecureBank */}
-          <TiltCard>
-          <div className="flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 opacity-70 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-700 dark:border-blue-800/40 dark:bg-blue-950/40 dark:text-blue-300">
-              <Code2 className="h-3 w-3" />
-              SecureBank
-            </div>
-            <div>
-              <h3 className="font-semibold tracking-tight">Banking API &amp; dashboard <span className="ml-1.5 text-[10px] font-normal text-muted-foreground/60 uppercase tracking-wider">upcoming</span></h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                Multi-currency banking backend with JWT auth, atomic transfers, rate limiting, and a Next.js dashboard.
-              </p>
-            </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · Next.js · PostgreSQL · Prometheus</p>
-          </div>
-          </TiltCard>
-
         </StaggeredGrid>
+
+        {/* ── In progress ── */}
+        <div className="mt-4 rounded-2xl border border-border bg-background px-5 py-4">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">In progress</p>
+          <div className="flex flex-wrap gap-3">
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+              <Clock className="h-4 w-4 shrink-0 text-sky-500" />
+              <div>
+                <p className="text-sm font-medium">TripPack</p>
+                <p className="text-xs text-muted-foreground">Travel packing app · Swift · SwiftUI · AI</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+              <Code2 className="h-4 w-4 shrink-0 text-blue-500" />
+              <div>
+                <p className="text-sm font-medium">SecureBank</p>
+                <p className="text-xs text-muted-foreground">Banking API &amp; dashboard · Go · Next.js · PostgreSQL</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Developer Toolkit */}
         <FadeInSection delay={0}>
@@ -346,6 +372,51 @@ export default async function LandingPage() {
           </div>
         </Link>
         </FadeInSection>
+
+        {/* ── Blog posts ── */}
+        {recentPrompts.length > 0 && (
+          <FadeInSection>
+          <div className="mt-8">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Latest posts</p>
+              <Link href="/prompts" className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground">
+                All posts <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {recentPrompts.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`/docs/prompts/${post.slug}`}
+                  className="group flex flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5"
+                >
+                  <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
+                    <BookOpen className="h-3 w-3" />
+                    Post
+                  </div>
+                  <div>
+                    <h3 className="font-semibold tracking-tight line-clamp-2">{post.title}</h3>
+                    {post.description && (
+                      <p className="mt-1.5 text-sm leading-6 text-muted-foreground line-clamp-2">{post.description}</p>
+                    )}
+                  </div>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-auto flex flex-wrap gap-1">
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <span key={tag} className="rounded-md border border-border bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground/70">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+                    <span className="group-hover:underline underline-offset-2">Read</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+          </FadeInSection>
+        )}
 
         {/* ── Interactive demos ── */}
         <FadeInSection>
@@ -414,11 +485,22 @@ export default async function LandingPage() {
           <StaggeredGrid className="grid gap-6 md:grid-cols-2">
 
             <div className="rounded-2xl border border-border bg-background p-6">
-              <h2 className="text-2xl font-bold tracking-tight">Aykut Sert</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Full-Stack Developer</p>
-              <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
-                <MapPin className="h-3 w-3" />
-                İstanbul, Turkey
+              <div className="flex items-center gap-4">
+                <Image
+                  src="/my-face.jpeg"
+                  alt="Aykut Sert"
+                  width={64}
+                  height={64}
+                  className="rounded-full object-cover ring-2 ring-border shrink-0"
+                />
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">Aykut Sert</h2>
+                  <p className="mt-0.5 text-sm text-muted-foreground">Full-Stack Developer</p>
+                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground/60">
+                    <MapPin className="h-3 w-3" />
+                    İstanbul, Turkey
+                  </div>
+                </div>
               </div>
               <p className="mt-5 text-sm leading-7 text-muted-foreground">
                 2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.

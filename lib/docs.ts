@@ -187,3 +187,18 @@ export async function getAllDocParams(): Promise<{ category: string; slug: strin
     .eq('published', true)
   return data ?? []
 }
+
+export async function getRecentPrompts(limit = 3): Promise<Pick<TaggedDoc, 'id' | 'title' | 'slug' | 'description' | 'image_url' | 'tags' | 'created_at'>[]> {
+  'use cache'
+  cacheTag('docs', 'prompts')
+  cacheLife('max')
+  const supabase = createPublicClient()
+  const { data } = await supabase
+    .from('docs')
+    .select('id, title, slug, description, image_url, tags, created_at')
+    .eq('published', true)
+    .eq('category', 'prompts')
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  return data ?? []
+}

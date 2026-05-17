@@ -65,6 +65,8 @@ export function KitchenShowcase() {
               key={opt.key}
               src={opt.src}
               alt={opt.label}
+              loading={opt.key === 'before' ? 'eager' : 'lazy'}
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover"
               style={{
                 opacity: active === opt.key ? 1 : 0,
@@ -100,6 +102,8 @@ export function KitchenShowcase() {
               <img
                 src={opt.src}
                 alt={opt.label}
+                loading="lazy"
+                decoding="async"
                 className="h-14 w-full object-cover hover:opacity-100 transition-opacity"
               />
             </button>

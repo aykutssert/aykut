@@ -8,7 +8,10 @@ export const metadata: Metadata = {
 }
 
 export default async function LandingPage() {
-  const [docs, recentPrompts] = await Promise.all([getDocs(), getRecentPrompts(3)])
+  const [docs, recentPrompts] = await Promise.all([
+    getDocs().catch(() => []),
+    getRecentPrompts(3).catch(() => []),
+  ])
 
   const jsonLd = {
     '@context': 'https://schema.org',

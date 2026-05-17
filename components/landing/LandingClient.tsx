@@ -89,6 +89,8 @@ export function LandingClient({ docs, recentPrompts }: Props) {
               alt="Aykut Sert"
               width={44}
               height={44}
+              priority
+              sizes="44px"
               className="rounded-full object-cover ring-2 ring-border shrink-0"
             />
             <div>
@@ -179,42 +181,20 @@ export function LandingClient({ docs, recentPrompts }: Props) {
           </TiltCard>
 
           <TiltCard>
-          <a href="https://bagcilarmermerci.com/" target="_blank" rel="noopener noreferrer"
+          <a href="https://aykutssert.github.io/cadie/" target="_blank" rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
-              <Image src="/logos/localseo.png" alt="Local SEO" width={40} height={40} className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-stone-700 dark:border-stone-500/50 dark:bg-stone-800/40 dark:text-stone-300">
-                <Code2 className="h-3 w-3" />
-                Local SEO
+              <Image src="/logos/cadie.png" alt="Cadie" width={40} height={40} className="rounded-xl shrink-0" />
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
+                <Sparkles className="h-3 w-3" />
+                Cadie
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">{t('projects.localseo.title')}</h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.localseo.description')}</p>
+              <h3 className="font-semibold tracking-tight">{t('projects.cadie.title')}</h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.cadie.description')}</p>
             </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Next.js · SEO · Structured Data</p>
-            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
-              <ExternalLink className="h-3 w-3" />
-            </div>
-          </a>
-          </TiltCard>
-
-          <TiltCard>
-          <a href="https://loadtest.kernelgallery.com" target="_blank" rel="noopener noreferrer"
-            className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-            <div className="flex items-center gap-3">
-              <Image src="/logos/surge.png" alt="Surge" width={40} height={40} className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
-                <Code2 className="h-3 w-3" />
-                Surge
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold tracking-tight">{t('projects.surge.title')}</h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.surge.description')}</p>
-            </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · C# .NET 8 · RabbitMQ · MongoDB</p>
+            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
               <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
@@ -245,20 +225,20 @@ export function LandingClient({ docs, recentPrompts }: Props) {
           </TiltCard>
 
           <TiltCard>
-          <a href="https://aykutssert.github.io/cadie/" target="_blank" rel="noopener noreferrer"
+          <a href="https://bagcilarmermerci.com/" target="_blank" rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
-              <Image src="/logos/cadie.png" alt="Cadie" width={40} height={40} className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
-                <Sparkles className="h-3 w-3" />
-                Cadie
+              <Image src="/logos/localseo.png" alt="Local SEO" width={40} height={40} className="rounded-xl shrink-0" />
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-stone-700 dark:border-stone-500/50 dark:bg-stone-800/40 dark:text-stone-300">
+                <Code2 className="h-3 w-3" />
+                Local SEO
               </div>
             </div>
             <div>
-              <h3 className="font-semibold tracking-tight">{t('projects.cadie.title')}</h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.cadie.description')}</p>
+              <h3 className="font-semibold tracking-tight">{t('projects.localseo.title')}</h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.localseo.description')}</p>
             </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
+            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Next.js · SEO · Structured Data</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
               <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
               <ExternalLink className="h-3 w-3" />
@@ -277,6 +257,13 @@ export function LandingClient({ docs, recentPrompts }: Props) {
               <div>
                 <p className="text-sm font-medium">SecureBank</p>
                 <p className="text-xs text-muted-foreground">{t('in_progress.securebank')}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+              <Image src="/logos/surge.png" alt="Surge" width={32} height={32} className="rounded-lg shrink-0" />
+              <div>
+                <p className="text-sm font-medium">Surge</p>
+                <p className="text-xs text-muted-foreground">{t('in_progress.surge')}</p>
               </div>
             </div>
           </div>

@@ -153,6 +153,9 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
               <img
                 src={doc.image_url}
                 alt={doc.title}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
                 className="relative z-10 max-w-full max-h-[70vh] object-contain"
               />
             </div>

@@ -10,14 +10,14 @@ export async function POST(req: Request) {
   try {
     const pb = await createAdminPB()
 
-    // Check if pet exists
+    // Check if pet exists, create with petId if not
     let recordId: string
     try {
       const existing = await pb.collection('pets').getOne(petId)
       recordId = existing.id
     } catch {
-      // Create new pet record to upload file
       const created = await pb.collection('pets').create({
+        id: petId,
         display_name: petId,
         published: false,
         is_nsfw: false,

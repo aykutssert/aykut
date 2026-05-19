@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { getLikedPetIds, togglePetLike } from '@/lib/likes'
 
 type PetLikeStatus = {
   liked: boolean
@@ -10,20 +11,11 @@ type PetLikeStatus = {
 type PetLikeStatusContextValue = {
   getStatus: (petId: string) => PetLikeStatus | null
   setStatus: (petId: string, status: PetLikeStatus) => void
+  toggle: (petId: string) => boolean
   ready: boolean
 }
 
 const PetLikeStatusContext = createContext<PetLikeStatusContextValue | null>(null)
-
-function getFingerprint(): string {
-  const key = 'codex_fp'
-  let fp = localStorage.getItem(key)
-  if (!fp) {
-    fp = crypto.randomUUID()
-    localStorage.setItem(key, fp)
-  }
-  return fp
-}
 
 export function PetLikeStatusProvider({
   petIds,
@@ -34,52 +26,34 @@ export function PetLikeStatusProvider({
 }) {
   const [statuses, setStatuses] = useState<Record<string, PetLikeStatus>>({})
   const [ready, setReady] = useState(false)
-  const idsKey = petIds.join(',')
+
+  const petKey = useMemo(() => [...petIds].sort().join(','), [petIds])
 
   useEffect(() => {
-    let active = true
-
-    async function loadStatuses() {
-      if (!petIds.length) {
-        setReady(true)
-        return
-      }
-
-      const params = new URLSearchParams()
-      params.set('ids', idsKey)
-      params.set('fp', getFingerprint())
-
-      const res = await fetch(`/api/pets/likes?${params}`)
-      if (!res.ok) {
-        if (active) setReady(true)
-        return
-      }
-
-      const data = await res.json().catch(() => null) as {
-        items?: Record<string, PetLikeStatus>
-      } | null
-
-      if (active) {
-        setStatuses(data?.items ?? {})
-        setReady(true)
-      }
+    const likedIds = getLikedPetIds()
+    const initial: Record<string, PetLikeStatus> = {}
+    for (const id of petIds) {
+      initial[id] = { liked: likedIds.includes(id), count: 0 }
     }
-
-    void loadStatuses()
-
-    return () => {
-      active = false
-    }
-  }, [idsKey, petIds.length])
+    setStatuses(initial)
+    setReady(true)
+  }, [petKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const getStatus = useCallback((petId: string) => statuses[petId] ?? null, [statuses])
+
   const setStatus = useCallback((petId: string, status: PetLikeStatus) => {
-    setStatuses((current) => ({ ...current, [petId]: status }))
+    setStatuses((prev) => ({ ...prev, [petId]: status }))
+  }, [])
+
+  const toggle = useCallback((petId: string) => {
+    const nowLiked = togglePetLike(petId)
+    setStatuses((prev) => ({ ...prev, [petId]: { liked: nowLiked, count: 0 } }))
+    return nowLiked
   }, [])
 
   const value = useMemo(
-    () => ({ getStatus, setStatus, ready }),
-    [getStatus, setStatus, ready]
+    () => ({ getStatus, setStatus, toggle, ready }),
+    [getStatus, setStatus, toggle, ready]
   )
 
   return (
@@ -93,6 +67,7 @@ export function usePetLikeStatus() {
   return useContext(PetLikeStatusContext)
 }
 
+// Geriye dönük uyumluluk için
 export function getPetLikeFingerprint() {
-  return getFingerprint()
+  return ''
 }

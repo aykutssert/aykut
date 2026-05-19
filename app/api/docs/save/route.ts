@@ -16,8 +16,10 @@ export async function POST(req: Request) {
       if (existing.content !== payload.content) {
         const versions = await pb.collection('doc_versions').getFullList({
           filter: `doc_id = "${id}"`,
+          sort: '-version_number',
+          fields: 'version_number',
         })
-        const nextVersion = versions.length + 1
+        const nextVersion = (versions[0]?.version_number ?? 0) + 1
         await pb.collection('doc_versions').create({
           doc_id: id,
           version_number: nextVersion,

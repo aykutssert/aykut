@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
-const LOCK_PRODUCTION_SITE = false
+const LOCK_PRODUCTION_SITE = true
 
 const PUBLIC_API_PREFIXES = [
   '/api/search',
@@ -25,15 +25,9 @@ function isAdmin(request: NextRequest): boolean {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (LOCK_PRODUCTION_SITE && process.env.VERCEL_ENV === 'production') {
-    if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Site temporarily locked' }, { status: 503 })
-    }
-
-    if (pathname !== '/locked') {
-      const url = request.nextUrl.clone()
-      url.pathname = '/locked'
-      return NextResponse.rewrite(url)
+  if (LOCK_PRODUCTION_SITE && process.env.NODE_ENV === 'production') {
+    if (pathname.startsWith('/admin')) {
+      return new NextResponse(null, { status: 404 })
     }
   }
 

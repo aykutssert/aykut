@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { createHash } from 'crypto'
+
+function hashSecret(secret: string): string {
+  return createHash('sha256').update(secret).digest('hex')
+}
 
 export async function POST(req: Request) {
   const { password } = await req.json()
@@ -10,7 +15,7 @@ export async function POST(req: Request) {
   }
 
   const cookieStore = await cookies()
-  cookieStore.set('admin_token', secret, {
+  cookieStore.set('admin_token', hashSecret(secret), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

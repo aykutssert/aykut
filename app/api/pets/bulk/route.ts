@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
+import { requireAdmin } from '@/lib/auth/admin'
 
 export async function POST(req: Request) {
+  if (!(await requireAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const formData = await req.formData()
 
   const id = formData.get('id') as string

@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createAdminPB } from '@/lib/pocketbase'
+import { requireAdmin } from '@/lib/auth/admin'
 
 export async function POST(req: Request) {
+  if (!(await requireAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const formData = await req.formData()
   const file = formData.get('file') as File | null
   const petId = formData.get('petId') as string | null

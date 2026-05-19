@@ -1,17 +1,48 @@
 import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
+import { requireAdmin } from '@/lib/auth/admin'
+import sharp from 'sharp'
 
 export async function POST(req: Request) {
-  const { id, payload, versionSummary } = await req.json()
+  if (!(await requireAdmin())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const formData = await req.formData()
+  const payload = JSON.parse(formData.get('payload') as string)
+  const id = (formData.get('id') as string) || null
+  const versionSummary = (formData.get('versionSummary') as string) || ''
+  const rawImage = formData.get('image') as File | null
+  const clearImage = formData.get('clearImage') === 'true'
 
   try {
     const pb = await createAdminPB()
     let docId = id
 
+    // Convert image to WebP if provided
+    let imageFile: File | null = null
+    if (rawImage && rawImage.size > 0) {
+      const buffer = Buffer.from(await rawImage.arrayBuffer())
+      const webp = await sharp(buffer).webp({ quality: 85 }).toBuffer()
+      const slug = (payload.slug as string) || `img-${Date.now()}`
+      imageFile = new File([new Uint8Array(webp)], `${slug}.webp`, { type: 'image/webp' })
+    }
+
+    // Build PocketBase data object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: Record<string, any> = { ...payload }
+
+    if (imageFile) {
+      data.image = imageFile
+      data.image_url = null // clear old text URL
+    } else if (clearImage) {
+      data.image = null
+      data.image_url = null
+    }
+    // else: leave image and image_url untouched
+
     if (id) {
       const existing = await pb.collection('docs').getOne(id)
-      await pb.collection('docs').update(id, payload)
+      await pb.collection('docs').update(id, data)
 
       if (existing.content !== payload.content) {
         const versions = await pb.collection('doc_versions').getFullList({
@@ -29,7 +60,7 @@ export async function POST(req: Request) {
         })
       }
     } else {
-      const newDoc = await pb.collection('docs').create(payload)
+      const newDoc = await pb.collection('docs').create(data)
       docId = newDoc.id
       await pb.collection('doc_versions').create({
         doc_id: docId,

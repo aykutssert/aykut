@@ -153,6 +153,7 @@ export async function getAllCategories(): Promise<string[]> {
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
+      filter: 'category != "_uploads"',
       sort: '+category',
       fields: 'category',
     })
@@ -227,7 +228,7 @@ export async function getPromptDocsFiltered({
 }): Promise<TaggedDoc[]> {
   'use cache'
   cacheTag('docs', 'prompts')
-  cacheLife('max')
+  cacheLife('minutes')
 
   try {
     const pb = createPB()
@@ -268,6 +269,7 @@ export async function getAllTags(): Promise<string[]> {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
       filter: 'published = true',
+      fields: 'tags',
     })
     const all = records.flatMap((r) => parseTags(r.tags))
     return [...new Set(all)].sort()

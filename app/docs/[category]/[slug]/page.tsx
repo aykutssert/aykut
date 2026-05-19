@@ -80,7 +80,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
         <main className="flex-1 min-w-0 px-4 md:px-10 pt-3 pb-32">
           <div className="mb-8">
             <Link
-              href={`/docs/${firstInCategory.category}/${firstInCategory.slug}`}
+              href={`/docs/${firstInCategory?.category ?? doc.category}/${firstInCategory?.slug ?? doc.slug}`}
               className="text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground transition-colors mb-4 inline-block"
             >
               {doc.category}

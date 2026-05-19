@@ -12,14 +12,16 @@ function resolveImageUrl(r: { id: string; image?: string; image_url?: string }):
   return r.image_url ?? null
 }
 
+const VALID_ID = /^[a-z0-9]{15}$/i
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
-  const ids = searchParams.get('ids')?.split(',').filter(Boolean) ?? []
+  const ids = (searchParams.get('ids')?.split(',') ?? []).filter((id) => VALID_ID.test(id))
   if (!ids.length) return NextResponse.json([])
 
   try {
     const pb = createPB()
-    const filter = ids.map((id) => `id = "${id}"`).join(' || ')
+    const filter = `published = true && (${ids.map((id) => `id = "${id}"`).join(' || ')})`
     const records = await pb.collection('docs').getFullList({ filter })
 
     const docs: TaggedDoc[] = records.map((r) => ({

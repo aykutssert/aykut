@@ -28,7 +28,6 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
   const [content, setContent] = useState(doc?.content ?? '')
   const [orderIndex, setOrderIndex] = useState(String(doc?.order_index ?? 0))
   const [published, setPublished] = useState(doc?.published ?? false)
-  const [imageUrl, setImageUrl] = useState(doc?.image_url ?? '')
   const [requiredImages, setRequiredImages] = useState<string>(String(doc?.required_images ?? ''))
   const [variables, setVariables] = useState<{ name: string; default: string }[]>(
     (doc?.variables ?? []).map((v) => ({ name: v.name, default: v.default ?? '' }))
@@ -36,19 +35,23 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
   const [tags, setTags] = useState<string[]>(doc?.tags ?? [])
   const [tagInput, setTagInput] = useState('')
   const [saving, setSaving] = useState(false)
-  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const [previewTab, setPreviewTab] = useState<'write' | 'preview' | 'split'>('write')
   const [previewHtml, setPreviewHtml] = useState('')
   const [previewLoading, setPreviewLoading] = useState(false)
   const [versionSummary, setVersionSummary] = useState('')
 
+  // Image state — no more separate upload call
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState(doc?.image_url ?? '')
+  const [clearImage, setClearImage] = useState(false)
+
   const isMounted = useRef(false)
   const [isDirty, setIsDirty] = useState(false)
   useEffect(() => {
     if (!isMounted.current) { isMounted.current = true; return }
     setIsDirty(true)
-  }, [title, category, customCategory, slug, description, sourceUrl, content, orderIndex, published, imageUrl, tags, requiredImages, variables])
+  }, [title, category, customCategory, slug, description, sourceUrl, content, orderIndex, published, imageFile, clearImage, tags, requiredImages, variables])
 
   useEffect(() => {
     if (!isDirty) return
@@ -56,6 +59,13 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
     window.addEventListener('beforeunload', onBeforeUnload)
     return () => window.removeEventListener('beforeunload', onBeforeUnload)
   }, [isDirty])
+
+  // Revoke blob URLs on unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview)
+    }
+  }, [imagePreview])
 
   const effectiveCategory = category === '__new__' ? customCategory : category
   const categoryDocs = allDocs
@@ -88,17 +98,21 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
     if (!isEdit) setSlug(slugify(val))
   }
 
-  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    setUploading(true)
-    const form = new FormData()
-    form.append('file', file)
-    const res = await fetch('/api/upload', { method: 'POST', body: form })
-    const data = await res.json()
-    if (data.url) setImageUrl(data.url)
-    else setError(data.error ?? 'Upload failed')
-    setUploading(false)
+    if (imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview)
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file))
+    setClearImage(false)
+  }
+
+  function handleImageRemove() {
+    if (imagePreview.startsWith('blob:')) URL.revokeObjectURL(imagePreview)
+    setImageFile(null)
+    setImagePreview('')
+    setClearImage(true)
+    if (fileRef.current) fileRef.current.value = ''
   }
 
   useEffect(() => {
@@ -145,7 +159,8 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
       source_url: sourceUrl || null,
       order_index: parseInt(orderIndex) || 0,
       published,
-      image_url: imageUrl || null,
+      // Preserve existing image_url unless we're uploading new or clearing
+      image_url: imageFile || clearImage ? null : (doc?.image_url ?? null),
       required_images: requiredImages !== '' ? parseInt(requiredImages) : null,
       variables: variables.filter((v) => v.name.trim()).map((v) => ({
         name: v.name.trim(),
@@ -158,11 +173,14 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
     const indexChanged = !isEdit || doc!.order_index !== parsedIndex || doc!.category !== effectiveCategory
     const conflict = indexChanged && categoryDocs.some((d) => d.order_index === parsedIndex)
 
-    const res = await fetch('/api/docs/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: doc?.id ?? null, payload, conflict, versionSummary }),
-    })
+    const fd = new FormData()
+    fd.append('payload', JSON.stringify({ ...payload, conflict }))
+    fd.append('id', doc?.id ?? '')
+    fd.append('versionSummary', versionSummary)
+    if (imageFile) fd.append('image', imageFile)
+    if (clearImage) fd.append('clearImage', 'true')
+
+    const res = await fetch('/api/docs/save', { method: 'POST', body: fd })
     const data = await res.json()
     if (!res.ok) { setError(data.error ?? 'Save failed'); setSaving(false); return }
 
@@ -171,7 +189,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
     toast.success(isEdit ? 'Document saved.' : 'Document created.')
     router.push('/admin/docs')
     router.refresh()
-  }, [allDocs, slug, doc, title, effectiveCategory, content, description, sourceUrl, orderIndex, published, imageUrl, tags, requiredImages, variables, versionSummary, isEdit, categoryDocs, router])
+  }, [allDocs, slug, doc, title, effectiveCategory, content, description, sourceUrl, orderIndex, published, imageFile, clearImage, tags, requiredImages, variables, versionSummary, isEdit, categoryDocs, router])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -226,7 +244,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               className="w-full appearance-none px-3 py-2 pr-9 text-sm border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="">Select category...</option>
-              {categories.map((c) => (
+              {categories.filter((c) => c !== '_uploads').map((c) => (
                 <option key={c} value={c}>{c}</option>
               ))}
               <option value="__new__">+ New category</option>
@@ -375,22 +393,16 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
 
         {/* Image upload */}
         <div>
-          <label className="block text-sm font-medium mb-1.5">Image (optional)</label>
-          {imageUrl ? (
+          <label className="block text-sm font-medium mb-1.5">
+            Image (optional)
+            {imageFile && <span className="ml-2 text-xs font-normal text-muted-foreground">— kaydedince WebP&apos;e dönüştürülür</span>}
+          </label>
+          {imagePreview ? (
             <div className="relative inline-block">
-              <img src={imageUrl} alt="" className="h-40 rounded-lg object-cover border border-border" />
+              <img src={imagePreview} alt="" className="h-40 rounded-lg object-cover border border-border" />
               <button
                 type="button"
-                onClick={async () => {
-                  if (imageUrl !== (doc?.image_url ?? '')) {
-                    await fetch('/api/upload', {
-                      method: 'DELETE',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ url: imageUrl }),
-                    })
-                  }
-                  setImageUrl('')
-                }}
+                onClick={handleImageRemove}
                 className="absolute -top-2 -right-2 w-5 h-5 bg-foreground text-background rounded-full flex items-center justify-center"
               >
                 <X className="w-3 h-3" />
@@ -400,14 +412,13 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              disabled={uploading}
-              className="flex items-center gap-2 px-4 py-3 border border-dashed border-border rounded-lg text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-3 border border-dashed border-border rounded-lg text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
             >
               <ImagePlus className="w-4 h-4" />
-              {uploading ? 'Uploading…' : 'Upload image'}
+              Upload image
             </button>
           )}
-          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
         </div>
 
         {/* Content */}
@@ -470,7 +481,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
             </div>
           )}
         </div>
-        
+
         {isEdit && (
           <div className="pt-4 border-t border-border">
             <label className="block text-sm font-medium mb-1.5">Version Note <span className="text-muted-foreground font-normal">(optional)</span></label>

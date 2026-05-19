@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
 import { createPB } from '@/lib/pocketbase'
 
+const VALID_ID = /^[a-z0-9]{15}$/i
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
-  const ids = searchParams.get('ids')?.split(',').filter(Boolean) ?? []
+  const ids = (searchParams.get('ids')?.split(',') ?? []).filter((id) => VALID_ID.test(id))
   if (!ids.length) return NextResponse.json([])
 
   try {
     const pb = createPB()
-    const filter = ids.map((id) => `id = "${id}"`).join(' || ')
+    const filter = `published = true && is_nsfw = false && (${ids.map((id) => `id = "${id}"`).join(' || ')})`
     const records = await pb.collection('pets').getFullList({ filter })
     const pets = records.map((r) => ({
       id: r.id,

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSyncExternalStore } from 'react'
-import { ChevronDown, MessageSquarePlus, PawPrint } from 'lucide-react'
+import { ChevronDown, Heart, MessageSquarePlus, PawPrint } from 'lucide-react'
 import Link from 'next/link'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
@@ -89,6 +89,14 @@ export function MoreMenu() {
           >
             <PawPrint className="h-3.5 w-3.5 text-pink-500" />
             {t('pets')}
+          </Link>
+          <Link
+            href="/account/likes"
+            onClick={() => setOpen(false)}
+            className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <Heart className="h-3.5 w-3.5 text-rose-500" />
+            Beğendiklerim
           </Link>
           <button
             type="button"

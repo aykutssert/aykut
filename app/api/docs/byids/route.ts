@@ -1,0 +1,43 @@
+import { NextResponse } from 'next/server'
+import { createPB } from '@/lib/pocketbase'
+import { withPromptPreviews } from '@/lib/prompt-preview'
+import type { TaggedDoc } from '@/types'
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url)
+  const ids = searchParams.get('ids')?.split(',').filter(Boolean) ?? []
+  if (!ids.length) return NextResponse.json([])
+
+  try {
+    const pb = createPB()
+    const filter = ids.map((id) => `id = "${id}"`).join(' || ')
+    const records = await pb.collection('docs').getFullList({ filter })
+
+    const docs: TaggedDoc[] = records.map((r) => ({
+      id: r.id,
+      title: r.title,
+      slug: r.slug,
+      category: r.category,
+      description: r.description ?? null,
+      content: r.content ?? '',
+      image_url: r.image_url ?? null,
+      order_index: r.order_index ?? 0,
+      published: r.published ?? false,
+      tags: Array.isArray(r.tags) ? r.tags : [],
+      created_at: r.created,
+      liked_by_me: true,
+    }))
+
+    const withPreviews = await withPromptPreviews(docs, (doc) => doc.image_url ? 4 : 5)
+
+    const result = withPreviews.map((doc) => ({
+      ...doc,
+      liked_by_me: true,
+      liked_at: new Date().toISOString(),
+    }))
+
+    return NextResponse.json(result)
+  } catch {
+    return NextResponse.json([])
+  }
+}

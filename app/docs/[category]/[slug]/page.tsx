@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, slug } = await params
   const doc = await getDoc(category, slug)
   if (!doc) return {}
-  const description = `${doc.category} — ${doc.title}`
+  const description = `${doc.title}`
   return {
     title: doc.title,
     description,

@@ -3,7 +3,7 @@ import { getDocs, getRecentPrompts } from '@/lib/docs'
 import { LandingClient } from '@/components/landing/LandingClient'
 
 export const metadata: Metadata = {
-  title: 'Aykut Sert — Portfolio',
+  title: 'Aykut Sert',
   description: 'Full-stack developer building web apps, mobile apps, and developer tools. Next.js, Go, C#, React Native, Swift.',
 }
 

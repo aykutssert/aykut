@@ -21,10 +21,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Aykut Sert — Full-Stack Developer',
-    template: '%s — Kernel',
+    default: 'Aykut Sert',
+    template: '%s',
   },
-  description: 'Portfolio of Aykut Sert — full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
+  description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
   metadataBase: new URL(siteUrl),
   alternates: {
     canonical: siteUrl,
@@ -32,15 +32,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Kernel',
-    title: 'Aykut Sert — Full-Stack Developer',
-    description: 'Portfolio of Aykut Sert — full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
+    title: 'Aykut Sert',
+    description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
     url: siteUrl,
     images: [{ url: '/kernel-logo.png', width: 512, height: 512, alt: 'Kernel' }],
   },
   twitter: {
     card: 'summary',
-    title: 'Aykut Sert — Full-Stack Developer',
-    description: 'Portfolio of Aykut Sert — full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
+    title: 'Aykut Sert',
+    description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
     images: ['/kernel-logo.png'],
   },
 }

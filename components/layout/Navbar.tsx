@@ -7,7 +7,6 @@ import { ThemeToggle } from './ThemeToggle'
 import { SearchTrigger } from '@/components/search/SearchTrigger'
 import { MobileNav } from './MobileNav'
 import { MoreMenu } from './MoreMenu'
-import { AuthButton } from '@/components/auth/AuthButton'
 import { HomeLink } from './HomeLink'
 import { LanguageToggle } from './LanguageToggle'
 import { useTranslations } from 'next-intl'
@@ -55,7 +54,6 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
             {t('blog')}
           </Link>
           <MoreMenu />
-          <AuthButton />
         </div>
         <LanguageToggle />
         <ThemeToggle />

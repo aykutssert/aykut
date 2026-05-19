@@ -251,9 +251,10 @@ export function TagPageClient({
                   type="button"
                   onClick={() => setMobileFiltersOpen((open) => !open)}
                   className="inline-flex items-center gap-1 rounded border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent lg:hidden"
+                  suppressHydrationWarning
                 >
                   <SlidersHorizontal className="h-3 w-3" />
-                  {tp('filter')}
+                  <span suppressHydrationWarning>{tp('filter')}</span>
                 </button>
                 {hasActiveFilters ? (
                   <Link

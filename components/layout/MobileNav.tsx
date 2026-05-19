@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { FileText, Menu, MessageSquarePlus, PawPrint, Sparkles, User, UserRound, X, ChevronDown } from 'lucide-react'
+import { FileText, Menu, MessageSquarePlus, PawPrint, Sparkles, User, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSyncExternalStore } from 'react'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
-import { useAuth } from '@/components/auth/AuthContext'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
@@ -88,8 +87,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
 
   const pathname = usePathname()
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
-  const { user } = useAuth()
-  const isLoggedIn = !!user
   const t = useTranslations('nav')
 
   function togglePet() {
@@ -219,18 +216,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                 </Link>
               </div>
 
-              {!isLoggedIn && (
-                <div className="mb-3 space-y-1 border-b border-border pb-3">
-                  <button
-                    type="button"
-                    onClick={() => { setOpen(false); window.dispatchEvent(new Event('kernel-auth-open')) }}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
-                  >
-                    <UserRound className="h-4 w-4" />
-                    {t('sign_in')}
-                  </button>
-                </div>
-              )}
 
               <div className="mb-3 space-y-1 border-b border-border pb-3">
                 <button

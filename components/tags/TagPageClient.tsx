@@ -74,7 +74,7 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
               className="relative z-10 block w-full"
             />
             <div className="absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t from-background/75 via-background/25 to-transparent dark:h-20 dark:from-[#080808] dark:via-[#080808]/70" />
-            <span className="absolute right-2.5 top-2.5 z-20 rounded-md border border-border bg-background/85 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur">
+            <span suppressHydrationWarning className="absolute right-2.5 top-2.5 z-20 rounded-md border border-border bg-background/85 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur">
               {tp('badge_image')}
             </span>
           </div>
@@ -88,7 +88,7 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
               </h2>
             </Link>
             {!doc.image_url && (
-              <span className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{tp('badge_text')}</span>
+              <span suppressHydrationWarning className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{tp('badge_text')}</span>
             )}
           </div>
           {doc.description && (
@@ -263,12 +263,12 @@ export function TagPageClient({
                     className="inline-flex items-center gap-1 rounded border border-border bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
                   >
                     <X className="h-3 w-3" />
-                    {tp('clear')}
+                    <span suppressHydrationWarning>{tp('clear')}</span>
                   </Link>
                 ) : (
                   <span className="inline-flex items-center gap-1 rounded border border-border px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground opacity-40">
                     <X className="h-3 w-3" />
-                    {tp('clear')}
+                    <span suppressHydrationWarning>{tp('clear')}</span>
                   </span>
                 )}
               </div>
@@ -276,7 +276,7 @@ export function TagPageClient({
           </div>
 
           <div>
-            <label htmlFor="prompt-search" className="mb-1.5 block text-xs font-medium text-muted-foreground">
+            <label suppressHydrationWarning htmlFor="prompt-search" className="mb-1.5 block text-xs font-medium text-muted-foreground">
               {tp('search_prompts')}
             </label>
             <div className="relative">
@@ -293,7 +293,7 @@ export function TagPageClient({
 
           <div className={cn('space-y-5 lg:block', mobileFiltersOpen ? 'block' : 'hidden')}>
             <div>
-              <label htmlFor="tag-search" className="mb-1.5 block text-xs font-medium text-muted-foreground">
+              <label suppressHydrationWarning htmlFor="tag-search" className="mb-1.5 block text-xs font-medium text-muted-foreground">
                 {tp('search_tags')}
               </label>
               <div className="relative">
@@ -327,7 +327,7 @@ export function TagPageClient({
             </div>
 
           <div>
-            <p className="mb-1.5 text-xs font-medium text-muted-foreground">{tp('sort')}</p>
+            <p suppressHydrationWarning className="mb-1.5 text-xs font-medium text-muted-foreground">{tp('sort')}</p>
             <div className="grid grid-cols-2 gap-1.5 text-xs">
               {([
                 ['default', tp('sort_default')],
@@ -338,6 +338,7 @@ export function TagPageClient({
                 <button
                   key={val}
                   onClick={() => updateSort(val)}
+                  suppressHydrationWarning
                   className={cn(
                     'rounded-md border px-2 py-1.5 text-left font-medium transition-colors',
                     sort === val

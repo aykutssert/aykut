@@ -11,7 +11,6 @@ export function DeveloperSubnav() {
 
   const links = [
     { href: '/prompts', label: t('prompts') },
-    { href: '/pets', label: t('pets') },
     { href: '/docs', label: t('blog') },
   ]
 

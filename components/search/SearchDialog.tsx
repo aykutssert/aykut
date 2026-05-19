@@ -158,7 +158,7 @@ export function SearchDialog({ open, onOpenChange, initialTag, allTags = [] }: S
 
           {!query && recentDocs.length > 0 && (
             <div className="py-2">
-              <p className="px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+              <p className="px-4 py-1.5 text-[11px] font-semibold tracking-wide text-muted-foreground/60">
                 {ts('recently_viewed')}
               </p>
               {recentDocs.map((doc) => (

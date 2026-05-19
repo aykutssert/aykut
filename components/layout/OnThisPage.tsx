@@ -56,7 +56,7 @@ export function OnThisPage({ content: _ }: { content: string }) {
 
   return (
     <nav className="pt-1.5 pb-8">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+      <p className="text-xs font-semibold tracking-wide text-muted-foreground mb-3">
         On this page
       </p>
       <ul className="space-y-1.5">

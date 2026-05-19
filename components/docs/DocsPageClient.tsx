@@ -34,7 +34,7 @@ export function DocsPageClient({ docs }: { docs: DocMeta[] }) {
         <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
           <aside className="hidden lg:block">
             <div className="sticky top-[117px] space-y-1 rounded-md border border-border bg-background p-3">
-              <p className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="px-2 pb-2 text-xs font-semibold tracking-wide text-muted-foreground">
                 {t('categories')}
               </p>
               {categories.map((category) => (
@@ -66,7 +66,7 @@ export function DocsPageClient({ docs }: { docs: DocMeta[] }) {
                 {Object.entries(grouped).map(([category, items]) => (
                   <section key={category} id={category} className="scroll-mt-32">
                     <div className="mb-3 flex items-center justify-between gap-4">
-                      <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      <h2 className="text-xs font-semibold tracking-wide text-muted-foreground">
                         {category}
                       </h2>
                       <span className="text-xs text-muted-foreground">

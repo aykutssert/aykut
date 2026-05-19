@@ -245,7 +245,7 @@ export function TagPageClient({
         <div className="space-y-5 rounded-md border border-border bg-background p-4 lg:max-h-[calc(100vh-133px)] lg:overflow-y-auto">
           <div>
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{tp('filters')}</p>
+              <p className="text-xs font-semibold tracking-wide text-muted-foreground">{tp('filters')}</p>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"

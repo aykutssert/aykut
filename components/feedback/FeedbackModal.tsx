@@ -96,7 +96,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
           />
 
           <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">
+            <label className="text-[10px] font-bold tracking-wide text-muted-foreground/70">
               Content
             </label>
             <textarea
@@ -111,7 +111,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">
+              <label className="text-[10px] font-bold tracking-wide text-muted-foreground/70">
                 Author
               </label>
               <input
@@ -123,7 +123,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">
+              <label className="text-[10px] font-bold tracking-wide text-muted-foreground/70">
                 Source
               </label>
               <div className="relative">

@@ -48,7 +48,7 @@ function MobileCategoryGroup({
     <div className="border-b border-border last:border-0 pb-1 last:pb-0">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+        className="w-full flex items-center justify-between py-2 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground transition-colors"
       >
         {category}
         <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', open && 'rotate-180')} />
@@ -145,7 +145,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
 
             <nav className="flex-1 overflow-y-auto p-4 space-y-1">
               <div className="mb-4 border-b border-border pb-3">
-                <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                <p className="mb-1.5 px-2 text-[10px] font-semibold tracking-wide text-muted-foreground/70">
                   {t('navigate')}
                 </p>
                 <Link
@@ -172,7 +172,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
               </div>
 
               <div className="mb-4 border-b border-border pb-3">
-                <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                <p className="mb-1.5 px-2 text-[10px] font-semibold tracking-wide text-muted-foreground/70">
                   {t('studio')}
                 </p>
                 <Link
@@ -190,7 +190,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
               </div>
 
               <div className="mb-3 space-y-1 border-b border-border pb-3">
-                <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                <p className="mb-1.5 px-2 text-[10px] font-semibold tracking-wide text-muted-foreground/70">
                   {t('developers')}
                 </p>
                 <Link
@@ -204,18 +204,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                 >
                   <Sparkles className="h-4 w-4" />
                   {t('prompts')}
-                </Link>
-                <Link
-                  href="/pets"
-                  className={cn(
-                    'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
-                    pathname.startsWith('/pets')
-                      ? 'bg-[#E5E5DF] dark:bg-[#1E1917] text-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-[#EEEEE8] dark:hover:bg-[#171513]'
-                  )}
-                >
-                  <PawPrint className="w-4 h-4" />
-                  {t('pets')}
                 </Link>
                 <Link
                   href="/docs"
@@ -253,6 +241,14 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                   <MessageSquarePlus className="h-4 w-4" />
                   {t('suggest')}
                 </button>
+                <Link
+                  href="/pets"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
+                >
+                  <PawPrint className="h-4 w-4 text-pink-500" />
+                  {t('pets')}
+                </Link>
                 <button
                   type="button"
                   onClick={togglePet}

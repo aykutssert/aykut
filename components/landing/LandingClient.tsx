@@ -116,7 +116,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
               { label: t('stack.cloud'), items: ['Docker', 'CI/CD', 'Vercel', 'Cloudflare', 'Railway', 'Hetzner', 'Contabo', 'Self-hosted VPS'] },
             ].map(({ label, items }) => (
               <div key={label}>
-                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                <p className="mb-3 text-[10px] font-semibold tracking-wide text-muted-foreground/50">
                   {label}
                 </p>
                 <ul className="space-y-1.5">
@@ -141,7 +141,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/mypetroutine.png" alt="My Pet Routine" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-pink-700 dark:border-pink-800/40 dark:bg-pink-950/40 dark:text-pink-300">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-[11px] font-semibold text-pink-700 dark:border-pink-800/40 dark:bg-pink-950/40 dark:text-pink-300">
                 <PawPrint className="h-3 w-3" />
                 My Pet Routine
               </div>
@@ -163,7 +163,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/flamy.png" alt="Flamy" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[11px] font-semibold text-orange-700 dark:border-orange-800/40 dark:bg-orange-950/40 dark:text-orange-300">
                 <Sparkles className="h-3 w-3" />
                 Flamy
               </div>
@@ -185,7 +185,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/trippack.png" alt="TripPack" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
                 <Sparkles className="h-3 w-3" />
                 TripPack
               </div>
@@ -207,7 +207,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/cadie.png" alt="Cadie" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
                 <Sparkles className="h-3 w-3" />
                 Cadie
               </div>
@@ -229,7 +229,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/uptime.svg" alt="Uptime Monitor" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" unoptimized />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-green-700 dark:border-green-800/40 dark:bg-green-950/40 dark:text-green-300">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[11px] font-semibold text-green-700 dark:border-green-800/40 dark:bg-green-950/40 dark:text-green-300">
                 <Activity className="h-3 w-3" />
                 Uptime Monitor
               </div>
@@ -251,7 +251,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/localseo.png" alt="Local SEO" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-stone-700 dark:border-stone-500/50 dark:bg-stone-800/40 dark:text-stone-300">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-stone-200 bg-stone-50 px-2.5 py-1 text-[11px] font-semibold text-stone-700 dark:border-stone-500/50 dark:bg-stone-800/40 dark:text-stone-300">
                 <Code2 className="h-3 w-3" />
                 Local SEO
               </div>
@@ -272,7 +272,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
 
         {/* ── In progress ── */}
         <div className="mt-4 rounded-2xl border border-border bg-background px-5 py-4">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">{t('in_progress.label')}</p>
+          <p className="mb-3 text-[10px] font-semibold tracking-wide text-muted-foreground/50">{t('in_progress.label')}</p>
           <div className="flex flex-wrap gap-3">
             <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
               <Image src="/logo/securebank.svg" alt="SecureBank" width={32} height={32} sizes="32px" className="rounded-lg shrink-0" unoptimized />
@@ -296,7 +296,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
         <Link href="/prompts"
           className="group mt-4 relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5 md:flex-row">
           <div className="flex flex-col p-6 pb-5 md:flex-1">
-            <div className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
+            <div className="mb-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 dark:border-sky-800/40 dark:bg-sky-950/40 dark:text-sky-300">
               <Code2 className="h-3 w-3" />
               {t('toolkit.badge')}
             </div>
@@ -331,7 +331,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
           <FadeInSection>
           <div className="mt-8">
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('blog.latest')}</p>
+              <p className="text-xs font-semibold tracking-wide text-muted-foreground">{t('blog.latest')}</p>
               <Link href="/prompts" className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground">
                 {t('blog.all')} <ArrowRight className="h-3 w-3" />
               </Link>
@@ -340,7 +340,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
               {recentPrompts.map((post) => (
                 <Link key={post.id} href={`/docs/prompts/${post.slug}`}
                   className="group flex flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-                  <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
+                  <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
                     <BookOpen className="h-3 w-3" />
                     {t('blog.post_label')}
                   </div>
@@ -372,7 +372,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
       {/* ── About ── */}
       <section id="about" className="border-t border-border" style={{ scrollMarginTop: '72px' }}>
         <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('about.label')}</p>
+          <p className="mb-8 text-xs font-semibold tracking-wide text-muted-foreground">{t('about.label')}</p>
           <StaggeredGrid className="grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl border border-border bg-background p-6">
               <div className="flex items-center gap-4">
@@ -394,7 +394,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             </div>
 
             <div className="rounded-2xl border border-border bg-background p-6">
-              <p className="mb-5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">{t('about.experience.label')}</p>
+              <p className="mb-5 text-[10px] font-semibold tracking-wide text-muted-foreground/50">{t('about.experience.label')}</p>
               <div className="space-y-0">
                 <div className="pb-5">
                   <div className="flex items-start justify-between gap-4">
@@ -425,7 +425,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
       {/* ── Contact ── */}
       <section id="contact" className="border-t border-border" style={{ scrollMarginTop: '72px' }}>
         <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('contact.label')}</p>
+          <p className="mb-8 text-xs font-semibold tracking-wide text-muted-foreground">{t('contact.label')}</p>
           <StaggeredGrid className="grid gap-4 sm:grid-cols-3">
             <a href="mailto:aykutssert@gmail.com"
               className="group flex items-center gap-4 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
@@ -433,7 +433,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
                 <Mail className="h-4 w-4 text-muted-foreground" />
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">{t('contact.email')}</p>
+                <p className="text-[11px] text-muted-foreground/60 tracking-wide">{t('contact.email')}</p>
                 <p className="mt-0.5 truncate text-sm font-medium">aykutssert@gmail.com</p>
               </div>
             </a>
@@ -446,7 +446,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
                 </svg>
               </div>
               <div>
-                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">{t('contact.github')}</p>
+                <p className="text-[11px] text-muted-foreground/60 tracking-wide">{t('contact.github')}</p>
                 <p className="mt-0.5 text-sm font-medium">aykutssert</p>
               </div>
             </a>
@@ -459,7 +459,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
                 </svg>
               </div>
               <div>
-                <p className="text-[11px] text-muted-foreground/60 uppercase tracking-wider">{t('contact.linkedin')}</p>
+                <p className="text-[11px] text-muted-foreground/60 tracking-wide">{t('contact.linkedin')}</p>
                 <p className="mt-0.5 text-sm font-medium">Aykut Sert</p>
               </div>
             </a>
@@ -471,12 +471,12 @@ export function LandingClient({ docs, recentPrompts }: Props) {
       <section className="border-t border-border">
         <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
           <FadeInSection>
-          <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t('demos.title')}</p>
+          <p className="mb-4 text-xs font-semibold tracking-wide text-muted-foreground">{t('demos.title')}</p>
           <div className="grid gap-4 md:grid-cols-2">
 
             <div className="relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background">
               <div className="flex flex-col p-6 pb-6">
-                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
+                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
                   <Sparkles className="h-3 w-3" />
                   {t('demos.kitchen.badge')}
                 </div>
@@ -491,7 +491,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             <Link href="/tshirt-studio"
               className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
               <div className="flex flex-col p-6 pb-6">
-                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
+                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
                   <Shirt className="h-3 w-3" />
                   {t('demos.tshirt.badge')}
                 </div>

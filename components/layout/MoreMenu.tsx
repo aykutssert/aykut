@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSyncExternalStore } from 'react'
 import { ChevronDown, MessageSquarePlus, PawPrint } from 'lucide-react'
+import Link from 'next/link'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { useTranslations } from 'next-intl'
@@ -81,6 +82,14 @@ export function MoreMenu() {
             <MessageSquarePlus className="h-3.5 w-3.5" />
             {t('suggest')}
           </button>
+          <Link
+            href="/pets"
+            onClick={() => setOpen(false)}
+            className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <PawPrint className="h-3.5 w-3.5 text-pink-500" />
+            {t('pets')}
+          </Link>
           <button
             type="button"
             onClick={togglePet}

@@ -99,7 +99,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
           <div className="mb-8">
             <Link
               href={`/docs/${firstInCategory.category}/${firstInCategory.slug}`}
-              className="text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors mb-4 inline-block"
+              className="text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground transition-colors mb-4 inline-block"
             >
               {doc.category}
             </Link>
@@ -232,7 +232,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             if (related.length > 0) {
               return (
                 <div className="pt-1.5 pb-8 pr-1">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">Related</p>
+                  <p className="text-xs font-semibold tracking-wide text-muted-foreground mb-4">Related</p>
                   <div className="flex flex-col gap-3">
                     {related.map((d) => (
                       <Link

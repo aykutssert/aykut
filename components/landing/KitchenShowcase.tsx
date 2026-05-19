@@ -5,10 +5,10 @@ import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
 const OPTIONS = [
-  { key: 'before', label: 'Original', src: '/kitchen/before.jpg' },
-  { key: 'after_1', label: 'Option 1', src: '/kitchen/after_1.png' },
-  { key: 'after_2', label: 'Option 2', src: '/kitchen/after_2.png' },
-  { key: 'after_3', label: 'Option 3', src: '/kitchen/after_3.png' },
+  { key: 'before', label: 'Original', src: '/kitchen/before.webp' },
+  { key: 'after_1', label: 'Option 1', src: '/kitchen/after_1.webp' },
+  { key: 'after_2', label: 'Option 2', src: '/kitchen/after_2.webp' },
+  { key: 'after_3', label: 'Option 3', src: '/kitchen/after_3.webp' },
 ]
 
 function KitchenLightbox({ src, label, onClose }: { src: string; label: string; onClose: () => void }) {

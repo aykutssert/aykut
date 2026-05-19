@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSyncExternalStore } from 'react'
-import { Bot, ChevronDown, MessageSquarePlus, PawPrint } from 'lucide-react'
+import { ChevronDown, MessageSquarePlus, PawPrint } from 'lucide-react'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
-import { ConnectDialog } from '@/components/mcp/ConnectDialog'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { useTranslations } from 'next-intl'
 
@@ -30,7 +29,6 @@ export function MoreMenu() {
   const ref = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
-  const [connectOpen, setConnectOpen] = useState(false)
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
   const t = useTranslations('nav')
 
@@ -85,14 +83,6 @@ export function MoreMenu() {
           </button>
           <button
             type="button"
-            onClick={() => { setOpen(false); setConnectOpen(true) }}
-            className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <Bot className="h-3.5 w-3.5" />
-            MCP
-          </button>
-          <button
-            type="button"
             onClick={togglePet}
             className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
@@ -108,7 +98,6 @@ export function MoreMenu() {
       )}
 
       <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
-      <ConnectDialog open={connectOpen} onOpenChange={setConnectOpen} />
     </div>
   )
 }

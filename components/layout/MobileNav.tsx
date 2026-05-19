@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { Bot, FileText, Menu, MessageSquarePlus, PawPrint, Sparkles, User, UserRound, X, ChevronDown } from 'lucide-react'
+import { FileText, Menu, MessageSquarePlus, PawPrint, Sparkles, User, UserRound, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSyncExternalStore } from 'react'
 import { FeedbackModal } from '@/components/feedback/FeedbackModal'
-import { ConnectDialog } from '@/components/mcp/ConnectDialog'
 import { useAuth } from '@/components/auth/AuthContext'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { cn } from '@/lib/utils'
@@ -86,7 +85,7 @@ function MobileCategoryGroup({
 export function MobileNav({ docs }: { docs: DocMeta[] }) {
   const [open, setOpen] = useState(false)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
-  const [connectOpen, setConnectOpen] = useState(false)
+
   const pathname = usePathname()
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
   const { user } = useAuth()
@@ -256,14 +255,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setOpen(false); setConnectOpen(true) }}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
-                >
-                  <Bot className="h-4 w-4" />
-                  MCP
-                </button>
-                <button
-                  type="button"
                   onClick={togglePet}
                   className="flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
                 >
@@ -294,7 +285,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
       )}
 
       <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
-      <ConnectDialog open={connectOpen} onOpenChange={setConnectOpen} />
     </>
   )
 }

@@ -8,7 +8,7 @@ import type { LikedPet, LikedDoc } from '@/lib/account'
 
 export function LikesLoader() {
   const searchParams = useSearchParams()
-  const type = searchParams.get('type') === 'prompts' ? 'prompts' : 'pets'
+  const type = searchParams.get('type') === 'pets' ? 'pets' : 'prompts'
 
   const [pets, setPets] = useState<LikedPet[]>([])
   const [prompts, setPrompts] = useState<LikedDoc[]>([])

@@ -3,6 +3,15 @@ import { createPB } from '@/lib/pocketbase'
 import { withPromptPreviews } from '@/lib/prompt-preview'
 import type { TaggedDoc } from '@/types'
 
+const PB_URL = process.env.POCKETBASE_URL ?? 'https://db.kernelgallery.com'
+
+function resolveImageUrl(r: { id: string; image?: string; image_url?: string }): string | null {
+  if (r.image && r.image.trim() !== '') {
+    return `${PB_URL}/api/files/docs/${r.id}/${r.image}`
+  }
+  return r.image_url ?? null
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const ids = searchParams.get('ids')?.split(',').filter(Boolean) ?? []
@@ -20,7 +29,7 @@ export async function GET(req: Request) {
       category: r.category,
       description: r.description ?? null,
       content: r.content ?? '',
-      image_url: r.image_url ?? null,
+      image_url: resolveImageUrl(r),
       order_index: r.order_index ?? 0,
       published: r.published ?? false,
       tags: Array.isArray(r.tags) ? r.tags : [],

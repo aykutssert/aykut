@@ -12,7 +12,8 @@
     "more": "Daha fazla",
     "navigate": "Gezin",
     "studio": "Stüdyo",
-    "developers": "Geliştiriciler"
+    "developers": "Geliştiriciler",
+    "liked": "Beğendiklerim"
   },
   "footer": {
     "built_by": "Built by",
@@ -78,23 +79,23 @@
   },
   "account": {
     "library": "Kütüphane",
-    "library_desc": "Kaydettiğin promptları ve pet arkadaşlarını yönet.",
-    "search_in_prompts": "Promptlarda ara...",
+    "library_desc": "Kaydettiğin blog yazılarını ve pet arkadaşlarını yönet.",
+    "search_in_prompts": "Blog yazılarında ara...",
     "search_in_pets": "Petlerde ara...",
     "pets_tab": "Petler",
-    "prompts_tab": "Promptlar",
+    "prompts_tab": "Blog",
     "matched": "{count} eşleşme",
     "total_count": "{count} toplam",
     "no_results": "\"{query}\" için sonuç bulunamadı",
     "try_different": "Farklı bir kelime deneyin veya aramayı temizleyin.",
-    "no_liked_prompts": "Henüz beğenilen prompt yok",
+    "no_liked_prompts": "Henüz beğenilen blog yazısı yok",
     "no_liked_pets": "Henüz beğenilen pet yok",
-    "heart_prompt_hint": "Herhangi bir prompta kalp işaretine basarak buraya kaydedebilirsin.",
+    "heart_prompt_hint": "Herhangi bir blog yazısında kalp işaretine basarak buraya kaydedebilirsin.",
     "heart_pet_hint": "Herhangi bir pette kalp işaretine basarak favorilerini bir arada tutabilirsin.",
-    "browse_prompts": "Promptlara göz at",
+    "browse_prompts": "Blog'a göz at",
     "browse_pets": "Petlere göz at",
     "view_liked_pets": "Beğenilen petleri gör",
-    "view_liked_prompts": "Beğenilen promptları gör"
+    "view_liked_prompts": "Beğenilen blog yazılarını gör"
   },
   "pets_page": {
     "description": "OpenAI Codex ile oluşturulan piksel sanat evcil hayvan spriteleri.",

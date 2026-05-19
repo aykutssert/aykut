@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { Heart, PawPrint, Search, X } from 'lucide-react'
+import { Heart, PawPrint, Search, X, BookOpen } from 'lucide-react'
 import { LikedPetCard } from '@/components/account/LikedPetCard'
 import { LikedPromptCard } from '@/components/account/LikedPromptCard'
 import type { LikedDoc, LikedPet } from '@/lib/account'
@@ -88,7 +88,7 @@ export function AccountLikesClient({
             href="/account/likes?type=prompts"
             className={`inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors ${type === 'prompts' ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
           >
-            <Heart className="h-3.5 w-3.5" />
+            <BookOpen className="h-3.5 w-3.5" />
             {t('prompts_tab')}
           </Link>
         </div>
@@ -127,7 +127,7 @@ export function AccountLikesClient({
                 href={type === 'prompts' ? '/prompts' : '/pets'}
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-4 text-xs font-medium text-background transition-opacity hover:opacity-85"
               >
-                <Heart className="h-3.5 w-3.5" />
+                {type === 'prompts' ? <BookOpen className="h-3.5 w-3.5" /> : <PawPrint className="h-3.5 w-3.5" />}
                 {type === 'prompts' ? t('browse_prompts') : t('browse_pets')}
               </Link>
               {type === 'prompts' ? (
@@ -143,7 +143,7 @@ export function AccountLikesClient({
                   href="/account/likes?type=prompts"
                   className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border px-4 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/25 hover:text-foreground"
                 >
-                  <Heart className="h-3.5 w-3.5" />
+                  <BookOpen className="h-3.5 w-3.5" />
                   {t('view_liked_prompts')}
                 </Link>
               )}

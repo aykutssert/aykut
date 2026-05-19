@@ -12,7 +12,8 @@
     "more": "More",
     "navigate": "Navigate",
     "studio": "Studio",
-    "developers": "Developers"
+    "developers": "Developers",
+    "liked": "Liked"
   },
   "footer": {
     "built_by": "Built by",
@@ -78,23 +79,23 @@
   },
   "account": {
     "library": "Library",
-    "library_desc": "Manage your saved prompts and pet companions.",
-    "search_in_prompts": "Search in prompts...",
+    "library_desc": "Manage your saved blog posts and pet companions.",
+    "search_in_prompts": "Search in blog posts...",
     "search_in_pets": "Search in pets...",
     "pets_tab": "Pets",
-    "prompts_tab": "Prompts",
+    "prompts_tab": "Blog",
     "matched": "{count} matched",
     "total_count": "{count} total",
     "no_results": "No results for \"{query}\"",
     "try_different": "Try a different keyword or clear the search.",
-    "no_liked_prompts": "No liked prompts yet",
+    "no_liked_prompts": "No liked blog posts yet",
     "no_liked_pets": "No liked pets yet",
-    "heart_prompt_hint": "Hit the heart on any prompt to save it here for quick access later.",
+    "heart_prompt_hint": "Hit the heart on any blog post to save it here for quick access later.",
     "heart_pet_hint": "Tap the heart on any pet to keep your favorites in one place.",
-    "browse_prompts": "Browse prompts",
+    "browse_prompts": "Browse Blog",
     "browse_pets": "Browse pets",
     "view_liked_pets": "View liked pets",
-    "view_liked_prompts": "View liked prompts"
+    "view_liked_prompts": "View liked blog posts"
   },
   "pets_page": {
     "description": "Pixel-art companion sprites generated with OpenAI Codex.",

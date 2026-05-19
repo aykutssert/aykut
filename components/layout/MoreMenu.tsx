@@ -96,7 +96,7 @@ export function MoreMenu() {
             className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             <Heart className="h-3.5 w-3.5 text-rose-500" />
-            Beğendiklerim
+            {t('liked')}
           </Link>
           <button
             type="button"

@@ -1,28 +1,13 @@
 import { AdminShell } from '@/components/admin/AdminShell'
-import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/auth/admin'
 import { redirect } from 'next/navigation'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
 
 async function AdminGuard({ children }: { children: React.ReactNode }) {
   await connection()
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/admin/login')
-  }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile?.is_admin) {
-    redirect('/')
-  }
-
+  const isAdmin = await requireAdmin()
+  if (!isAdmin) redirect('/admin/login')
   return <>{children}</>
 }
 

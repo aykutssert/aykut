@@ -12,10 +12,10 @@ export function CurlCommand({ petId }: Props) {
   const [copied, setCopied] = useState(false)
   const [tab, setTab] = useState<'cli' | 'curl'>('cli')
 
-  const projectRef = 'ngsyjbwzbujmoxwrwjam'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kernelgallery.com'
   const commands = {
     cli: `npx kernel-pets add ${petId}`,
-    curl: `curl -L "https://${projectRef}.supabase.co/functions/v1/petshare/api/pets/${petId}/download" -o "/tmp/${petId}.codex-pet.zip" && mkdir -p "$HOME/.codex/pets/${petId}" && unzip -o "/tmp/${petId}.codex-pet.zip" -d "$HOME/.codex/pets/${petId}"`,
+    curl: `curl -L "${siteUrl}/api/pets/download?id=${petId}" -o "/tmp/${petId}.codex-pet.zip" && mkdir -p "$HOME/.codex/pets/${petId}" && unzip -o "/tmp/${petId}.codex-pet.zip" -d "$HOME/.codex/pets/${petId}"`,
   }
 
   async function handleCopy() {

@@ -1,16 +1,20 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createPB } from '@/lib/pocketbase'
 
 export async function GET() {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('docs')
-    .select('id, title, slug, category, order_index, published')
-    .eq('published', true)
-    .order('category')
-    .order('order_index')
-
-  return NextResponse.json(data ?? [], {
-    headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' },
-  })
+  try {
+    const pb = createPB()
+    const records = await pb.collection('docs').getFullList({
+      filter: 'published = true',
+      sort: '+category,+order_index',
+      fields: 'id,title,slug,category,order_index,published',
+    })
+    return NextResponse.json(records, {
+      headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' },
+    })
+  } catch {
+    return NextResponse.json([], {
+      headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' },
+    })
+  }
 }

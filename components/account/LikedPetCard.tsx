@@ -27,8 +27,8 @@ export function LikedPetCard({
             {(pet.views_count ?? 0).toLocaleString()}
           </span>
           <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-            <Heart className={cn('h-3 w-3', pet.likes_count > 0 ? 'fill-rose-500 text-rose-500' : 'text-muted-foreground')} />
-            {pet.likes_count.toLocaleString()}
+            <Heart className={cn('h-3 w-3', (pet.likes_count ?? 0) > 0 ? 'fill-rose-500 text-rose-500' : 'text-muted-foreground')} />
+            {(pet.likes_count ?? 0).toLocaleString()}
           </span>
         </div>
         {pet.description && (
@@ -45,7 +45,7 @@ export function LikedPetCard({
         </Link>
         <LikeButton
           petId={pet.id}
-          initialCount={pet.likes_count}
+          initialCount={pet.likes_count ?? 0}
           compact
           onChange={(liked) => {
             if (!liked) onUnlike?.(pet.id)

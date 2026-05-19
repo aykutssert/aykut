@@ -1,10 +1,24 @@
 import { cacheTag, cacheLife } from 'next/cache'
-import { createPublicClient } from '@/lib/supabase/server'
+import { createPB } from '@/lib/pocketbase'
 import type { Pet } from '@/lib/pets'
 
 const PER_PAGE = 15
-
 export { PER_PAGE }
+
+function mapPet(r: Record<string, unknown>): Pet {
+  return {
+    id: r.id as string,
+    display_name: r.display_name as string,
+    description: (r.description as string) || null,
+    spritesheet_url: r.spritesheet_url as string,
+    source_url: (r.source_url as string) || null,
+    published: r.published as boolean,
+    is_nsfw: r.is_nsfw as boolean,
+    likes_count: 0,
+    views_count: 0,
+    created_at: r.created as string,
+  }
+}
 
 export async function getPets(
   page: number,
@@ -16,30 +30,36 @@ export async function getPets(
   cacheTag('pets')
   cacheLife('minutes')
 
-  const supabase = createPublicClient()
-  const from = (page - 1) * PER_PAGE
-  const to = from + PER_PAGE - 1
-  const orderCol = sort === 'liked' ? 'likes_count' : sort === 'viewed' ? 'views_count' : 'created_at'
+  try {
+    const pb = createPB()
 
-  let query = supabase
-    .from('pets')
-    .select('*', { count: 'exact' })
-    .eq('published', true)
-    .order(orderCol, { ascending: false })
-    .range(from, to)
+    const filters: string[] = ['published = true']
+    if (!showNsfw) filters.push('is_nsfw = false')
+    if (q) {
+      const safe = q.replace(/"/g, '')
+      filters.push(`(display_name ~ "${safe}" || description ~ "${safe}")`)
+    }
 
-  if (!showNsfw) query = query.eq('is_nsfw', false)
+    // likes/viewed sort kaldırıldı, created_at'e fallback
+    const sortMap: Record<string, string> = {
+      newest: '-created',
+      oldest: '+created',
+      liked: '-created',
+      viewed: '-created',
+    }
+    const pbSort = sortMap[sort] ?? '-created'
 
-  if (q) {
-    const safe = q.replace(/[%_\\]/g, '\\$&')
-    query = query.or(`display_name.ilike.%${safe}%,description.ilike.%${safe}%`)
+    const result = await pb.collection('pets').getList(page, PER_PAGE, {
+      filter: filters.join(' && '),
+      sort: pbSort,
+    })
+
+    return {
+      pets: result.items.map((r) => mapPet(r as unknown as Record<string, unknown>)),
+      total: result.totalItems,
+      totalLikes: 0,
+    }
+  } catch {
+    return { pets: [], total: 0, totalLikes: 0 }
   }
-
-  const [{ data, count }, { data: likesData }] = await Promise.all([
-    query,
-    supabase.from('pets').select('likes_count').eq('published', true),
-  ])
-
-  const totalLikes = (likesData ?? []).reduce((sum, p) => sum + (p.likes_count ?? 0), 0)
-  return { pets: data ?? [], total: count ?? 0, totalLikes }
 }

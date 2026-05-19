@@ -1,7 +1,7 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 
-const LOCK_PRODUCTION_SITE = true
+const LOCK_PRODUCTION_SITE = false
 
 const PUBLIC_API_PREFIXES = [
   '/api/search',
@@ -15,6 +15,12 @@ const PUBLIC_API_PREFIXES = [
   '/api/product-products',
   '/api/product-results',
 ]
+
+function isAdmin(request: NextRequest): boolean {
+  const token = request.cookies.get('admin_token')?.value
+  const secret = process.env.ADMIN_SECRET
+  return Boolean(secret && token === secret)
+}
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -31,6 +37,9 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  const admin = isAdmin(request)
+
+  // Public API routes pass through
   const isPublicApi = pathname.startsWith('/api/')
     && PUBLIC_API_PREFIXES.some((p) => pathname.startsWith(p))
 
@@ -38,74 +47,22 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next({ request })
   }
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return NextResponse.next({ request })
-  }
-
-  let supabaseResponse = NextResponse.next({ request })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
+  // Admin route protection
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+    if (!admin) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
     }
-  )
-
-  const { data: { user } } = await supabase.auth.getUser()
-  let isAdmin = false
-
-  if (user) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('is_admin')
-      .eq('id', user.id)
-      .maybeSingle()
-    isAdmin = Boolean(profile?.is_admin)
   }
 
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/admin/login'
-    return NextResponse.redirect(url)
-  }
-
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login' && user && !isAdmin) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/prompts'
-    return NextResponse.redirect(url)
-  }
-
-  if (pathname === '/admin/login' && user && isAdmin) {
+  if (pathname === '/admin/login' && admin) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin'
     return NextResponse.redirect(url)
   }
 
-  if (pathname === '/admin/login' && user && !isAdmin) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/prompts'
-    return NextResponse.redirect(url)
-  }
-
-  if (pathname.startsWith('/api/')) {
-    if (!user || !isAdmin) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-  }
-
-  return supabaseResponse
+  return NextResponse.next({ request })
 }
 
 export const config = {

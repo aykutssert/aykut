@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminPB } from '@/lib/pocketbase'
 
 export async function POST(req: Request) {
   const body = await req.json() as {
-    id: string
+    id?: string
     display_name: string
     description: string
     spritesheet_url: string
@@ -13,22 +13,30 @@ export async function POST(req: Request) {
     is_nsfw: boolean
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-
-  const { error } = await supabase.from('pets').upsert({
-    id: body.id,
-    display_name: body.display_name,
-    description: body.description,
-    spritesheet_url: body.spritesheet_url,
-    source_url: body.source_url || null,
-    published: body.published,
-    is_nsfw: body.is_nsfw,
-  })
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  revalidateTag('pets', 'max')
-  return NextResponse.json({ ok: true })
+  try {
+    const pb = await createAdminPB()
+    if (body.id) {
+      await pb.collection('pets').update(body.id, {
+        display_name: body.display_name,
+        description: body.description,
+        spritesheet_url: body.spritesheet_url,
+        source_url: body.source_url || null,
+        published: body.published,
+        is_nsfw: body.is_nsfw,
+      })
+    } else {
+      await pb.collection('pets').create({
+        display_name: body.display_name,
+        description: body.description,
+        spritesheet_url: body.spritesheet_url,
+        source_url: body.source_url || null,
+        published: body.published,
+        is_nsfw: body.is_nsfw,
+      })
+    }
+    revalidateTag('pets', 'max')
+    return NextResponse.json({ ok: true })
+  } catch (e: unknown) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
 }

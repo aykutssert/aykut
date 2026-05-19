@@ -235,7 +235,7 @@ export function TagPageClient({
   return (
     <div className="grid gap-x-8 gap-y-3 lg:grid-cols-[240px_1fr]">
       <div className="flex min-h-5 items-center gap-2">
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground" suppressHydrationWarning>
             {tp('result_count', { count: docs.length })}
           </span>
       </div>
@@ -245,7 +245,7 @@ export function TagPageClient({
         <div className="space-y-5 rounded-md border border-border bg-background p-4 lg:max-h-[calc(100vh-133px)] lg:overflow-y-auto">
           <div>
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold tracking-wide text-muted-foreground">{tp('filters')}</p>
+              <p className="text-xs font-semibold tracking-wide text-muted-foreground" suppressHydrationWarning>{tp('filters')}</p>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"

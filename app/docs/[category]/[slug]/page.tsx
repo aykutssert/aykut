@@ -19,7 +19,6 @@ import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { DocViewTracker } from '@/components/docs/DocViewTracker'
 import { ExternalLink, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react'
-import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -56,24 +55,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
     getDocVersions(doc.id),
     renderDocHtml(doc.content)
   ])
-  let likedByMe = false
-
-  if (doc.category === 'prompts') {
-    const auth = await createClient()
-    const { data: { user } } = await auth.auth.getUser()
-
-    if (user) {
-      const service = createServiceClient()
-      const { data: like } = await service
-        .from('doc_likes')
-        .select('doc_id')
-        .eq('doc_id', doc.id)
-        .eq('user_id', user.id)
-        .maybeSingle()
-
-      likedByMe = Boolean(like)
-    }
-  }
+  const likedByMe = false
 
   const categoryDocs = docs.filter((d) => d.category === doc.category)
   const allSorted = docs

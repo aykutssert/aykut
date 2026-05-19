@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminPB } from '@/lib/pocketbase'
 
 export async function POST(req: Request) {
   const formData = await req.formData()
@@ -7,20 +7,32 @@ export async function POST(req: Request) {
   const petId = formData.get('petId') as string | null
   if (!file || !petId) return NextResponse.json({ error: 'Missing file or petId' }, { status: 400 })
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  try {
+    const pb = await createAdminPB()
 
-  const path = `pets/${petId}/spritesheet.webp`
-  const buffer = Buffer.from(await file.arrayBuffer())
+    // Check if pet exists
+    let recordId: string
+    try {
+      const existing = await pb.collection('pets').getOne(petId)
+      recordId = existing.id
+    } catch {
+      // Create new pet record to upload file
+      const created = await pb.collection('pets').create({
+        display_name: petId,
+        published: false,
+        is_nsfw: false,
+      })
+      recordId = created.id
+    }
 
-  const { error } = await supabase.storage
-    .from('kernel')
-    .upload(path, buffer, { contentType: 'image/webp', upsert: true })
+    const uploadFormData = new FormData()
+    uploadFormData.append('spritesheet', file)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    const updated = await pb.collection('pets').update(recordId, uploadFormData)
+    const url = pb.files.getURL(updated, updated.spritesheet as string)
 
-  const { data } = supabase.storage.from('kernel').getPublicUrl(path)
-  return NextResponse.json({ url: data.publicUrl })
+    return NextResponse.json({ url })
+  } catch (e: unknown) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
 }

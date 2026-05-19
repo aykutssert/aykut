@@ -1,16 +1,24 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createAdminPB } from '@/lib/pocketbase'
 import { PetAdminTable } from '@/components/admin/PetAdminTable'
 import type { Pet } from '@/lib/pets'
 
 async function getAllPets(): Promise<Pet[]> {
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-  const { data } = await supabase.from('pets').select('*').order('created_at', { ascending: false })
-  return data ?? []
+  const pb = await createAdminPB()
+  const records = await pb.collection('pets').getFullList({
+    sort: '-created',
+  })
+  return records.map((r) => ({
+    id: r.id,
+    display_name: r.display_name,
+    description: r.description ?? null,
+    spritesheet_url: r.spritesheet_url ?? '',
+    source_url: r.source_url ?? null,
+    published: r.published ?? false,
+    is_nsfw: r.is_nsfw ?? false,
+    created_at: r.created,
+  })) as Pet[]
 }
 
 async function PetList() {

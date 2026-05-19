@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createAdminPB } from '@/lib/pocketbase'
 import { PetEditForm } from '@/components/admin/PetEditForm'
 import type { Pet } from '@/lib/pets'
 
@@ -10,12 +10,24 @@ interface Props {
 
 async function EditPetContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-  const { data: pet } = await supabase.from('pets').select('*').eq('id', id).single() as { data: Pet | null }
-  if (!pet) notFound()
+  const pb = await createAdminPB()
+  let record
+  try {
+    record = await pb.collection('pets').getOne(id)
+  } catch {
+    notFound()
+  }
+
+  const pet: Pet = {
+    id: record.id,
+    display_name: record.display_name,
+    description: record.description ?? null,
+    spritesheet_url: record.spritesheet_url ?? '',
+    source_url: record.source_url ?? null,
+    published: record.published ?? false,
+    is_nsfw: record.is_nsfw ?? false,
+    created_at: record.created,
+  }
 
   return (
     <div>

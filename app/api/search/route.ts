@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createPublicClient } from '@/lib/supabase/server'
+import { createPB } from '@/lib/pocketbase'
 
 function snippet(content: string, query: string, len = 140): string {
   const lower = content.toLowerCase()
@@ -14,31 +14,33 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const q = searchParams.get('q')?.trim() ?? ''
   const tag = searchParams.get('tag')?.trim() ?? ''
-  const safe = q.replace(/[%_\\]/g, '\\$&')
 
-  const supabase = createPublicClient()
+  try {
+    const pb = createPB()
+    const filters: string[] = ['published = true']
+    if (tag) filters.push(`tags ~ '"${tag}"'`)
+    if (q) {
+      const safe = q.replace(/"/g, '')
+      filters.push(`(title ~ "${safe}" || content ~ "${safe}")`)
+    }
 
-  let base = supabase
-    .from('docs')
-    .select('id, title, category, slug, content, tags')
-    .eq('published', true)
-    .limit(8)
+    const records = await pb.collection('docs').getList(1, 8, {
+      filter: filters.join(' && '),
+      sort: q ? '' : '+order_index',
+    })
 
-  if (tag) base = base.contains('tags', [tag])
-
-  const { data } = await (q
-    ? base.or(`title.ilike.%${safe}%,content.ilike.%${safe}%`)
-    : base.order('order_index'))
-
-  return NextResponse.json(
-    (data ?? []).map((doc) => ({
-      id: doc.id,
-      title: doc.title,
-      category: doc.category,
-      slug: doc.slug,
-      tags: doc.tags ?? [],
-      snippet: q ? snippet(doc.content ?? '', q) : null,
-    })),
-    { headers: { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60' } }
-  )
+    return NextResponse.json(
+      records.items.map((doc) => ({
+        id: doc.id,
+        title: doc.title,
+        category: doc.category,
+        slug: doc.slug,
+        tags: Array.isArray(doc.tags) ? doc.tags : [],
+        snippet: q ? snippet((doc.content as string) ?? '', q) : null,
+      })),
+      { headers: { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60' } }
+    )
+  } catch {
+    return NextResponse.json([])
+  }
 }

@@ -3,11 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/client'
 
 export default function AdminLoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -17,11 +15,14 @@ export default function AdminLoginPage() {
     setLoading(true)
     setError('')
 
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const res = await fetch('/api/auth/signin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    })
 
-    if (error) {
-      setError(error.message)
+    if (!res.ok) {
+      setError('Invalid password')
       setLoading(false)
     } else {
       router.push('/admin')
@@ -38,21 +39,6 @@ export default function AdminLoginPage() {
         <h1 className="mb-6 text-center text-xl font-semibold">Admin login</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="mb-1.5 block text-sm font-medium">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          </div>
           <div>
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium">
               Password

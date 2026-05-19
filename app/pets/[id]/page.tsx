@@ -1,28 +1,48 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
-import { createPublicClient } from '@/lib/supabase/server'
+import { createPB } from '@/lib/pocketbase'
 import { Navbar } from '@/components/layout/Navbar'
-
 import { Footer } from '@/components/layout/Footer'
 import { PetDetailSection } from '@/components/pets/PetDetailSection'
 import { getDocs } from '@/lib/docs'
-import { Download, ExternalLink, Eye } from 'lucide-react'
+import { Download, ExternalLink } from 'lucide-react'
 import { LikeButton } from '@/components/pets/LikeButton'
 import { ShareButton } from '@/components/pets/ShareModal'
 import { CurlCommand } from '@/components/pets/CurlCommand'
 import { BackButton } from '@/components/pets/BackButton'
-import { ViewTracker } from '@/components/pets/ViewTracker'
 import type { Pet } from '@/lib/pets'
 
 interface Props {
   params: Promise<{ id: string }>
 }
 
+async function getPet(id: string): Promise<Pet | null> {
+  try {
+    const pb = createPB()
+    const record = await pb.collection('pets').getFirstListItem(
+      `id = "${id}" && published = true && is_nsfw = false`
+    )
+    return {
+      id: record.id,
+      display_name: record.display_name as string,
+      description: (record.description as string) || null,
+      spritesheet_url: record.spritesheet_url as string,
+      source_url: (record.source_url as string) || null,
+      published: record.published as boolean,
+      is_nsfw: record.is_nsfw as boolean,
+      likes_count: 0,
+      views_count: 0,
+      created_at: record.created,
+    }
+  } catch {
+    return null
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const supabase = createPublicClient()
-  const { data: pet } = await supabase.from('pets').select('display_name, description, spritesheet_url').eq('id', id).eq('published', true).eq('is_nsfw', false).single()
+  const pet = await getPet(id)
   if (!pet) return {}
   return {
     title: pet.display_name,
@@ -43,24 +63,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = createPublicClient()
-  const [petResult, docs] = await Promise.all([
-    supabase.from('pets').select('*').eq('id', id).eq('published', true).eq('is_nsfw', false).single(),
-    getDocs(),
-  ])
-  const pet = petResult.data as Pet | null
+  const [pet, docs] = await Promise.all([getPet(id), getDocs()])
   if (!pet) notFound()
 
   return (
     <>
-      <ViewTracker petId={pet.id} />
       <div className="flex flex-col min-h-screen">
         <Navbar docs={docs} />
 
         <main className="flex-1 max-w-[900px] mx-auto w-full px-4 md:px-0 py-12">
           <BackButton />
           <PetDetailSection spritesheetUrl={pet.spritesheet_url} size={256}>
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Codex Pet</p>
+            <p className="text-xs font-semibold tracking-wider text-muted-foreground mb-3">Codex Pet</p>
             <h1 className="text-3xl font-bold tracking-tight mb-3">{pet.display_name}</h1>
             {pet.description && (
               <p className="text-muted-foreground mb-8 leading-relaxed">{pet.description}</p>
@@ -73,12 +87,8 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
                 <Download className="w-4 h-4" />
                 Download .codex-pet
               </a>
-              <LikeButton petId={pet.id} initialCount={pet.likes_count ?? 0} showCount />
+              <LikeButton petId={pet.id} initialCount={0} showCount />
               <ShareButton petId={pet.id} petName={pet.display_name} description={pet.description} spritesheetUrl={pet.spritesheet_url} />
-              <span className="inline-flex items-center gap-1.5 px-3 py-2 text-sm text-muted-foreground border border-foreground/15 rounded-lg">
-                <Eye className="w-4 h-4" />
-                {(pet.views_count ?? 0).toLocaleString()}
-              </span>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               Download the package, then unzip it into{' '}

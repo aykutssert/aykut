@@ -24,8 +24,8 @@ export interface Pet {
   source_url: string | null
   published: boolean
   is_nsfw: boolean
-  likes_count: number
-  views_count: number | null
+  likes_count?: number
+  views_count?: number | null
   created_at: string
 }
 

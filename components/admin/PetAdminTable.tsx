@@ -3,14 +3,14 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Pencil, Trash2, Search, X, Eye, Heart, ChevronUp, ChevronDown, ChevronsUpDown, Copy, PawPrint } from 'lucide-react'
+import { Pencil, Trash2, Search, X, ChevronUp, ChevronDown, ChevronsUpDown, Copy, PawPrint } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { ConfirmDialog } from './ConfirmDialog'
 import type { Pet } from '@/lib/pets'
 
 type StatusFilter = 'all' | 'published' | 'draft'
-type SortKey = 'display_name' | 'views_count' | 'likes_count' | 'created_at'
+type SortKey = 'display_name' | 'created_at'
 type SortDir = 'asc' | 'desc'
 
 function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
@@ -22,8 +22,6 @@ function sortPets(pets: Pet[], key: SortKey, dir: SortDir) {
   return [...pets].sort((a, b) => {
     let cmp = 0
     if (key === 'display_name') cmp = a.display_name.localeCompare(b.display_name)
-    else if (key === 'views_count') cmp = (a.views_count ?? 0) - (b.views_count ?? 0)
-    else if (key === 'likes_count') cmp = a.likes_count - b.likes_count
     else if (key === 'created_at') cmp = a.created_at.localeCompare(b.created_at)
     return dir === 'asc' ? cmp : -cmp
   })
@@ -154,18 +152,6 @@ export function PetAdminTable({ pets: initialPets }: { pets: Pet[] }) {
               <span className="inline-flex items-center gap-1">Name <SortIcon active={sortKey === 'display_name'} dir={sortDir} /></span>
             </th>
             <th className="text-left px-4 py-3 font-medium text-muted-foreground">ID</th>
-            <th
-              onClick={() => handleSort('views_count')}
-              className="text-right px-4 py-3 font-medium text-muted-foreground cursor-pointer select-none hover:text-foreground"
-            >
-              <span className="inline-flex items-center justify-end gap-1"><Eye className="w-3.5 h-3.5" /><SortIcon active={sortKey === 'views_count'} dir={sortDir} /></span>
-            </th>
-            <th
-              onClick={() => handleSort('likes_count')}
-              className="text-right px-4 py-3 font-medium text-muted-foreground cursor-pointer select-none hover:text-foreground"
-            >
-              <span className="inline-flex items-center justify-end gap-1"><Heart className="w-3.5 h-3.5" /><SortIcon active={sortKey === 'likes_count'} dir={sortDir} /></span>
-            </th>
             <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
             <th className="px-4 py-3" />
           </tr>
@@ -187,8 +173,6 @@ export function PetAdminTable({ pets: initialPets }: { pets: Pet[] }) {
               </td>
               <td className="px-4 py-2 font-medium">{pet.display_name}</td>
               <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{pet.id}</td>
-              <td className="px-4 py-2 text-right text-xs tabular-nums text-muted-foreground">{(pet.views_count ?? 0).toLocaleString()}</td>
-              <td className="px-4 py-2 text-right text-xs tabular-nums text-muted-foreground">{pet.likes_count.toLocaleString()}</td>
               <td className="px-4 py-2">
                 <div className="flex items-center gap-2">
                   <button

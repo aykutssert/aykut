@@ -30,8 +30,8 @@ export function PetListCard({ pet }: { pet: Pet }) {
             {(pet.views_count ?? 0).toLocaleString()}
           </span>
           <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-            <Heart className={cn('h-3 w-3', pet.likes_count > 0 ? 'fill-rose-500 text-rose-500' : 'text-muted-foreground')} />
-            {pet.likes_count.toLocaleString()}
+            <Heart className={cn('h-3 w-3', (pet.likes_count ?? 0) > 0 ? 'fill-rose-500 text-rose-500' : 'text-muted-foreground')} />
+            {(pet.likes_count ?? 0).toLocaleString()}
           </span>
         </div>
         {pet.description && (
@@ -46,7 +46,7 @@ export function PetListCard({ pet }: { pet: Pet }) {
           <ExternalLink className="h-3.5 w-3.5" />
           View
         </Link>
-        <LikeButton petId={pet.id} initialCount={pet.likes_count} compact />
+        <LikeButton petId={pet.id} initialCount={pet.likes_count ?? 0} compact />
         <a
           href={`/api/pets/download?id=${pet.id}`}
           className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-foreground/15 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground sm:flex-1"

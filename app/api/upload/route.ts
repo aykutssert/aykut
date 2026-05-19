@@ -1,24 +1,11 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminPB } from '@/lib/pocketbase'
+import { requireAdmin } from '@/lib/auth/admin'
 import sharp from 'sharp'
 
 export async function POST(req: Request) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
+  if (!(await requireAdmin())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  // Admin kontrolü
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile?.is_admin) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
   const formData = await req.formData()
@@ -27,40 +14,29 @@ export async function POST(req: Request) {
 
   const buffer = Buffer.from(await file.arrayBuffer())
   const webp = await sharp(buffer).webp({ quality: 85 }).toBuffer()
-
   const filename = `${Date.now()}.webp`
+  const webpFile = new File([new Uint8Array(webp)], filename, { type: 'image/webp' })
 
-  const { error } = await supabase.storage
-    .from('kernel')
-    .upload(filename, webp, { contentType: 'image/webp', upsert: false })
+  try {
+    const pb = await createAdminPB()
+    // Store as a temp doc record to get file URL
+    const uploadForm = new FormData()
+    uploadForm.append('image', webpFile)
+    uploadForm.append('title', filename)
+    uploadForm.append('slug', filename)
+    uploadForm.append('category', '_uploads')
+    uploadForm.append('content', '')
+    uploadForm.append('published', 'false')
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
-  const { data } = supabase.storage.from('kernel').getPublicUrl(filename)
-  return NextResponse.json({ url: data.publicUrl })
+    const record = await pb.collection('docs').create(uploadForm)
+    const url = pb.files.getURL(record, record.image as string)
+    return NextResponse.json({ url })
+  } catch (e: unknown) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
 }
 
-export async function DELETE(req: Request) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  // Admin kontrolü
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile?.is_admin) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-
-  const { url } = await req.json() as { url: string }
-  const parts = new URL(url).pathname.split('/object/public/kernel/')
-  if (parts[1]) await supabase.storage.from('kernel').remove([parts[1]])
+export async function DELETE() {
+  // Images are managed by Pocketbase, cleanup handled there
   return NextResponse.json({ ok: true })
 }

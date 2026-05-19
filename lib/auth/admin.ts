@@ -1,15 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 
-export async function requireAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return false
+const ADMIN_SECRET = process.env.ADMIN_SECRET ?? ''
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  return Boolean(profile?.is_admin)
+export async function requireAdmin(): Promise<boolean> {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('admin_token')?.value
+  return token === ADMIN_SECRET && ADMIN_SECRET !== ''
 }

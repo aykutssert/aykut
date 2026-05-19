@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createPublicClient } from '@/lib/supabase/server'
+import { createPB } from '@/lib/pocketbase'
 import JSZip from 'jszip'
 
 export async function GET(req: Request) {
@@ -7,36 +7,34 @@ export async function GET(req: Request) {
   const id = searchParams.get('id')
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
 
-  const supabase = createPublicClient()
-  const { data: pet } = await supabase
-    .from('pets')
-    .select('id, display_name, description, spritesheet_url')
-    .eq('id', id)
-    .single()
+  try {
+    const pb = createPB()
+    const record = await pb.collection('pets').getOne(id)
 
-  if (!pet) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    const spritesheetRes = await fetch(record.spritesheet_url as string)
+    if (!spritesheetRes.ok) return NextResponse.json({ error: 'Failed to fetch spritesheet' }, { status: 500 })
+    const spritesheetBuffer = await spritesheetRes.arrayBuffer()
 
-  const spritesheetRes = await fetch(pet.spritesheet_url)
-  if (!spritesheetRes.ok) return NextResponse.json({ error: 'Failed to fetch spritesheet' }, { status: 500 })
-  const spritesheetBuffer = await spritesheetRes.arrayBuffer()
+    const petJson = JSON.stringify({
+      id: record.id,
+      displayName: record.display_name,
+      description: (record.description as string) ?? '',
+      spritesheetPath: 'spritesheet.webp',
+    }, null, 2)
 
-  const petJson = JSON.stringify({
-    id: pet.id,
-    displayName: pet.display_name,
-    description: pet.description ?? '',
-    spritesheetPath: 'spritesheet.webp',
-  }, null, 2)
+    const zip = new JSZip()
+    zip.file('pet.json', petJson)
+    zip.file('spritesheet.webp', spritesheetBuffer)
 
-  const zip = new JSZip()
-  zip.file('pet.json', petJson)
-  zip.file('spritesheet.webp', spritesheetBuffer)
+    const zipBuffer = await zip.generateAsync({ type: 'arraybuffer', compression: 'DEFLATE' })
 
-  const zipBuffer = await zip.generateAsync({ type: 'arraybuffer', compression: 'DEFLATE' })
-
-  return new Response(zipBuffer as ArrayBuffer, {
-    headers: {
-      'Content-Type': 'application/zip',
-      'Content-Disposition': `attachment; filename="${pet.id}.codex-pet.zip"`,
-    },
-  })
+    return new Response(zipBuffer as ArrayBuffer, {
+      headers: {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': `attachment; filename="${record.id}.codex-pet.zip"`,
+      },
+    })
+  } catch {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
 }

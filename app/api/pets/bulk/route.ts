@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminPB } from '@/lib/pocketbase'
 
 export async function POST(req: Request) {
   const formData = await req.formData()
@@ -16,39 +16,29 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const pb = await createAdminPB()
 
-  const { data: existing } = await supabase.from('pets').select('id').eq('id', id).single()
-  if (existing) {
+  // Check if already exists
+  try {
+    await pb.collection('pets').getOne(id)
     return NextResponse.json({ ok: true, skipped: true })
+  } catch {
+    // doesn't exist, continue
   }
 
-  const buffer = Buffer.from(await webp.arrayBuffer())
-  const filename = `${id}.webp`
+  const uploadForm = new FormData()
+  uploadForm.append('id', id)
+  uploadForm.append('display_name', display_name)
+  if (description) uploadForm.append('description', description)
+  uploadForm.append('published', String(published))
+  uploadForm.append('is_nsfw', String(is_nsfw))
+  uploadForm.append('spritesheet', webp, `${id}.webp`)
 
-  const { error: uploadError } = await supabase.storage
-    .from('kernel')
-    .upload(filename, buffer, { contentType: 'image/webp', upsert: false })
+  // Build spritesheet_url from PB file URL
+  const record = await pb.collection('pets').create(uploadForm)
+  const spritesheetUrl = pb.files.getURL(record, record.spritesheet)
 
-  if (uploadError && uploadError.message !== 'The resource already exists') {
-    return NextResponse.json({ error: uploadError.message }, { status: 500 })
-  }
-
-  const { data: urlData } = supabase.storage.from('kernel').getPublicUrl(filename)
-
-  const { error: dbError } = await supabase.from('pets').insert({
-    id,
-    display_name,
-    description: description || null,
-    spritesheet_url: urlData.publicUrl,
-    published,
-    is_nsfw,
-  })
-
-  if (dbError) return NextResponse.json({ error: dbError.message }, { status: 500 })
+  await pb.collection('pets').update(record.id, { spritesheet_url: spritesheetUrl })
 
   revalidateTag('pets', 'max')
   return NextResponse.json({ ok: true, skipped: false })

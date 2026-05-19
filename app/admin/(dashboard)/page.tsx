@@ -1,18 +1,14 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
-import { FileText, PawPrint, Heart, FileX } from 'lucide-react'
+import { createAdminPB } from '@/lib/pocketbase'
+import { FileText, PawPrint, FileX } from 'lucide-react'
 import { AdminCharts } from '@/components/admin/AdminCharts'
-import type { Doc } from '@/types'
-import type { Pet } from '@/lib/pets'
 
 interface Stats {
   totalDocs: number
   totalPets: number
   draftDocs: number
   draftPets: number
-  totalLikes: number
 }
 
 function getWeekLabels(count: number): { start: Date; label: string }[] {
@@ -27,81 +23,57 @@ function getWeekLabels(count: number): { start: Date; label: string }[] {
 }
 
 async function getChartData() {
-  const service = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-  const supabase = await createClient()
+  const pb = await createAdminPB()
   const since = new Date()
   since.setDate(since.getDate() - 56)
+  const sinceStr = since.toISOString().replace('T', ' ')
 
-  const [docsRes, petsRes, topViewedRes, topLikedRes] = await Promise.all([
-    supabase.from('docs').select('created_at').gte('created_at', since.toISOString()),
-    service.from('pets').select('created_at').gte('created_at', since.toISOString()),
-    service.from('pets').select('id, display_name, views_count').eq('published', true).order('views_count', { ascending: false }).limit(5),
-    service.from('pets').select('id, display_name, likes_count').eq('published', true).order('likes_count', { ascending: false }).limit(5),
+  const [docs, pets] = await Promise.all([
+    pb.collection('docs').getFullList({ filter: `created >= "${sinceStr}"`, fields: 'created' }),
+    pb.collection('pets').getFullList({ filter: `created >= "${sinceStr}"`, fields: 'created' }),
   ])
 
   const weeks = getWeekLabels(8)
-  const docs = docsRes.data ?? []
-  const pets = petsRes.data ?? []
 
   const weekly = weeks.map(({ start }, i) => {
     const end = i < weeks.length - 1 ? weeks[i + 1].start : new Date()
-    // Label by end of range so data added on "May 2" appears under "May 2", not "Apr 26"
     const labelDate = i < weeks.length - 1 ? new Date(end.getTime() - 86400000) : new Date()
     const weekLabel = labelDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    const docCount = docs.filter((d) => new Date(d.created_at) >= start && new Date(d.created_at) < end).length
-    const petCount = pets.filter((p) => new Date(p.created_at) >= start && new Date(p.created_at) < end).length
+    const docCount = docs.filter((d) => new Date(d.created) >= start && new Date(d.created) < end).length
+    const petCount = pets.filter((p) => new Date(p.created) >= start && new Date(p.created) < end).length
     return { week: weekLabel, docs: docCount, pets: petCount }
   })
 
-  return {
-    weekly,
-    topViewed: (topViewedRes.data ?? []).map((p) => ({ id: p.id, display_name: p.display_name, count: p.views_count ?? 0 })),
-    topLiked: (topLikedRes.data ?? []).map((p) => ({ id: p.id, display_name: p.display_name, count: p.likes_count ?? 0 })),
-  }
+  return { weekly }
 }
 
 async function getStats(): Promise<Stats> {
-  const supabase = await createClient()
-  const service = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const pb = await createAdminPB()
 
-  const [docsRes, petsRes] = await Promise.all([
-    supabase.from('docs').select('published'),
-    service.from('pets').select('published, likes_count'),
+  const [docs, pets] = await Promise.all([
+    pb.collection('docs').getFullList({ fields: 'published' }),
+    pb.collection('pets').getFullList({ fields: 'published' }),
   ])
-
-  const docs = docsRes.data ?? []
-  const pets = petsRes.data ?? []
 
   return {
     totalDocs: docs.length,
     totalPets: pets.length,
     draftDocs: docs.filter((d) => !d.published).length,
     draftPets: pets.filter((p) => !p.published).length,
-    totalLikes: pets.reduce((sum, p) => sum + (p.likes_count ?? 0), 0),
   }
 }
 
-async function getRecent(): Promise<{ docs: Pick<Doc, 'id' | 'title' | 'category' | 'published' | 'created_at'>[]; pets: Pick<Pet, 'id' | 'display_name' | 'spritesheet_url' | 'published' | 'created_at'>[] }> {
-  const supabase = await createClient()
-  const service = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+async function getRecent() {
+  const pb = await createAdminPB()
 
   const [docsRes, petsRes] = await Promise.all([
-    supabase.from('docs').select('id, title, category, published, created_at').order('created_at', { ascending: false }).limit(5),
-    service.from('pets').select('id, display_name, spritesheet_url, published, created_at').order('created_at', { ascending: false }).limit(5),
+    pb.collection('docs').getList(1, 5, { sort: '-created', fields: 'id,title,category,published,created' }),
+    pb.collection('pets').getList(1, 5, { sort: '-created', fields: 'id,display_name,spritesheet_url,published,created' }),
   ])
 
   return {
-    docs: docsRes.data ?? [],
-    pets: petsRes.data ?? [],
+    docs: docsRes.items,
+    pets: petsRes.items,
   }
 }
 
@@ -125,19 +97,14 @@ async function Dashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-xl font-semibold mb-4">Overview</h1>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <StatCard icon={<FileText className="w-4 h-4" />} label="Total docs" value={stats.totalDocs} href="/admin/docs" />
           <StatCard icon={<PawPrint className="w-4 h-4" />} label="Total pets" value={stats.totalPets} href="/admin/pets" />
-          <StatCard icon={<Heart className="w-4 h-4" />} label="Total likes" value={stats.totalLikes} />
           <StatCard icon={<FileX className="w-4 h-4" />} label="Drafts" value={stats.draftDocs + stats.draftPets} />
         </div>
       </div>
 
-      <AdminCharts
-        weekly={chartData.weekly}
-        topViewed={chartData.topViewed}
-        topLiked={chartData.topLiked}
-      />
+      <AdminCharts weekly={chartData.weekly} />
 
       <div className="grid md:grid-cols-2 gap-6">
         <div>
@@ -212,8 +179,8 @@ export default function AdminPage() {
     <Suspense fallback={
       <div className="space-y-4">
         <div className="h-8 w-48 bg-muted animate-pulse rounded-lg" />
-        <div className="grid grid-cols-4 gap-3">
-          {[...Array(4)].map((_, i) => <div key={i} className="h-20 bg-muted animate-pulse rounded-xl" />)}
+        <div className="grid grid-cols-3 gap-3">
+          {[...Array(3)].map((_, i) => <div key={i} className="h-20 bg-muted animate-pulse rounded-xl" />)}
         </div>
         <div className="h-64 bg-muted animate-pulse rounded-xl" />
       </div>

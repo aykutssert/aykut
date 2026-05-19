@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { createPublicClient } from '@/lib/supabase/server'
+import { createAdminPB } from '@/lib/pocketbase'
 import { getDocs } from '@/lib/docs'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { OnThisPage } from '@/components/layout/OnThisPage'
@@ -15,9 +15,29 @@ interface Props {
 }
 
 async function getDocById(id: string): Promise<Doc | null> {
-  const supabase = createPublicClient()
-  const { data } = await supabase.from('docs').select('*').eq('id', id).single()
-  return data ?? null
+  const pb = await createAdminPB()
+  try {
+    const r = await pb.collection('docs').getOne(id)
+    return {
+      id: r.id,
+      title: r.title,
+      slug: r.slug,
+      category: r.category,
+      description: r.description ?? null,
+      content: r.content ?? '',
+      source_url: r.source_url ?? null,
+      image_url: r.image_url ?? null,
+      required_images: r.required_images ?? null,
+      variables: r.variables ?? [],
+      tags: Array.isArray(r.tags) ? r.tags : [],
+      order_index: r.order_index ?? 0,
+      published: r.published ?? false,
+      created_at: r.created,
+      updated_at: r.updated,
+    } as Doc
+  } catch {
+    return null
+  }
 }
 
 async function PreviewContent({ params }: { params: Promise<{ id: string }> }) {

@@ -1,31 +1,15 @@
 import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
-import { createClient } from '@supabase/supabase-js'
+import { createAdminPB } from '@/lib/pocketbase'
 
 export async function DELETE(req: Request) {
   const { id } = await req.json() as { id: string }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-
-  const { data: doc } = await supabase
-    .from('docs')
-    .select('image_url')
-    .eq('id', id)
-    .single()
-
-  if (doc?.image_url) {
-    const url = new URL(doc.image_url)
-    const parts = url.pathname.split('/object/public/kernel/')
-    if (parts[1]) {
-      await supabase.storage.from('kernel').remove([parts[1]])
-    }
+  try {
+    const pb = await createAdminPB()
+    await pb.collection('docs').delete(id)
+    revalidateTag('docs', 'max')
+    return NextResponse.json({ ok: true })
+  } catch (e: unknown) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
   }
-
-  await supabase.from('docs').delete().eq('id', id)
-
-  revalidateTag('docs', 'max')
-  return NextResponse.json({ ok: true })
 }

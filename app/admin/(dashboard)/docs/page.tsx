@@ -1,17 +1,31 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminPB } from '@/lib/pocketbase'
 import { DocTable } from '@/components/admin/DocTable'
 import type { Doc } from '@/types'
 
 async function getAllDocs(): Promise<Doc[]> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('docs')
-    .select('*')
-    .order('category')
-    .order('order_index')
-  return data ?? []
+  const pb = await createAdminPB()
+  const records = await pb.collection('docs').getFullList({
+    sort: 'category,order_index',
+  })
+  return records.map((r) => ({
+    id: r.id,
+    title: r.title,
+    slug: r.slug,
+    category: r.category,
+    description: r.description ?? null,
+    content: r.content ?? '',
+    source_url: r.source_url ?? null,
+    image_url: r.image_url ?? null,
+    required_images: r.required_images ?? null,
+    variables: r.variables ?? [],
+    tags: Array.isArray(r.tags) ? r.tags : [],
+    order_index: r.order_index ?? 0,
+    published: r.published ?? false,
+    created_at: r.created,
+    updated_at: r.updated,
+  })) as Doc[]
 }
 
 async function DocList() {

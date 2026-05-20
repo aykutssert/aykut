@@ -6,6 +6,7 @@ import { Suspense, useState, useEffect, useRef, useCallback, useMemo } from 'rea
 import * as THREE from 'three'
 import { Upload, RotateCcw, Download } from 'lucide-react'
 import { FabricEditor, FabricEditorHandle } from './FabricEditor'
+import { useTranslations } from 'next-intl'
 
 function GlCapture({ glRef }: { glRef: React.MutableRefObject<THREE.WebGLRenderer | null> }) {
   const { gl } = useThree()
@@ -99,6 +100,7 @@ export default function TshirtViewer() {
   const editorRef = useRef<FabricEditorHandle>(null)
   const glRef = useRef<THREE.WebGLRenderer | null>(null)
   const [canvasReady, setCanvasReady] = useState(false)
+  const t = useTranslations('tshirt')
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setCanvasReady(true))
@@ -140,7 +142,7 @@ export default function TshirtViewer() {
               color: mobileTab === tab ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))',
             }}
           >
-            {tab === 'design' ? 'Design' : '3D Preview'}
+            {tab === 'design' ? t('tab_design') : t('tab_preview')}
           </button>
         ))}
       </div>
@@ -150,7 +152,7 @@ export default function TshirtViewer() {
       {/* Left: UV canvas editor */}
       <div className={`md:w-[440px] flex-col border-r bg-background shrink-0 ${mobileTab === 'design' ? 'flex' : 'hidden md:!flex'}`}>
         <div className="px-4 py-3 border-b">
-          <h2 className="font-semibold text-xs">Design Editor</h2>
+          <h2 className="font-semibold text-xs">{t('editor_heading')}</h2>
         </div>
 
         <div className="p-4 flex justify-center">
@@ -164,7 +166,7 @@ export default function TshirtViewer() {
             className="flex flex-1 items-center justify-center gap-2 rounded-md border border-border py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
           >
             <Upload className="h-3.5 w-3.5" />
-            Upload
+            {t('upload')}
           </button>
           <button
             type="button"
@@ -172,13 +174,13 @@ export default function TshirtViewer() {
             className="flex flex-1 items-center justify-center gap-2 rounded-md border border-border py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            Reset
+            {t('reset')}
           </button>
         </div>
 
         <div className="px-4 py-3 border-t">
           <div className="flex items-center justify-between mb-2.5">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider">Color</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('label_color')}</p>
             <span className="font-mono text-xs text-muted-foreground">{color.toUpperCase()}</span>
           </div>
           <div className="flex items-center gap-2 mb-3">
@@ -194,7 +196,7 @@ export default function TshirtViewer() {
                 className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
               />
             </label>
-            <p className="text-xs text-muted-foreground">Click to pick any color</p>
+            <p className="text-xs text-muted-foreground">{t('color_picker_hint')}</p>
           </div>
           <div className="flex gap-1.5">
             {PRESETS.map((c) => (
@@ -216,7 +218,7 @@ export default function TshirtViewer() {
 
         <div className="px-4 py-3 border-t">
           <div className="flex items-center justify-between mb-2.5">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider">Brightness</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">{t('label_brightness')}</p>
             <span className="text-xs text-muted-foreground">{Math.round(brightness * 100)}%</span>
           </div>
           <input
@@ -251,7 +253,7 @@ export default function TshirtViewer() {
           className="absolute bottom-4 right-4 flex items-center gap-1.5 rounded-lg border border-white/20 bg-black/50 px-3 py-2 text-xs font-medium text-white backdrop-blur-sm transition-colors hover:bg-black/70"
         >
           <Download className="h-3.5 w-3.5" />
-          Download
+          {t('download')}
         </button>
       </div>
 

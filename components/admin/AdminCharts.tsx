@@ -47,14 +47,14 @@ export function AdminCharts({ weekly }: Props) {
               }}
               cursor={{ fill: 'hsl(240 3.7% 15%)', radius: 4 }}
             />
-            <Bar dataKey="docs" name="Docs" fill={DOCS_COLOR} radius={[3, 3, 0, 0]} />
+            <Bar dataKey="docs" name="Blog" fill={DOCS_COLOR} radius={[3, 3, 0, 0]} />
             <Bar dataKey="pets" name="Pets" fill={PETS_COLOR} radius={[3, 3, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
         <div className="flex items-center gap-4 mt-2 justify-center">
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <span className="w-2.5 h-2.5 rounded-sm" style={{ background: DOCS_COLOR }} />
-            Docs
+            Blog
           </span>
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <span className="w-2.5 h-2.5 rounded-sm" style={{ background: PETS_COLOR }} />

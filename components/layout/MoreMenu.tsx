@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSyncExternalStore } from 'react'
-import { ChevronDown, Heart, MessageSquarePlus, PawPrint } from 'lucide-react'
+import { ChevronDown, Heart, PawPrint } from 'lucide-react'
 import Link from 'next/link'
-import { FeedbackModal } from '@/components/feedback/FeedbackModal'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { useTranslations } from 'next-intl'
 
@@ -29,9 +28,9 @@ function subscribePet(callback: () => void) {
 export function MoreMenu() {
   const ref = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
-  const [feedbackOpen, setFeedbackOpen] = useState(false)
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
   const t = useTranslations('nav')
+  const tMoreMenu = useTranslations('more_menu')
 
   function togglePet() {
     const next = !readPetEnabled()
@@ -74,14 +73,6 @@ export function MoreMenu() {
 
       {open && (
         <div className="absolute right-0 top-[calc(100%+8px)] z-[80] w-44 overflow-hidden rounded-lg border border-border bg-background shadow-xl">
-<button
-            type="button"
-            onClick={() => { setOpen(false); setFeedbackOpen(true) }}
-            className="flex w-full items-center gap-2 border-b border-border px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <MessageSquarePlus className="h-3.5 w-3.5" />
-            {t('suggest')}
-          </button>
           <Link
             href="/pets"
             onClick={() => setOpen(false)}
@@ -105,16 +96,15 @@ export function MoreMenu() {
           >
             <span className="flex items-center gap-2">
               <PawPrint className={`h-3.5 w-3.5 ${petEnabled ? 'text-green-500' : 'text-red-400'}`} />
-              Pet
+              {tMoreMenu('label_pet')}
             </span>
             <span className={`text-[10px] font-medium ${petEnabled ? 'text-green-500' : 'text-red-400'}`}>
-              {petEnabled ? 'ON' : 'OFF'}
+              {petEnabled ? tMoreMenu('on') : tMoreMenu('off')}
             </span>
           </button>
         </div>
       )}
 
-      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
     </div>
   )
 }

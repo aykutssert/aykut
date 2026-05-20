@@ -1,9 +1,14 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
+
 type PromptRawPreviewProps = {
   html?: string
   remaining?: number
 }
 
 export function PromptRawPreview({ html, remaining = 0 }: PromptRawPreviewProps) {
+  const t = useTranslations('pets_page')
   if (!html) return null
 
   return (
@@ -15,7 +20,7 @@ export function PromptRawPreview({ html, remaining = 0 }: PromptRawPreviewProps)
       {remaining > 0 && (
         <div className="mt-1 grid grid-cols-[2ch_1fr] gap-3 text-muted-foreground">
           <span>...</span>
-          <span>+{remaining} more lines</span>
+          <span>{t('more_lines', { count: remaining })}</span>
         </div>
       )}
     </div>

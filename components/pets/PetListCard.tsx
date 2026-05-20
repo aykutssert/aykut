@@ -7,9 +7,11 @@ import { PetCardCanvas } from '@/components/pets/PetCardCanvas'
 import { LikeButton } from '@/components/pets/LikeButton'
 import { cn } from '@/lib/utils'
 import type { Pet } from '@/lib/pets'
+import { useTranslations } from 'next-intl'
 
 export function PetListCard({ pet }: { pet: Pet }) {
   const [active, setActive] = useState(false)
+  const t = useTranslations('pets_page')
 
   return (
     <div
@@ -44,7 +46,7 @@ export function PetListCard({ pet }: { pet: Pet }) {
           className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-foreground/15 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
         >
           <ExternalLink className="h-3.5 w-3.5" />
-          View
+          {t('view')}
         </Link>
         <LikeButton petId={pet.id} initialCount={pet.likes_count ?? 0} compact />
         <a
@@ -52,7 +54,7 @@ export function PetListCard({ pet }: { pet: Pet }) {
           className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-foreground/15 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground sm:flex-1"
         >
           <Download className="h-3.5 w-3.5" />
-          Download
+          {t('download')}
         </a>
       </div>
     </div>

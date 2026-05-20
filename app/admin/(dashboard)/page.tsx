@@ -104,12 +104,12 @@ async function Dashboard() {
       <div className="grid md:grid-cols-2 gap-6">
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold">Recent docs</h2>
+            <h2 className="text-sm font-semibold">Recent blog posts</h2>
             <Link href="/admin/docs" className="text-xs text-muted-foreground hover:text-foreground transition-colors">View all</Link>
           </div>
           <div className="border border-border rounded-xl overflow-hidden">
             {recent.docs.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No docs yet.</p>
+              <p className="text-sm text-muted-foreground text-center py-8">No blog posts yet.</p>
             ) : (
               <ul className="divide-y divide-border">
                 {recent.docs.map((doc) => (

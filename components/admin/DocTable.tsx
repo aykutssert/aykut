@@ -115,7 +115,7 @@ export function DocTable({ docs: initialDocs }: { docs: Doc[] }) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search docs…"
+          placeholder="Search blog posts…"
           className="w-full pl-9 pr-8 py-2 text-sm bg-muted/50 border border-border rounded-lg outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground"
         />
         {query && (

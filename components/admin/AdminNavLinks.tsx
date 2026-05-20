@@ -19,7 +19,7 @@ export function AdminNavLinks() {
   return (
     <div className="flex items-center gap-1">
       <Link href="/admin" className={linkClass(overviewActive)}>Overview</Link>
-      <Link href="/admin/docs" className={linkClass(docsActive)}>Docs</Link>
+      <Link href="/admin/docs" className={linkClass(docsActive)}>Blog</Link>
       <Link href="/admin/pets" className={linkClass(petsActive)}>Pets</Link>
     </div>
   )

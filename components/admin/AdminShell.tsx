@@ -44,7 +44,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-sm text-background transition-opacity hover:opacity-90"
             >
               <Plus className="h-3.5 w-3.5" />
-              New doc
+              New blog post
             </Link>
             <LogoutButton />
           </div>

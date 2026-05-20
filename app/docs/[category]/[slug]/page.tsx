@@ -2,12 +2,10 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Sidebar } from '@/components/layout/Sidebar'
-import { OnThisPage } from '@/components/layout/OnThisPage'
+import { getTranslations } from 'next-intl/server'
 import { ScrollFadeAside } from '@/components/layout/ScrollFadeAside'
 import { MobileOnThisPage } from '@/components/layout/MobileOnThisPage'
 
-import { TagFilterBar } from '@/components/layout/TagFilterBar'
 import { getDoc, getDocs, getDocVersions } from '@/lib/docs'
 import { DocContent, renderDocHtml } from '@/components/docs/DocContent'
 import { DocVersionHandler } from '@/components/docs/DocVersionHandler'
@@ -48,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function DocPageContent({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params
-  const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
+  const [doc, docs, t] = await Promise.all([getDoc(category, slug), getDocs(), getTranslations('doc')])
   if (!doc) notFound()
   
   const [versions, { html: currentHtml, lang: currentLang }] = await Promise.all([
@@ -57,34 +55,19 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
   ])
   const likedByMe = false
 
-  const categoryDocs = docs.filter((d) => d.category === doc.category)
-  const allSorted = docs
-  const currentIndex = allSorted.findIndex((d) => d.id === doc.id)
-  const prevDoc = currentIndex > 0 ? allSorted[currentIndex - 1] : null
-  const nextDoc = currentIndex < allSorted.length - 1 ? allSorted[currentIndex + 1] : null
-  const firstInCategory = categoryDocs[0]
+  const currentIndex = docs.findIndex((d) => d.id === doc.id)
+  const prevDoc = currentIndex > 0 ? docs[currentIndex - 1] : null
+  const nextDoc = currentIndex < docs.length - 1 ? docs[currentIndex + 1] : null
 
   return (
     <div className="flex flex-col min-h-screen">
       <DocViewTracker title={doc.title} slug={doc.slug} category={doc.category} />
       <Navbar docs={docs} />
 
-      <TagFilterBar docs={docs} activeTags={doc.tags ?? []} />
       <div id="main-content" className="flex flex-1 max-w-[1400px] mx-auto w-full">
-        {/* Left sidebar */}
-        <ScrollFadeAside className="hidden md:block w-[260px] shrink-0 sticky top-[105px] h-[calc(100vh-105px)] overflow-y-auto scrollbar-none border-r border-border">
-          <Sidebar docs={docs} />
-        </ScrollFadeAside>
-
         {/* Content */}
         <main className="flex-1 min-w-0 px-4 md:px-10 pt-3 pb-32">
           <div className="mb-8">
-            <Link
-              href={`/docs/${firstInCategory?.category ?? doc.category}/${firstInCategory?.slug ?? doc.slug}`}
-              className="text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground transition-colors mb-4 inline-block"
-            >
-              {doc.category}
-            </Link>
             <div className="flex items-start justify-between gap-4 mb-2">
               <h1 className="text-[1.75rem] font-bold tracking-tight leading-tight" style={{ fontFamily: '"Anthropic Serif Display", Georgia, "Times New Roman", Times, serif' }}>
                 {doc.title}
@@ -148,7 +131,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
               bg-amber-50 border-amber-200 text-amber-700
               dark:bg-amber-950/40 dark:border-amber-800/50 dark:text-amber-400">
               <ImageIcon className="w-4 h-4 shrink-0" />
-              <span>Requires {doc.required_images} {doc.required_images === 1 ? 'image' : 'images'}</span>
+              <span>{t('requires_images', { count: doc.required_images })}</span>
             </div>
           )}
 
@@ -169,7 +152,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                Source
+                {t('source')}
               </a>
             </div>
           )}
@@ -183,7 +166,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">Previous</p>
+                    <p className="text-xs text-muted-foreground mb-0.5">{t('previous')}</p>
                     <p className="font-medium group-hover:text-foreground">{prevDoc.title}</p>
                   </div>
                 </Link>
@@ -194,7 +177,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
                   className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors text-right"
                 >
                   <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">Next</p>
+                    <p className="text-xs text-muted-foreground mb-0.5">{t('next')}</p>
                     <p className="font-medium group-hover:text-foreground">{nextDoc.title}</p>
                   </div>
                   <ChevronRight className="w-4 h-4" />
@@ -205,43 +188,49 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
         </main>
 
         {/* Right sidebar */}
-        <ScrollFadeAside className="hidden lg:block w-[260px] shrink-0 sticky top-[105px] h-[calc(100vh-105px)] overflow-y-auto scrollbar-none border-l border-border pl-5">
+        <ScrollFadeAside className="hidden lg:block w-[260px] shrink-0 sticky top-[57px] h-[calc(100vh-57px)] overflow-y-auto scrollbar-none border-l border-border pl-5">
           {(() => {
             const docTags = doc.tags ?? []
             const related = docTags.length > 0
               ? docs.filter((d) => d.id !== doc.id && (d.tags ?? []).some((t) => docTags.includes(t))).slice(0, 8)
               : []
-            if (related.length > 0) {
-              return (
-                <div className="pt-1.5 pb-8 pr-1">
-                  <p className="text-xs font-semibold tracking-wide text-muted-foreground mb-4">Related</p>
-                  <div className="flex flex-col gap-3">
-                    {related.map((d) => (
-                      <Link
-                        key={d.id}
-                        href={`/docs/${d.category}/${d.slug}`}
-                        className="group block rounded-md border border-border bg-background p-3 transition-colors hover:border-foreground/30"
-                      >
-                        <div className="flex items-start justify-between gap-2 mb-1.5">
-                          <h3 className="text-[13px] font-medium leading-snug tracking-tight line-clamp-2 group-hover:underline group-hover:underline-offset-2">
-                            {d.title}
-                          </h3>
+            const sidebarDocs = related.length > 0
+              ? { label: t('related'), items: related }
+              : {
+                  label: t('more_in', { category: doc.category.charAt(0).toUpperCase() + doc.category.slice(1) }),
+                  items: docs.filter((d) => d.id !== doc.id && d.category === doc.category).slice(0, 8),
+                }
+            if (sidebarDocs.items.length === 0) return null
+            return (
+              <div className="pt-1.5 pb-8 pr-1">
+                <p className="text-xs font-semibold tracking-wide text-muted-foreground mb-4">{sidebarDocs.label}</p>
+                <div className="flex flex-col gap-3">
+                  {sidebarDocs.items.map((d) => (
+                    <Link
+                      key={d.id}
+                      href={`/docs/${d.category}/${d.slug}`}
+                      className="group block rounded-md border border-border bg-background p-3 transition-colors hover:border-foreground/30"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <h3 className="text-[13px] font-medium leading-snug tracking-tight line-clamp-2 group-hover:underline group-hover:underline-offset-2">
+                          {d.title}
+                        </h3>
+                        {d.image_url && (
                           <span className="shrink-0 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium text-foreground">
-                            {d.image_url ? 'Image' : 'Text'}
+                            {t('badge_image')}
                           </span>
-                        </div>
-                        {d.description && (
-                          <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground/90">
-                            {d.description}
-                          </p>
                         )}
-                      </Link>
-                    ))}
-                  </div>
+                      </div>
+                      {d.description && (
+                        <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground/90">
+                          {d.description}
+                        </p>
+                      )}
+                    </Link>
+                  ))}
                 </div>
-              )
-            }
-            return <OnThisPage content={doc.content} />
+              </div>
+            )
           })()}
         </ScrollFadeAside>
       </div>

@@ -8,17 +8,16 @@
     "prompts": "Promptlar",
     "pets": "Codex Pets",
     "sign_in": "Giriş yap",
-    "suggest": "Öneri",
     "more": "Daha fazla",
     "navigate": "Gezin",
     "studio": "Stüdyo",
     "developers": "Geliştiriciler",
-    "liked": "Beğendiklerim"
+    "liked": "Beğendiklerim",
+    "categories": "Kategoriler"
   },
   "footer": {
     "built_by": "Built by",
     "disclaimer": "Prompt verisi <link>Awesome ChatGPT Prompts</link> üzerinden. Topluluk tarafından paylaşılan Pets — bazıları mevcut karakterlere veya markalara atıfta bulunabilir; kaldırma talepleri için <email>aykutssert@gmail.com</email>.",
-    "feedback": "Geri bildirim",
     "blog": "Blog"
   },
   "search": {
@@ -112,7 +111,38 @@
     "viewed_short": "Görüntülenen",
     "include_nsfw": "NSFW içerik",
     "pet_count": "{count} pet",
-    "page_of": "Sayfa {page} / {total}"
+    "page_of": "Sayfa {page} / {total}",
+    "back": "Geri",
+    "view": "Görüntüle",
+    "download": "İndir",
+    "more_lines": "+{count} satır daha",
+    "animations": "Animasyonlar",
+    "codex_pet": "Codex Pet",
+    "download_codex_pet": ".codex-pet İndir",
+    "unzip_instruction": "Paketi indirin, ardından şu konuma açın:",
+    "source": "Kaynak",
+    "terminal_instruction": "Alternatif olarak, bu komutu terminalinize kopyalayıp yapıştırın."
+  },
+  "doc": {
+    "related": "İlgili",
+    "more_in": "{category} kategorisinden daha fazlası",
+    "previous": "Önceki",
+    "next": "Sonraki",
+    "source": "Kaynak",
+    "badge_image": "Görsel",
+    "requires_images": "{count, plural, one {# görsel} other {# görsel}} gerektirir",
+    "copy_prompt": "Promptu kopyala",
+    "copied": "Kopyalandı!",
+    "categories": "Kategoriler",
+    "tab_content": "İçerik",
+    "tab_versions": "Sürümler",
+    "version_history": "Sürüm Geçmişi",
+    "compare_latest": "Son Sürümle Karşılaştır",
+    "current_version": "Güncel Sürüm",
+    "no_description": "Açıklama girilmemiş",
+    "diff_title": "v{from} → Güncel Sürüm",
+    "diff_subtitle": "v{from} ile güncel sürüm arasındaki değişiklikler",
+    "close": "Kapat"
   },
   "hero_text": "Yaptıklarım",
   "landing": {
@@ -181,7 +211,7 @@
       "npm_cli": "tek komutla kurulum için npm cli yayınlandı"
     },
     "blog": {
-      "latest": "Son yazılar",
+      "latest": "Son içerikler",
       "all": "Tüm yazılar",
       "read": "Oku",
       "post_label": "Yazı"
@@ -220,6 +250,38 @@
       "github": "GitHub",
       "linkedin": "LinkedIn"
     }
+  },
+  "not_found": {
+    "title": "Sayfa bulunamadı",
+    "description": "Aradığın sayfa mevcut değil veya taşınmış.",
+    "browse_pets": "Petlere göz at",
+    "read_docs": "Dökümanlara bak"
+  },
+  "reset_password": {
+    "error_mismatch": "Şifreler eşleşmiyor.",
+    "error_update": "Şifre güncellenemedi.",
+    "success_updated": "Şifre güncellendi. Yönlendiriliyor...",
+    "heading": "Şifreyi sıfırla",
+    "description": "Kernel hesabın için yeni bir şifre seç.",
+    "label_new_password": "Yeni şifre",
+    "label_confirm_password": "Şifreyi onayla",
+    "submit": "Şifreyi güncelle"
+  },
+  "tshirt": {
+    "tab_design": "Tasarım",
+    "tab_preview": "3D Önizleme",
+    "editor_heading": "Tasarım Editörü",
+    "upload": "Yükle",
+    "reset": "Sıfırla",
+    "label_color": "Renk",
+    "color_picker_hint": "Herhangi bir renk seçmek için tıkla",
+    "label_brightness": "Parlaklık",
+    "download": "İndir"
+  },
+  "more_menu": {
+    "label_pet": "Pet",
+    "on": "AÇIK",
+    "off": "KAPALI"
   },
   "pet": {
     "click": ["Merhaba!", "Selam!", "Seni görmek güzel!", "Hehe!"],

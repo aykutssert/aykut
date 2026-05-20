@@ -28,7 +28,7 @@ export function TagFilterBar({ docs, activeTags = [] }: { docs: DocMeta[]; activ
   if (allTags.length === 0) return null
 
   return (
-    <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="sticky top-[57px] z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="relative max-w-[1400px] mx-auto w-full px-4 md:px-0">
         <div className={cn(
           'absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none transition-opacity duration-150',

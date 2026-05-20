@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { FileText, Menu, MessageSquarePlus, PawPrint, Sparkles, User, X, ChevronDown } from 'lucide-react'
+import { FileText, Menu, PawPrint, Sparkles, User, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSyncExternalStore } from 'react'
-import { FeedbackModal } from '@/components/feedback/FeedbackModal'
 import { ROAMING_PET_STORAGE_KEY, ROAMING_PET_EVENT } from '@/components/pets/RoamingPetToggle'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
@@ -30,64 +29,14 @@ function subscribePet(callback: () => void) {
   }
 }
 
-function MobileCategoryGroup({
-  category,
-  pages,
-  pathname,
-  defaultOpen,
-}: {
-  category: string
-  pages: DocMeta[]
-  pathname: string
-  defaultOpen: boolean
-}) {
-  const [open, setOpen] = useState(defaultOpen)
-
-  return (
-    <div className="border-b border-border last:border-0 pb-1 last:pb-0">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between py-2 text-xs font-semibold tracking-wide text-muted-foreground hover:text-foreground transition-colors"
-      >
-        {category}
-        <ChevronDown className={cn('w-3.5 h-3.5 transition-transform', open && 'rotate-180')} />
-      </button>
-
-      {open && (
-        <div className="pb-2">
-          <ul className="space-y-0.5">
-            {pages.map((page) => {
-              const href = `/docs/${page.category}/${page.slug}`
-              return (
-                <li key={page.id}>
-                  <Link
-                    href={href}
-                    className={cn(
-                      'block py-1.5 px-2 rounded-md text-sm transition-colors',
-                      pathname === href
-                        ? 'bg-[#E5E5DF] dark:bg-[#1E1917] text-foreground font-medium'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-[#EEEEE8] dark:hover:bg-[#171513]'
-                    )}
-                  >
-                    {page.title}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      )}
-    </div>
-  )
-}
 
 export function MobileNav({ docs }: { docs: DocMeta[] }) {
   const [open, setOpen] = useState(false)
-  const [feedbackOpen, setFeedbackOpen] = useState(false)
 
   const pathname = usePathname()
   const petEnabled = useSyncExternalStore(subscribePet, readPetEnabled, () => true)
   const t = useTranslations('nav')
+  const tMoreMenu = useTranslations('more_menu')
 
   function togglePet() {
     const next = !readPetEnabled()
@@ -131,7 +80,7 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
 
           <div className="fixed top-0 left-0 bottom-0 z-[201] w-72 bg-background border-r shadow-xl flex flex-col">
             <div className="sticky top-0 flex items-center justify-between px-4 h-14 border-b bg-background shrink-0">
-              <span className="text-sm font-semibold">Menu</span>
+              <span className="text-sm font-semibold">{t('more')}</span>
               <button
                 onClick={() => setOpen(false)}
                 className="p-1.5 rounded-md hover:bg-[#EEEEE8] dark:hover:bg-[#171513] text-muted-foreground hover:text-foreground"
@@ -218,14 +167,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
 
 
               <div className="mb-3 space-y-1 border-b border-border pb-3">
-                <button
-                  type="button"
-                  onClick={() => { setOpen(false); setFeedbackOpen(true) }}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
-                >
-                  <MessageSquarePlus className="h-4 w-4" />
-                  {t('suggest')}
-                </button>
                 <Link
                   href="/pets"
                   onClick={() => setOpen(false)}
@@ -241,31 +182,46 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                 >
                   <span className="flex items-center gap-2">
                     <PawPrint className={`h-4 w-4 ${petEnabled ? 'text-green-500' : 'text-red-400'}`} />
-                    Pet
+                    {tMoreMenu('label_pet')}
                   </span>
                   <span className={`text-xs font-medium ${petEnabled ? 'text-green-500' : 'text-red-400'}`}>
-                    {petEnabled ? 'ON' : 'OFF'}
+                    {petEnabled ? tMoreMenu('on') : tMoreMenu('off')}
                   </span>
                 </button>
               </div>
 
-              {/* Doc categories as accordion */}
-              {Object.entries(grouped).map(([category, pages]) => (
-                <MobileCategoryGroup
-                  key={category}
-                  category={category}
-                  pages={pages}
-                  pathname={pathname}
-                  defaultOpen={category === activeCategory}
-                />
-              ))}
+              {/* Doc categories */}
+              {Object.keys(grouped).length > 0 && (
+                <div className="space-y-0.5">
+                  <p className="mb-1.5 px-2 text-[10px] font-semibold tracking-wide text-muted-foreground/70">
+                    {t('categories')}
+                  </p>
+                  {Object.entries(grouped).map(([category, pages]) => {
+                    const isActive = activeCategory === category
+                    return (
+                      <Link
+                        key={category}
+                        href={`/prompts?category=${encodeURIComponent(category)}`}
+                        className={cn(
+                          'flex items-center justify-between rounded-md px-2 py-2 text-sm font-medium transition-colors',
+                          isActive
+                            ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
+                            : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
+                        )}
+                      >
+                        <span className="capitalize">{category}</span>
+                        <span className="text-xs text-muted-foreground">{pages.length}</span>
+                      </Link>
+                    )
+                  })}
+                </div>
+              )}
             </nav>
           </div>
         </>,
         document.body
       )}
 
-      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
     </>
   )
 }

@@ -52,7 +52,7 @@ async function EditDocContent({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-6">Edit doc</h1>
+      <h1 className="text-xl font-semibold mb-6">Edit blog post</h1>
       <DocForm doc={doc} categories={categories} allDocs={allDocs} />
     </div>
   )

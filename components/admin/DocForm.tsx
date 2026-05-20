@@ -14,6 +14,15 @@ interface DocFormProps {
   allDocs: Pick<Doc, 'id' | 'title' | 'slug' | 'category' | 'order_index'>[]
 }
 
+function PreviewPane({ html }: { html: string }) {
+  return (
+    <div
+      className="doc-raw text-xs leading-relaxed font-mono rounded-md border border-foreground/20 overflow-hidden [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_pre]:m-0 [&_pre]:p-5 [&_pre]:bg-[#F5F5F5]! dark:[&_pre]:bg-[#262626]!"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  )
+}
+
 export function DocForm({ doc, categories, allDocs }: DocFormProps) {
   const router = useRouter()
   const isEdit = !!doc
@@ -458,7 +467,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
                 {previewLoading ? (
                   <p className="text-sm text-muted-foreground">Loading preview…</p>
                 ) : (
-                  <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+                  <PreviewPane html={previewHtml} />
                 )}
               </div>
             </div>
@@ -476,7 +485,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               {previewLoading ? (
                 <p className="text-sm text-muted-foreground">Loading preview…</p>
               ) : (
-                <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+                <PreviewPane html={previewHtml} />
               )}
             </div>
           )}

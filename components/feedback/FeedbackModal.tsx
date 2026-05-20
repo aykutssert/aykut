@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { MessageSquare, Send, X, Loader2, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [content, setContent] = useState('')
@@ -13,7 +14,8 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
+  const t = useTranslations('feedback')
+
   const backdropRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
         onClose()
       }, 2000)
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError(t('error_generic'))
     } finally {
       setLoading(false)
     }
@@ -77,7 +79,7 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground/5 text-foreground">
               <MessageSquare className="h-4 w-4" />
             </div>
-            <span className="text-sm font-bold tracking-tight">Suggest a Feature</span>
+            <span className="text-sm font-bold tracking-tight">{t('modal_title')}</span>
           </div>
           <button onClick={onClose} className="rounded-full p-2 hover:bg-muted transition-colors">
             <X className="h-4 w-4 text-muted-foreground" />
@@ -86,24 +88,24 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
 
         <form onSubmit={handleSubmit} className="p-5 space-y-5">
           {/* Honeypot */}
-          <input 
-            type="text" 
-            value={honeypot} 
-            onChange={(e) => setHoneypot(e.target.value)} 
-            className="hidden" 
-            tabIndex={-1} 
-            autoComplete="off" 
+          <input
+            type="text"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            className="hidden"
+            tabIndex={-1}
+            autoComplete="off"
           />
 
           <div className="space-y-2">
             <label className="text-[10px] font-bold tracking-wide text-muted-foreground/70">
-              Content
+              {t('label_content')}
             </label>
             <textarea
               autoFocus
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Features you want, bugs you found, or general feedback..."
+              placeholder={t('placeholder_content')}
               className="min-h-[140px] w-full resize-none rounded-xl border border-border bg-muted/30 p-4 text-base outline-none transition-all placeholder:text-muted-foreground/40 focus:border-foreground/30 focus:bg-background sm:text-sm"
               required
             />
@@ -112,19 +114,19 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <label className="text-[10px] font-bold tracking-wide text-muted-foreground/70">
-                Author
+                {t('label_author')}
               </label>
               <input
                 type="text"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Anonymous"
+                placeholder={t('placeholder_author')}
                 className="w-full rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-base outline-none transition-all focus:border-foreground/30 focus:bg-background sm:text-sm"
               />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold tracking-wide text-muted-foreground/70">
-                Source
+                {t('label_source')}
               </label>
               <div className="relative">
                 <select
@@ -132,10 +134,10 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                   onChange={(e) => setSource(e.target.value)}
                   className="w-full appearance-none rounded-xl border border-border bg-muted/30 px-4 py-2.5 pr-10 text-base outline-none transition-all focus:border-foreground/30 focus:bg-background sm:text-sm"
                 >
-                  <option value="Site">Website</option>
-                  <option value="Reddit">Reddit</option>
-                  <option value="Twitter">Twitter (X)</option>
-                  <option value="Other">Other</option>
+                  <option value="Site">{t('source_website')}</option>
+                  <option value="Reddit">{t('source_reddit')}</option>
+                  <option value="Twitter">{t('source_twitter')}</option>
+                  <option value="Other">{t('source_other')}</option>
                 </select>
                 <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -153,8 +155,8 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
             disabled={loading || success || !content.trim()}
             className={cn(
               "flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition-all duration-300",
-              success 
-                ? "bg-green-500 text-white" 
+              success
+                ? "bg-green-500 text-white"
                 : "bg-foreground text-background hover:opacity-90 disabled:opacity-50"
             )}
           >
@@ -163,12 +165,12 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
             ) : success ? (
               <>
                 <CheckCircle2 className="h-4 w-4" />
-                Sent Successfully!
+                {t('sent_successfully')}
               </>
             ) : (
               <>
                 <Send className="h-3.5 w-3.5" />
-                Submit Suggestion
+                {t('submit')}
               </>
             )}
           </button>

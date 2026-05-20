@@ -11,6 +11,7 @@ import { LikeButton } from '@/components/pets/LikeButton'
 import { ShareButton } from '@/components/pets/ShareModal'
 import { CurlCommand } from '@/components/pets/CurlCommand'
 import { BackButton } from '@/components/pets/BackButton'
+import { getTranslations } from 'next-intl/server'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const [pet, docs] = await Promise.all([getPet(id), getDocs()])
+  const [pet, docs, t] = await Promise.all([getPet(id), getDocs(), getTranslations('pets_page')])
   if (!pet) notFound()
 
   return (
@@ -50,7 +51,7 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
         <main className="flex-1 max-w-[900px] mx-auto w-full px-4 md:px-0 py-12">
           <BackButton />
           <PetDetailSection spritesheetUrl={pet.spritesheet_url} size={256}>
-            <p className="text-xs font-semibold tracking-wider text-muted-foreground mb-3">Codex Pet</p>
+            <p className="text-xs font-semibold tracking-wider text-muted-foreground mb-3">{t('codex_pet')}</p>
             <h1 className="text-3xl font-bold tracking-tight mb-3">{pet.display_name}</h1>
             {pet.description && (
               <p className="text-muted-foreground mb-8 leading-relaxed">{pet.description}</p>
@@ -61,13 +62,13 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
                 className="inline-flex items-center gap-2 px-4 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 <Download className="w-4 h-4" />
-                Download .codex-pet
+                {t('download_codex_pet')}
               </a>
               <LikeButton petId={pet.id} initialCount={0} showCount />
               <ShareButton petId={pet.id} petName={pet.display_name} description={pet.description} spritesheetUrl={pet.spritesheet_url} />
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              Download the package, then unzip it into{' '}
+              {t('unzip_instruction')}{' '}
               <code className="text-xs">{`$HOME/.codex/pets/${pet.id}`}</code>
             </p>
             {pet.source_url && (
@@ -78,11 +79,11 @@ async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
                 className="inline-flex items-center gap-1.5 mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                Source
+                {t('source')}
               </a>
             )}
             <p className="text-xs text-muted-foreground mt-8">
-              Alternatively, copy and paste this command into your terminal.
+              {t('terminal_instruction')}
             </p>
             <CurlCommand petId={pet.id} />
           </PetDetailSection>

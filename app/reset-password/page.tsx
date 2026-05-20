@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function ResetPasswordPage() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+  const t = useTranslations('reset_password')
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -20,7 +22,7 @@ export default function ResetPasswordPage() {
     setSuccess('')
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.')
+      setError(t('error_mismatch'))
       return
     }
 
@@ -34,12 +36,12 @@ export default function ResetPasswordPage() {
 
     if (!response.ok) {
       const payload = await response.json().catch(() => null) as { error?: string } | null
-      setError(payload?.error ?? 'Password could not be updated.')
+      setError(payload?.error ?? t('error_update'))
       setLoading(false)
       return
     }
 
-    setSuccess('Password updated. Redirecting...')
+    setSuccess(t('success_updated'))
     setPassword('')
     setConfirmPassword('')
     setTimeout(() => {
@@ -58,15 +60,15 @@ export default function ResetPasswordPage() {
               <Image src="/kernel-logo.svg" alt="Kernel" width={24} height={24} priority />
               <span className="text-sm font-semibold">Kernel</span>
             </Link>
-            <h1 className="text-sm font-semibold">Reset password</h1>
+            <h1 className="text-sm font-semibold">{t('heading')}</h1>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Choose a new password for your Kernel account.
+              {t('description')}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3 px-5 py-5">
             <label htmlFor="new-password" className="block">
-              <span className="mb-1.5 block text-xs font-medium">New password</span>
+              <span className="mb-1.5 block text-xs font-medium">{t('label_new_password')}</span>
               <input
                 id="new-password"
                 name="new-password"
@@ -76,12 +78,13 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 onChange={(event) => setPassword(event.target.value)}
                 className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/40"
+                placeholder={t('label_new_password')}
                 required
               />
             </label>
 
             <label htmlFor="confirm-password" className="block">
-              <span className="mb-1.5 block text-xs font-medium">Confirm password</span>
+              <span className="mb-1.5 block text-xs font-medium">{t('label_confirm_password')}</span>
               <input
                 id="confirm-password"
                 name="confirm-password"
@@ -91,6 +94,7 @@ export default function ResetPasswordPage() {
                 autoComplete="new-password"
                 onChange={(event) => setConfirmPassword(event.target.value)}
                 className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm outline-none transition-colors focus:border-foreground/40"
+                placeholder={t('label_confirm_password')}
                 required
               />
             </label>
@@ -115,7 +119,7 @@ export default function ResetPasswordPage() {
               className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Update password
+              {t('submit')}
             </button>
           </form>
         </div>

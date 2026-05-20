@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { CODEX_PET_STATES, CELL_WIDTH, CELL_HEIGHT } from '@/lib/pets'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 const FPS = 8
 const THUMB_SIZE = 80
@@ -69,6 +70,7 @@ export function PetViewer({ spritesheetUrl, size = 192 }: { spritesheetUrl: stri
   const frameRef = useRef(0)
   const rafRef = useRef<number>(0)
   const lastTimeRef = useRef(0)
+  const t = useTranslations('pets_page')
 
   useEffect(() => {
     const img = new Image()
@@ -127,7 +129,7 @@ export function PetViewer({ spritesheetUrl, size = 192 }: { spritesheetUrl: stri
       {/* Thumbnail grid */}
       {loaded && imgRef.current && (
         <div className="w-full">
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Animations</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{t('animations')}</p>
           <div className="grid grid-cols-3 gap-2">
             {CODEX_PET_STATES.map((s, i) => (
               <StateThumb

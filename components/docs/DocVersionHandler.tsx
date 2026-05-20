@@ -6,6 +6,7 @@ import * as diff from 'diff'
 import { cn } from '@/lib/utils'
 import type { Doc, DocVersion } from '@/types'
 import { DocRawContent } from './DocRawContent'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   doc: Doc
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: Props) {
+  const t = useTranslations('doc')
   const [activeTab, setActiveTab] = useState<'content' | 'versions'>('content')
   const [selectedVersion, setSelectedVersion] = useState<DocVersion | null>(null)
   const [comparingVersion, setComparingVersion] = useState<DocVersion | null>(null)
@@ -102,7 +104,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
           )}
         >
           <FileText className="w-4 h-4" />
-          Content
+          {t('tab_content')}
         </button>
         <button
           type="button"
@@ -113,7 +115,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
           )}
         >
           <History className="w-4 h-4" />
-          Versions
+          {t('tab_versions')}
           {versions.length > 0 && (
             <span className="ml-1 px-1.5 py-0.5 rounded-full bg-muted text-[10px]">{versions.length}</span>
           )}
@@ -130,7 +132,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
       ) : (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Version History</h3>
+            <h3 className="text-lg font-semibold">{t('version_history')}</h3>
             <button
               type="button"
               onClick={handleCompareLatest}
@@ -138,7 +140,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
               disabled={versions.length === 0}
             >
               <GitCompare className="w-3.5 h-3.5" />
-              Compare Latest
+              {t('compare_latest')}
             </button>
           </div>
 
@@ -151,7 +153,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
                       <span className="font-bold text-sm">v{v.version_number}</span>
                       {i === 0 && (
                         <span className="px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-semibold">
-                          Current Version
+                          {t('current_version')}
                         </span>
                       )}
                       <span className="text-xs text-muted-foreground flex items-center gap-1 ml-2">
@@ -163,7 +165,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
                         {v.author_handle || '@admin'}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground">{v.change_summary || 'No description provided'}</p>
+                    <p className="text-sm text-muted-foreground">{v.change_summary || t('no_description')}</p>
                   </div>
 
                   {i > 0 && (
@@ -191,7 +193,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
               <div className="flex items-center gap-3">
                 <GitCompare className="w-5 h-5 text-blue-500" />
                 <h2 className="text-lg font-bold">
-                  v{comparingVersion.version_number} <span className="mx-2 text-muted-foreground">→</span> Current Version
+                  {t('diff_title', { from: comparingVersion.version_number })}
                 </h2>
               </div>
               <button
@@ -205,7 +207,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
 
             <div className="p-4 bg-muted/30 border-b flex items-center gap-6 text-xs font-medium">
               <div className="flex items-center gap-1.5 text-foreground/70 italic">
-                Changes between v{comparingVersion.version_number} and current version
+                {t('diff_subtitle', { from: comparingVersion.version_number })}
               </div>
             </div>
 
@@ -219,7 +221,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
                 onClick={() => setComparingVersion(null)}
                 className="px-6 py-2 bg-foreground text-background rounded-full font-medium hover:opacity-90 transition-opacity"
               >
-                Close
+                {t('close')}
               </button>
             </div>
           </div>

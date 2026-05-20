@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Layers, User, Mail, BookOpen } from 'lucide-react'
+import { Layers, User, Mail, BookOpen, Sparkles } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 import { SearchTrigger } from '@/components/search/SearchTrigger'
 import { MobileNav } from './MobileNav'
@@ -50,7 +50,11 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
             {t('contact')}
           </Link>
           <Link href="/prompts" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
-            <BookOpen className="w-3.5 h-3.5 text-emerald-500" />
+            <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+            {t('prompts')}
+          </Link>
+          <Link href="/docs" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
+            <BookOpen className="w-3.5 h-3.5 text-violet-400" />
             {t('blog')}
           </Link>
           <MoreMenu />

@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`dark ${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
         <LocaleProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <AuthProvider>

@@ -8,17 +8,16 @@
     "prompts": "Prompts",
     "pets": "Codex Pets",
     "sign_in": "Sign in",
-    "suggest": "Suggest",
     "more": "More",
     "navigate": "Navigate",
     "studio": "Studio",
     "developers": "Developers",
-    "liked": "Liked"
+    "liked": "Liked",
+    "categories": "Categories"
   },
   "footer": {
     "built_by": "Built by",
     "disclaimer": "Prompt data via <link>Awesome ChatGPT Prompts</link>. Pets shared by the community — some may reference existing characters or brands; takedown requests to <email>aykutssert@gmail.com</email>.",
-    "feedback": "Feedback",
     "blog": "Blog"
   },
   "search": {
@@ -112,7 +111,38 @@
     "viewed_short": "Viewed",
     "include_nsfw": "Include NSFW",
     "pet_count": "{count, plural, one {# pet} other {# pets}}",
-    "page_of": "Page {page} / {total}"
+    "page_of": "Page {page} / {total}",
+    "back": "Back",
+    "view": "View",
+    "download": "Download",
+    "more_lines": "+{count} more lines",
+    "animations": "Animations",
+    "codex_pet": "Codex Pet",
+    "download_codex_pet": "Download .codex-pet",
+    "unzip_instruction": "Download the package, then unzip it into",
+    "source": "Source",
+    "terminal_instruction": "Alternatively, copy and paste this command into your terminal."
+  },
+  "doc": {
+    "related": "Related",
+    "more_in": "More in {category}",
+    "previous": "Previous",
+    "next": "Next",
+    "source": "Source",
+    "badge_image": "Image",
+    "requires_images": "Requires {count, plural, one {# image} other {# images}}",
+    "copy_prompt": "Copy prompt",
+    "copied": "Copied!",
+    "categories": "Categories",
+    "tab_content": "Content",
+    "tab_versions": "Versions",
+    "version_history": "Version History",
+    "compare_latest": "Compare Latest",
+    "current_version": "Current Version",
+    "no_description": "No description provided",
+    "diff_title": "v{from} → Current Version",
+    "diff_subtitle": "Changes between v{from} and current version",
+    "close": "Close"
   },
   "hero_text": "Things I've built",
   "landing": {
@@ -181,7 +211,7 @@
       "npm_cli": "published npm cli for one-command installs"
     },
     "blog": {
-      "latest": "Latest posts",
+      "latest": "Latest",
       "all": "All posts",
       "read": "Read",
       "post_label": "Post"
@@ -220,6 +250,38 @@
       "github": "GitHub",
       "linkedin": "LinkedIn"
     }
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "browse_pets": "Browse Pets",
+    "read_docs": "Read Docs"
+  },
+  "reset_password": {
+    "error_mismatch": "Passwords do not match.",
+    "error_update": "Password could not be updated.",
+    "success_updated": "Password updated. Redirecting...",
+    "heading": "Reset password",
+    "description": "Choose a new password for your Kernel account.",
+    "label_new_password": "New password",
+    "label_confirm_password": "Confirm password",
+    "submit": "Update password"
+  },
+  "tshirt": {
+    "tab_design": "Design",
+    "tab_preview": "3D Preview",
+    "editor_heading": "Design Editor",
+    "upload": "Upload",
+    "reset": "Reset",
+    "label_color": "Color",
+    "color_picker_hint": "Click to pick any color",
+    "label_brightness": "Brightness",
+    "download": "Download"
+  },
+  "more_menu": {
+    "label_pet": "Pet",
+    "on": "ON",
+    "off": "OFF"
   },
   "pet": {
     "click": ["Hi there!", "Hello!", "Nice to see you!", "Teehee!"],

@@ -90,7 +90,7 @@ export function AdminGlobalSearch() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={onKeyDown}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
-          placeholder="Search docs and pets…"
+          placeholder="Search blog posts and pets…"
           className="flex-1 text-sm outline-none bg-transparent placeholder:text-muted-foreground"
           autoFocus
         />
@@ -111,7 +111,7 @@ export function AdminGlobalSearch() {
             <>
               {docs.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 pt-2 pb-1">Docs</p>
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 pt-2 pb-1">Blog</p>
                   {docs.map((doc, i) => (
                     <button
                       key={doc.id}

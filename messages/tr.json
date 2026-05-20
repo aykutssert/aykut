@@ -32,7 +32,7 @@
     "search_prompts": "Prompt ara",
     "placeholder_content": "Başlık, içerik...",
     "search_tags": "Etiket ara",
-    "placeholder_tags": "Etiket filtrele...",
+    "placeholder_tags": "Etiket ara...",
     "sort": "Sırala",
     "sort_default": "Varsayılan",
     "sort_alpha": "A-Z",
@@ -86,11 +86,11 @@
     "matched": "{count} eşleşme",
     "total_count": "{count} toplam",
     "no_results": "\"{query}\" için sonuç bulunamadı",
-    "try_different": "Farklı bir kelime deneyin veya aramayı temizleyin.",
+    "try_different": "Farklı bir kelime dene veya aramayı temizle.",
     "no_liked_prompts": "Henüz beğenilen blog yazısı yok",
     "no_liked_pets": "Henüz beğenilen pet yok",
     "heart_prompt_hint": "Herhangi bir blog yazısında kalp işaretine basarak buraya kaydedebilirsin.",
-    "heart_pet_hint": "Herhangi bir pette kalp işaretine basarak favorilerini bir arada tutabilirsin.",
+    "heart_pet_hint": "Herhangi bir pet'in kalp ikonuna tıklayarak favorilerini burada toplayabilirsin.",
     "browse_prompts": "Blog'a göz at",
     "browse_pets": "Petlere göz at",
     "view_liked_pets": "Beğenilen petleri gör",
@@ -98,11 +98,11 @@
   },
   "pets_page": {
     "description": "OpenAI Codex ile oluşturulan piksel sanat evcil hayvan spriteleri.",
-    "no_pets_found": "\"{q}\" için evcil hayvan bulunamadı",
-    "try_different": "Farklı bir arama terimi deneyin.",
+    "no_pets_found": "\"{q}\" için pet bulunamadı",
+    "try_different": "Farklı bir şey dene.",
     "clear_search": "Aramayı temizle",
-    "no_pets_yet": "Henüz evcil hayvan yok.",
-    "search_placeholder": "Evcil hayvan ara…",
+    "no_pets_yet": "Henüz pet yok.",
+    "search_placeholder": "Pet ara…",
     "find": "Ara",
     "newest": "En yeni",
     "most_liked": "En çok beğenilen",
@@ -119,9 +119,9 @@
     "animations": "Animasyonlar",
     "codex_pet": "Codex Pet",
     "download_codex_pet": ".codex-pet İndir",
-    "unzip_instruction": "Paketi indirin, ardından şu konuma açın:",
+    "unzip_instruction": "Paketi indir, ardından şu konuma çıkart:",
     "source": "Kaynak",
-    "terminal_instruction": "Alternatif olarak, bu komutu terminalinize kopyalayıp yapıştırın."
+    "terminal_instruction": "Ya da bu komutu terminale kopyala ve çalıştır."
   },
   "doc": {
     "related": "İlgili",
@@ -130,7 +130,7 @@
     "next": "Sonraki",
     "source": "Kaynak",
     "badge_image": "Görsel",
-    "requires_images": "{count, plural, one {# görsel} other {# görsel}} gerektirir",
+    "requires_images": "Bu prompt {count} görsel gerektiriyor",
     "copy_prompt": "Promptu kopyala",
     "copied": "Kopyalandı!",
     "categories": "Kategoriler",
@@ -206,7 +206,7 @@
     "toolkit": {
       "badge": "Geliştirici",
       "title": "Geliştirici araç seti",
-      "description": "Tam metin aranabilir dokümantasyon sistemi, küratörlü prompt kütüphanesi ve herkese açık REST API & npm CLI'ye sahip piksel sanat Codex pets.",
+      "description": "Tam metin arama destekli blog, küratörlü prompt kütüphanesi ve piksel sanat Codex pet koleksiyonu — herkese açık REST API ve npm CLI ile.",
       "explore": "Keşfet",
       "npm_cli": "tek komutla kurulum için npm cli yayınlandı"
     },
@@ -255,7 +255,7 @@
     "title": "Sayfa bulunamadı",
     "description": "Aradığın sayfa mevcut değil veya taşınmış.",
     "browse_pets": "Petlere göz at",
-    "read_docs": "Dökümanlara bak"
+    "read_docs": "Blog'a göz at"
   },
   "reset_password": {
     "error_mismatch": "Şifreler eşleşmiyor.",

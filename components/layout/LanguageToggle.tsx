@@ -1,15 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useLocaleContext } from './LocaleProvider'
 
 export function LanguageToggle() {
   const { locale, setLocale } = useLocaleContext()
-  const router = useRouter()
 
   function handleToggle() {
     setLocale(locale === 'en' ? 'tr' : 'en')
-    router.refresh()
+    window.location.reload()
   }
 
   return (

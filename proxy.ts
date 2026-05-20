@@ -67,7 +67,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  return NextResponse.next({ request })
+  const locale = request.cookies.get('locale')?.value === 'tr' ? 'tr' : 'en'
+  const response = NextResponse.next({ request })
+  response.headers.set('x-locale', locale)
+  return response
 }
 
 export const config = {

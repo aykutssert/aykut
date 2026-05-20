@@ -130,7 +130,7 @@
     "next": "Sonraki",
     "source": "Kaynak",
     "badge_image": "Görsel",
-    "requires_images": "Bu prompt {count} görsel gerektiriyor",
+    "requires_images": "{count} görsel gerekli",
     "copy_prompt": "Promptu kopyala",
     "copied": "Kopyalandı!",
     "categories": "Kategoriler",

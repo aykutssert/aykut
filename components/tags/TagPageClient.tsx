@@ -305,6 +305,7 @@ export function TagPageClient({
                 value={promptQuery}
                 onChange={(e) => setPromptQuery(e.target.value)}
                 placeholder={tp('placeholder_content')}
+                suppressHydrationWarning
                 className="h-8 w-full rounded-md border border-border bg-background pl-8 pr-3 text-xs outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-foreground/40"
               />
             </div>
@@ -322,6 +323,7 @@ export function TagPageClient({
                   value={tagQuery}
                   onChange={(e) => setTagQuery(e.target.value)}
                   placeholder={tp('placeholder_tags')}
+                  suppressHydrationWarning
                   className="h-8 w-full rounded-md border border-border bg-background pl-8 pr-3 text-xs outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-foreground/40"
                 />
               </div>

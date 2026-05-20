@@ -20,7 +20,7 @@ export function PromptRawPreview({ html, remaining = 0 }: PromptRawPreviewProps)
       {remaining > 0 && (
         <div className="mt-1 grid grid-cols-[2ch_1fr] gap-3 text-muted-foreground">
           <span>...</span>
-          <span>{t('more_lines', { count: remaining })}</span>
+          <span suppressHydrationWarning>{t('more_lines', { count: remaining })}</span>
         </div>
       )}
     </div>

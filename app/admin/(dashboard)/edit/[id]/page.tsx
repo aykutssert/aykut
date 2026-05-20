@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
-import { getAllCategories, getAllDocsMeta } from '@/lib/docs'
+import { getAllCategories, getAllDocsMeta, resolveDocImageUrl } from '@/lib/docs'
 import { DocForm } from '@/components/admin/DocForm'
 import type { Doc } from '@/types'
 
@@ -10,6 +11,10 @@ interface Props {
 }
 
 async function getDocById(id: string): Promise<Doc | null> {
+  'use cache'
+  cacheTag('docs', `doc-admin-${id}`)
+  cacheLife('max')
+
   const pb = await createAdminPB()
   try {
     const r = await pb.collection('docs').getOne(id)
@@ -21,7 +26,7 @@ async function getDocById(id: string): Promise<Doc | null> {
       description: r.description ?? null,
       content: r.content ?? '',
       source_url: r.source_url ?? null,
-      image_url: r.image_url ?? null,
+      image_url: resolveDocImageUrl(r),
       required_images: r.required_images ?? null,
       variables: r.variables ?? [],
       tags: Array.isArray(r.tags) ? r.tags : [],

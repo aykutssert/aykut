@@ -1,13 +1,20 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
+import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
+import { resolveDocImageUrl } from '@/lib/docs'
 import { DocTable } from '@/components/admin/DocTable'
 import type { Doc } from '@/types'
 
 async function getAllDocs(): Promise<Doc[]> {
+  'use cache'
+  cacheTag('docs')
+  cacheLife('max')
+
   const pb = await createAdminPB()
   const records = await pb.collection('docs').getFullList({
     sort: 'category,order_index',
+    fields: 'id,title,slug,category,description,order_index,published,image,image_url,tags,created,updated',
   })
   return records.map((r) => ({
     id: r.id,
@@ -15,11 +22,11 @@ async function getAllDocs(): Promise<Doc[]> {
     slug: r.slug,
     category: r.category,
     description: r.description ?? null,
-    content: r.content ?? '',
-    source_url: r.source_url ?? null,
-    image_url: r.image_url ?? null,
-    required_images: r.required_images ?? null,
-    variables: r.variables ?? [],
+    content: '',
+    source_url: null,
+    image_url: resolveDocImageUrl(r),
+    required_images: null,
+    variables: [],
     tags: Array.isArray(r.tags) ? r.tags : [],
     order_index: r.order_index ?? 0,
     published: r.published ?? false,

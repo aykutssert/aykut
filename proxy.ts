@@ -16,10 +16,21 @@ const PUBLIC_API_PREFIXES = [
   '/api/product-results',
 ]
 
-function isAdmin(request: NextRequest): boolean {
+async function hashSecret(secret: string): Promise<string> {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(secret)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+async function isAdmin(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get('admin_token')?.value
   const secret = process.env.ADMIN_SECRET
-  return Boolean(secret && token === secret)
+  if (!secret || !token) return false
+  const expected = await hashSecret(secret)
+  return token === expected
 }
 
 export async function proxy(request: NextRequest) {
@@ -31,7 +42,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  const admin = isAdmin(request)
+  const admin = await isAdmin(request)
 
   // Public API routes pass through
   const isPublicApi = pathname.startsWith('/api/')

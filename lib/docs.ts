@@ -1,14 +1,16 @@
 import { cacheTag, cacheLife } from 'next/cache'
 import { createPB } from '@/lib/pocketbase'
+import { withPromptPreviews } from '@/lib/prompt-preview'
 import type { Doc, DocMeta, TaggedDoc, DocVersion } from '@/types'
+import type { TaggedDocWithPreview } from '@/lib/prompt-preview'
 
 const PB_URL = process.env.POCKETBASE_URL ?? 'https://db.kernelgallery.com'
 
-function resolveImageUrl(r: Record<string, unknown>): string | null {
+export function resolveDocImageUrl(r: { id?: unknown; image?: unknown; image_url?: unknown }): string | null {
   if (r.image && typeof r.image === 'string' && r.image.trim() !== '') {
     return `${PB_URL}/api/files/docs/${r.id}/${r.image}`
   }
-  return (r.image_url as string) || null
+  return (typeof r.image_url === 'string' && r.image_url) ? r.image_url : null
 }
 
 type PromptSort = 'default' | 'alpha' | 'newest' | 'oldest'
@@ -31,7 +33,7 @@ function mapDoc(r: Record<string, unknown>): Doc {
     description: (r.description as string) || null,
     content: r.content as string,
     source_url: (r.source_url as string) || null,
-    image_url: resolveImageUrl(r),
+    image_url: resolveDocImageUrl(r),
     required_images: (r.required_images as number) || null,
     variables: (r.variables as { name: string; default?: string }[]) || [],
     tags: parseTags(r.tags),
@@ -53,7 +55,7 @@ function mapDocMeta(r: Record<string, unknown>): DocMeta {
     published: r.published as boolean,
     tags: parseTags(r.tags),
     description: (r.description as string) || null,
-    image_url: resolveImageUrl(r),
+    image_url: resolveDocImageUrl(r),
   }
 }
 
@@ -65,7 +67,7 @@ function mapTaggedDoc(r: Record<string, unknown>): TaggedDoc {
     category: r.category as string,
     description: (r.description as string) || null,
     content: r.content as string,
-    image_url: resolveImageUrl(r),
+    image_url: resolveDocImageUrl(r),
     order_index: (r.order_index as number) || 0,
     published: r.published as boolean,
     tags: parseTags(r.tags),
@@ -228,7 +230,7 @@ export async function getPromptDocsFiltered({
 }): Promise<TaggedDoc[]> {
   'use cache'
   cacheTag('docs', 'prompts')
-  cacheLife('minutes')
+  cacheLife('max')
 
   try {
     const pb = createPB()
@@ -294,6 +296,24 @@ export async function getAllDocParams(): Promise<{ category: string; slug: strin
   }
 }
 
+export async function getPromptDocsWithPreviews({
+  q = '',
+  tags = [],
+  sort = 'default',
+}: {
+  q?: string
+  tags?: string[]
+  sort?: PromptSort
+}): Promise<TaggedDocWithPreview[]> {
+  'use cache'
+  cacheTag('docs', 'prompts')
+  cacheLife('max')
+
+  const docs = await getPromptDocsFiltered({ q, tags, sort })
+  const withLikes = docs.map((doc) => ({ ...doc, liked_by_me: false as boolean | undefined }))
+  return withPromptPreviews(withLikes, (doc) => (doc.image_url ? 4 : 8))
+}
+
 export async function getRecentPrompts(limit = 3): Promise<Pick<TaggedDoc, 'id' | 'title' | 'slug' | 'description' | 'image_url' | 'tags' | 'created_at'>[]> {
   'use cache'
   cacheTag('docs', 'prompts')
@@ -310,7 +330,7 @@ export async function getRecentPrompts(limit = 3): Promise<Pick<TaggedDoc, 'id' 
       title: r.title as string,
       slug: r.slug as string,
       description: (r.description as string) || null,
-      image_url: resolveImageUrl(r as unknown as Record<string, unknown>),
+      image_url: resolveDocImageUrl(r as unknown as Record<string, unknown>),
       tags: parseTags(r.tags),
       created_at: r.created,
     }))

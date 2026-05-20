@@ -1,14 +1,19 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
+import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
 import { FileText, PawPrint, FileX } from 'lucide-react'
 import { AdminCharts } from '@/components/admin/AdminCharts'
 
-interface Stats {
-  totalDocs: number
-  totalPets: number
-  draftDocs: number
-  draftPets: number
+interface WeeklyPoint { week: string; docs: number; pets: number }
+
+interface DashboardData {
+  stats: { totalDocs: number; totalPets: number; draftDocs: number; draftPets: number }
+  recent: {
+    docs: { id: string; title: string; category: string; published: boolean; created: string }[]
+    pets: { id: string; display_name: string; spritesheet_url: string; published: boolean; created: string }[]
+  }
+  weekly: WeeklyPoint[]
 }
 
 function getWeekLabels(count: number): { start: Date; label: string }[] {
@@ -22,59 +27,49 @@ function getWeekLabels(count: number): { start: Date; label: string }[] {
   })
 }
 
-async function getChartData() {
+// Single PB auth + all queries in one cached function.
+async function getDashboardData(): Promise<DashboardData> {
+  'use cache'
+  cacheTag('docs', 'pets')
+  cacheLife('minutes')
+
   const pb = await createAdminPB()
   const since = new Date()
   since.setDate(since.getDate() - 56)
   const sinceStr = since.toISOString().replace('T', ' ')
 
-  const [docs, pets] = await Promise.all([
+  const [allDocs, allPets, recentDocsRes, recentPetsRes, chartDocs, chartPets] = await Promise.all([
+    pb.collection('docs').getFullList({ fields: 'published' }),
+    pb.collection('pets').getFullList({ fields: 'published' }),
+    pb.collection('docs').getList(1, 5, { sort: '-created', fields: 'id,title,category,published,created' }),
+    pb.collection('pets').getList(1, 5, { sort: '-created', fields: 'id,display_name,spritesheet_url,published,created' }),
     pb.collection('docs').getFullList({ filter: `created >= "${sinceStr}"`, fields: 'created' }),
     pb.collection('pets').getFullList({ filter: `created >= "${sinceStr}"`, fields: 'created' }),
   ])
 
-  const weeks = getWeekLabels(8)
+  const stats = {
+    totalDocs: allDocs.length,
+    totalPets: allPets.length,
+    draftDocs: allDocs.filter((d) => !d.published).length,
+    draftPets: allPets.filter((p) => !p.published).length,
+  }
 
-  const weekly = weeks.map(({ start }, i) => {
+  const recent = {
+    docs: recentDocsRes.items as unknown as DashboardData['recent']['docs'],
+    pets: recentPetsRes.items as unknown as DashboardData['recent']['pets'],
+  }
+
+  const weeks = getWeekLabels(8)
+  const weekly: WeeklyPoint[] = weeks.map(({ start }, i) => {
     const end = i < weeks.length - 1 ? weeks[i + 1].start : new Date()
     const labelDate = i < weeks.length - 1 ? new Date(end.getTime() - 86400000) : new Date()
     const weekLabel = labelDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    const docCount = docs.filter((d) => new Date(d.created) >= start && new Date(d.created) < end).length
-    const petCount = pets.filter((p) => new Date(p.created) >= start && new Date(p.created) < end).length
+    const docCount = chartDocs.filter((d) => new Date(d.created) >= start && new Date(d.created) < end).length
+    const petCount = chartPets.filter((p) => new Date(p.created) >= start && new Date(p.created) < end).length
     return { week: weekLabel, docs: docCount, pets: petCount }
   })
 
-  return { weekly }
-}
-
-async function getStats(): Promise<Stats> {
-  const pb = await createAdminPB()
-
-  const [docs, pets] = await Promise.all([
-    pb.collection('docs').getFullList({ fields: 'published' }),
-    pb.collection('pets').getFullList({ fields: 'published' }),
-  ])
-
-  return {
-    totalDocs: docs.length,
-    totalPets: pets.length,
-    draftDocs: docs.filter((d) => !d.published).length,
-    draftPets: pets.filter((p) => !p.published).length,
-  }
-}
-
-async function getRecent() {
-  const pb = await createAdminPB()
-
-  const [docsRes, petsRes] = await Promise.all([
-    pb.collection('docs').getList(1, 5, { sort: '-created', fields: 'id,title,category,published,created' }),
-    pb.collection('pets').getList(1, 5, { sort: '-created', fields: 'id,display_name,spritesheet_url,published,created' }),
-  ])
-
-  return {
-    docs: docsRes.items,
-    pets: petsRes.items,
-  }
+  return { stats, recent, weekly }
 }
 
 function StatCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: number; href?: string }) {
@@ -91,7 +86,7 @@ function StatCard({ icon, label, value, href }: { icon: React.ReactNode; label: 
 }
 
 async function Dashboard() {
-  const [stats, recent, chartData] = await Promise.all([getStats(), getRecent(), getChartData()])
+  const { stats, recent, weekly } = await getDashboardData()
 
   return (
     <div className="space-y-8">
@@ -104,7 +99,7 @@ async function Dashboard() {
         </div>
       </div>
 
-      <AdminCharts weekly={chartData.weekly} />
+      <AdminCharts weekly={weekly} />
 
       <div className="grid md:grid-cols-2 gap-6">
         <div>

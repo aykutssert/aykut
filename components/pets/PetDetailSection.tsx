@@ -7,6 +7,36 @@ import { cn } from '@/lib/utils'
 const FPS = 8
 const THUMB_SIZE = 80
 
+// ---------------------------------------------------------------------------
+// Single shared rAF ticker — all canvases subscribe to it instead of each
+// running their own requestAnimationFrame loop.
+// ---------------------------------------------------------------------------
+type TickCallback = (time: number) => void
+
+let tickerRaf: number | null = null
+const tickerSubscribers = new Set<TickCallback>()
+
+function tickerTick(time: number) {
+  tickerSubscribers.forEach((cb) => cb(time))
+  tickerRaf = requestAnimationFrame(tickerTick)
+}
+
+function subscribeTicker(cb: TickCallback) {
+  tickerSubscribers.add(cb)
+  if (tickerRaf === null) {
+    tickerRaf = requestAnimationFrame(tickerTick)
+  }
+  return () => {
+    tickerSubscribers.delete(cb)
+    if (tickerSubscribers.size === 0 && tickerRaf !== null) {
+      cancelAnimationFrame(tickerRaf)
+      tickerRaf = null
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+
 function StateThumb({
   img,
   state,
@@ -20,7 +50,6 @@ function StateThumb({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const frameRef = useRef(0)
-  const rafRef = useRef<number>(0)
   const lastTimeRef = useRef(0)
   const thumbH = Math.round(CELL_HEIGHT * (THUMB_SIZE / CELL_WIDTH))
 
@@ -31,18 +60,16 @@ function StateThumb({
     if (!ctx) return
     frameRef.current = 0
 
-    function draw(time: number) {
+    const unsubscribe = subscribeTicker((time) => {
       if (time - lastTimeRef.current >= 1000 / FPS) {
         lastTimeRef.current = time
-        ctx!.clearRect(0, 0, CELL_WIDTH, CELL_HEIGHT)
-        ctx!.drawImage(img, frameRef.current * CELL_WIDTH, state.row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, 0, 0, CELL_WIDTH, CELL_HEIGHT)
+        ctx.clearRect(0, 0, CELL_WIDTH, CELL_HEIGHT)
+        ctx.drawImage(img, frameRef.current * CELL_WIDTH, state.row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, 0, 0, CELL_WIDTH, CELL_HEIGHT)
         frameRef.current = (frameRef.current + 1) % state.frames
       }
-      rafRef.current = requestAnimationFrame(draw)
-    }
+    })
 
-    rafRef.current = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(rafRef.current)
+    return unsubscribe
   }, [img, state])
 
   return (
@@ -90,7 +117,6 @@ export function PetDetailSection({
   const [activeState, setActiveState] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const frameRef = useRef(0)
-  const rafRef = useRef<number>(0)
   const lastTimeRef = useRef(0)
 
   useEffect(() => {
@@ -110,19 +136,17 @@ export function PetDetailSection({
     const state = CODEX_PET_STATES[activeState]
     frameRef.current = 0
 
-    function draw(time: number) {
+    const unsubscribe = subscribeTicker((time) => {
       if (time - lastTimeRef.current >= 1000 / FPS) {
         lastTimeRef.current = time
         const img = imgRef.current!
-        ctx!.clearRect(0, 0, CELL_WIDTH, CELL_HEIGHT)
-        ctx!.drawImage(img, frameRef.current * CELL_WIDTH, state.row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, 0, 0, CELL_WIDTH, CELL_HEIGHT)
+        ctx.clearRect(0, 0, CELL_WIDTH, CELL_HEIGHT)
+        ctx.drawImage(img, frameRef.current * CELL_WIDTH, state.row * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, 0, 0, CELL_WIDTH, CELL_HEIGHT)
         frameRef.current = (frameRef.current + 1) % state.frames
       }
-      rafRef.current = requestAnimationFrame(draw)
-    }
+    })
 
-    rafRef.current = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(rafRef.current)
+    return unsubscribe
   }, [loaded, activeState])
 
   const scale = size / CELL_WIDTH

@@ -85,7 +85,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
         <div className="mx-auto w-full max-w-[1400px] px-4 py-4 md:px-0">
           <div className="flex items-center gap-3">
             <Image
-              src="/my-face.jpeg"
+              src="/my-face.webp"
               alt="Aykut Sert"
               width={44}
               height={44}
@@ -376,7 +376,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
           <StaggeredGrid className="grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl border border-border bg-background p-6">
               <div className="flex items-center gap-4">
-                <Image src="/my-face.jpeg" alt="Aykut Sert" width={64} height={64} sizes="64px" className="rounded-full object-cover ring-2 ring-border shrink-0" />
+                <Image src="/my-face.webp" alt="Aykut Sert" width={64} height={64} sizes="64px" className="rounded-full object-cover ring-2 ring-border shrink-0" />
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight">Aykut Sert</h2>
                   <p className="mt-0.5 text-sm text-muted-foreground">{t('about.role')}</p>

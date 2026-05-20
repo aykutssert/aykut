@@ -5,6 +5,32 @@ import type { Pet } from '@/lib/pets'
 const PER_PAGE = 15
 export { PER_PAGE }
 
+export async function getPet(id: string): Promise<Pet | null> {
+  'use cache'
+  cacheTag('pets', `pet-${id}`)
+  cacheLife('max')
+  try {
+    const pb = createPB()
+    const record = await pb.collection('pets').getFirstListItem(
+      `id = "${id}" && published = true && is_nsfw = false`
+    )
+    return {
+      id: record.id,
+      display_name: record.display_name as string,
+      description: (record.description as string) || null,
+      spritesheet_url: record.spritesheet_url as string,
+      source_url: (record.source_url as string) || null,
+      published: record.published as boolean,
+      is_nsfw: record.is_nsfw as boolean,
+      likes_count: 0,
+      views_count: 0,
+      created_at: record.created,
+    }
+  } catch {
+    return null
+  }
+}
+
 function mapPet(r: Record<string, unknown>): Pet {
   return {
     id: r.id as string,

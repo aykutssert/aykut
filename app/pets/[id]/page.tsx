@@ -1,43 +1,19 @@
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
-import { createPB } from '@/lib/pocketbase'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { PetDetailSection } from '@/components/pets/PetDetailSection'
 import { getDocs } from '@/lib/docs'
+import { getPet } from '@/lib/pets-data'
 import { Download, ExternalLink } from 'lucide-react'
 import { LikeButton } from '@/components/pets/LikeButton'
 import { ShareButton } from '@/components/pets/ShareModal'
 import { CurlCommand } from '@/components/pets/CurlCommand'
 import { BackButton } from '@/components/pets/BackButton'
-import type { Pet } from '@/lib/pets'
 
 interface Props {
   params: Promise<{ id: string }>
-}
-
-async function getPet(id: string): Promise<Pet | null> {
-  try {
-    const pb = createPB()
-    const record = await pb.collection('pets').getFirstListItem(
-      `id = "${id}" && published = true && is_nsfw = false`
-    )
-    return {
-      id: record.id,
-      display_name: record.display_name as string,
-      description: (record.description as string) || null,
-      spritesheet_url: record.spritesheet_url as string,
-      source_url: (record.source_url as string) || null,
-      published: record.published as boolean,
-      is_nsfw: record.is_nsfw as boolean,
-      likes_count: 0,
-      views_count: 0,
-      created_at: record.created,
-    }
-  } catch {
-    return null
-  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

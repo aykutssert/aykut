@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   cacheComponents: true,
   typescript: { ignoreBuildErrors: true },
+  serverExternalPackages: ['pocketbase'],
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

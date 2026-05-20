@@ -1,9 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { History, FileText, ChevronRight, GitCompare, X, Clock, User } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { History, FileText, GitCompare, X, Clock, User } from 'lucide-react'
 import * as diff from 'diff'
-import { encode } from 'gpt-tokenizer'
 import { cn } from '@/lib/utils'
 import type { Doc, DocVersion } from '@/types'
 import { DocRawContent } from './DocRawContent'
@@ -19,14 +18,32 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
   const [activeTab, setActiveTab] = useState<'content' | 'versions'>('content')
   const [selectedVersion, setSelectedVersion] = useState<DocVersion | null>(null)
   const [comparingVersion, setComparingVersion] = useState<DocVersion | null>(null)
+  // Token counts loaded lazily so the ~200 KB gpt-tokenizer bundle is only
+  // fetched when the diff modal is actually opened.
+  const [tokenCounts, setTokenCounts] = useState<{ added: number; removed: number } | null>(null)
 
-  // Current version is not in versions table as a separate snapshot usually until edited
-  // But we want to show it in the list.
-  
+  useEffect(() => {
+    if (!comparingVersion) {
+      setTokenCounts(null)
+      return
+    }
+    let cancelled = false
+    const changes = diff.diffWordsWithSpace(comparingVersion.content, doc.content)
+    import('gpt-tokenizer').then(({ encode }) => {
+      if (cancelled) return
+      let added = 0
+      let removed = 0
+      changes.forEach((part) => {
+        if (part.added) added += encode(part.value).length
+        if (part.removed) removed += encode(part.value).length
+      })
+      setTokenCounts({ added, removed })
+    })
+    return () => { cancelled = true }
+  }, [comparingVersion, doc.content])
+
   const handleCompareLatest = () => {
     if (versions.length >= 2) {
-      // Compare v1 with current if there's only 2, or compare latest two
-      // Actually usually Compare in this context means "Compare Current with Previous"
       setComparingVersion(versions[1] || versions[0])
     } else if (versions.length === 1) {
       setComparingVersion(versions[0])
@@ -35,25 +52,21 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
 
   const renderDiff = (oldText: string, newText: string) => {
     const changes = diff.diffWordsWithSpace(oldText, newText)
-    
-    let addedTokens = 0
-    let removedTokens = 0
-    
-    changes.forEach(part => {
-      if (part.added) addedTokens += encode(part.value).length
-      if (part.removed) removedTokens += encode(part.value).length
-    })
-    
+
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-5 text-[13px] font-mono select-none">
           <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
             <span className="text-base leading-none translate-y-[0.5px]">≈</span>
-            <span>+{addedTokens} tokens</span>
+            <span>
+              {tokenCounts ? `+${tokenCounts.added} tokens` : 'Calculating…'}
+            </span>
           </div>
           <div className="flex items-center gap-1 text-rose-600 dark:text-rose-400">
             <span className="text-base leading-none translate-y-[0.5px]">≈</span>
-            <span>-{removedTokens} tokens</span>
+            <span>
+              {tokenCounts ? `-${tokenCounts.removed} tokens` : ''}
+            </span>
           </div>
         </div>
 
@@ -62,8 +75,8 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
             <span
               key={index}
               className={cn(
-                part.added ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400" : 
-                part.removed ? "bg-rose-500/20 text-rose-700 dark:text-rose-400 line-through" : ""
+                part.added ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400' :
+                part.removed ? 'bg-rose-500/20 text-rose-700 dark:text-rose-400 line-through' : ''
               )}
             >
               {part.value}
@@ -74,6 +87,8 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
     )
   }
 
+  void selectedVersion // reserved for future per-version view
+
   return (
     <div className="space-y-6">
       {/* Tabs */}
@@ -82,8 +97,8 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
           type="button"
           onClick={() => setActiveTab('content')}
           className={cn(
-            "flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all",
-            activeTab === 'content' ? "bg-background shadow-sm text-foreground border border-border" : "text-muted-foreground hover:text-foreground"
+            'flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all',
+            activeTab === 'content' ? 'bg-background shadow-sm text-foreground border border-border' : 'text-muted-foreground hover:text-foreground'
           )}
         >
           <FileText className="w-4 h-4" />
@@ -93,8 +108,8 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
           type="button"
           onClick={() => setActiveTab('versions')}
           className={cn(
-            "flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all",
-            activeTab === 'versions' ? "bg-background shadow-sm text-foreground border border-border" : "text-muted-foreground hover:text-foreground"
+            'flex items-center gap-2 px-4 py-1.5 text-sm font-medium rounded-md transition-all',
+            activeTab === 'versions' ? 'bg-background shadow-sm text-foreground border border-border' : 'text-muted-foreground hover:text-foreground'
           )}
         >
           <History className="w-4 h-4" />
@@ -106,17 +121,17 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
       </div>
 
       {activeTab === 'content' ? (
-        <DocRawContent 
-          html={currentHtml} 
-          content={doc.content} 
-          variables={doc.variables ?? []} 
-          withLines={currentLang !== 'markdown'} 
+        <DocRawContent
+          html={currentHtml}
+          content={doc.content}
+          variables={doc.variables ?? []}
+          withLines={currentLang !== 'markdown'}
         />
       ) : (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Version History</h3>
-            <button 
+            <button
               type="button"
               onClick={handleCompareLatest}
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-muted transition-colors"
@@ -150,9 +165,9 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
                     </div>
                     <p className="text-sm text-muted-foreground">{v.change_summary || 'No description provided'}</p>
                   </div>
-                  
+
                   {i > 0 && (
-                    <button 
+                    <button
                       type="button"
                       onClick={() => setComparingVersion(v)}
                       className="p-2 rounded-md hover:bg-muted transition-colors opacity-0 group-hover:opacity-100"
@@ -179,7 +194,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
                   v{comparingVersion.version_number} <span className="mx-2 text-muted-foreground">→</span> Current Version
                 </h2>
               </div>
-              <button 
+              <button
                 type="button"
                 onClick={() => setComparingVersion(null)}
                 className="p-2 rounded-full hover:bg-muted transition-colors"
@@ -187,7 +202,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="p-4 bg-muted/30 border-b flex items-center gap-6 text-xs font-medium">
               <div className="flex items-center gap-1.5 text-foreground/70 italic">
                 Changes between v{comparingVersion.version_number} and current version
@@ -197,9 +212,9 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
             <div className="flex-1 overflow-y-auto p-6">
               {renderDiff(comparingVersion.content, doc.content)}
             </div>
-            
+
             <div className="p-4 border-t bg-muted/10 flex justify-end">
-              <button 
+              <button
                 type="button"
                 onClick={() => setComparingVersion(null)}
                 className="px-6 py-2 bg-foreground text-background rounded-full font-medium hover:opacity-90 transition-opacity"

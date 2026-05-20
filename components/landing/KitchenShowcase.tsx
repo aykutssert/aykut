@@ -49,7 +49,22 @@ function KitchenLightbox({ src, label, onClose }: { src: string; label: string; 
 export function KitchenShowcase() {
   const [active, setActive] = useState('before')
   const [lightbox, setLightbox] = useState(false)
+  // Track which option keys have ever been selected so we only mount their
+  // <img> elements after the user first clicks them (avoids downloading all
+  // 3 "after" images up-front when only "before" is visible on load).
+  const [loaded, setLoaded] = useState<Set<string>>(() => new Set(['before']))
+
   const current = OPTIONS.find((o) => o.key === active)!
+
+  function handleSelect(key: string) {
+    setLoaded((prev) => {
+      if (prev.has(key)) return prev
+      const next = new Set(prev)
+      next.add(key)
+      return next
+    })
+    setActive(key)
+  }
 
   return (
     <>
@@ -60,20 +75,22 @@ export function KitchenShowcase() {
           onClick={() => setLightbox(true)}
           className="relative flex-1 overflow-hidden bg-muted cursor-zoom-in"
         >
-          {OPTIONS.map((opt) => (
-            <img
-              key={opt.key}
-              src={opt.src}
-              alt={opt.label}
-              loading={opt.key === 'before' ? 'eager' : 'lazy'}
-              decoding="async"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{
-                opacity: active === opt.key ? 1 : 0,
-                transition: 'opacity 400ms ease-in-out',
-              }}
-            />
-          ))}
+          {OPTIONS.map((opt) => {
+            if (!loaded.has(opt.key)) return null
+            return (
+              <img
+                key={opt.key}
+                src={opt.src}
+                alt={opt.label}
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{
+                  opacity: active === opt.key ? 1 : 0,
+                  transition: 'opacity 400ms ease-in-out',
+                }}
+              />
+            )
+          })}
           <div className="absolute left-3 bottom-3 z-10">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
               <span
@@ -91,7 +108,7 @@ export function KitchenShowcase() {
             <button
               key={opt.key}
               type="button"
-              onClick={() => setActive(opt.key)}
+              onClick={() => handleSelect(opt.key)}
               className="relative flex-1 overflow-hidden rounded-lg transition-all"
               style={{
                 outline: active === opt.key ? '2px solid hsl(var(--foreground))' : '2px solid transparent',

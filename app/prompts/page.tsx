@@ -6,8 +6,7 @@ import { DeveloperSubnav } from '@/components/layout/DeveloperSubnav'
 import { Footer } from '@/components/layout/Footer'
 import { TagPageClient } from '@/components/tags/TagPageClient'
 import { PromptsGridSkeleton } from '@/components/prompts/PromptsGridSkeleton'
-import { getAllTags, getDocs, getPromptDocsFiltered } from '@/lib/docs'
-import { withPromptPreviews } from '@/lib/prompt-preview'
+import { getAllTags, getDocs, getPromptDocsWithPreviews } from '@/lib/docs'
 
 interface Props {
   searchParams: Promise<{ q?: string; tag?: string | string[]; sort?: string; auth?: string }>
@@ -30,15 +29,10 @@ async function PromptsContent({ searchParams }: Props) {
     : 'default'
 
   const promptQuery = params.q?.trim() ?? ''
-  const [rawDocs, allTags] = await Promise.all([
-    getPromptDocsFiltered({ q: promptQuery, tags, sort }),
+  const [docs, allTags] = await Promise.all([
+    getPromptDocsWithPreviews({ q: promptQuery, tags, sort }),
     getAllTags(),
   ])
-  const docsWithLikes = rawDocs.map((doc) => ({
-    ...doc,
-    liked_by_me: false,
-  }))
-  const docs = await withPromptPreviews(docsWithLikes, (doc) => doc.image_url ? 4 : 8)
 
   return (
     <TagPageClient

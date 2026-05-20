@@ -58,6 +58,7 @@ export async function POST(req: Request) {
           change_summary: versionSummary || 'Content updated',
           author_handle: '@admin',
         })
+        revalidateTag(`versions-${id}`, 'max')
       }
     } else {
       const newDoc = await pb.collection('docs').create(data)

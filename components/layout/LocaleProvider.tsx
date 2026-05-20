@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import enMessages from '@/messages/en.json'
 import trMessages from '@/messages/tr.json'
@@ -28,10 +28,16 @@ function readLocaleCookie(): Locale {
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(readLocaleCookie)
-  const [messages, setMessages] = useState<Messages>(() =>
-    readLocaleCookie() === 'tr' ? trMessages : enMessages
-  )
+  const [locale, setLocaleState] = useState<Locale>('en')
+  const [messages, setMessages] = useState<Messages>(enMessages)
+
+  useEffect(() => {
+    const saved = readLocaleCookie()
+    if (saved === 'tr') {
+      setMessages(trMessages)
+      setLocaleState('tr')
+    }
+  }, [])
 
   const setLocale = useCallback((next: Locale) => {
     document.cookie = `locale=${next};path=/;max-age=31536000`

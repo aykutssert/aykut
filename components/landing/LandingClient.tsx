@@ -159,7 +159,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
           </TiltCard>
 
           <TiltCard>
-          <a href="https://aykutssert.github.io/flamy-web/" target="_blank" rel="noopener noreferrer"
+          <a href="https://apps.apple.com/us/app/flamy-habit-tracker/id6770295891" target="_blank" rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/flamy.png" alt="Flamy" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
@@ -174,14 +174,14 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · SwiftData</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.app_store')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>
           </TiltCard>
 
           <TiltCard>
-          <a href="https://aykutssert.github.io/trippack-web/" target="_blank" rel="noopener noreferrer"
+          <a href="https://apps.apple.com/us/app/pack-my-trip/id6768713391" target="_blank" rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
               <Image src="/logo/trippack.png" alt="TripPack" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" />
@@ -196,7 +196,7 @@ export function LandingClient({ docs, recentPrompts }: Props) {
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · AI</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
+              <span className="group-hover:underline underline-offset-2">{t('projects.app_store')}</span>
               <ExternalLink className="h-3 w-3" />
             </div>
           </a>

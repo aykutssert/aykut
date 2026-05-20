@@ -2,12 +2,11 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
 import { ScrollFadeAside } from '@/components/layout/ScrollFadeAside'
 import { MobileOnThisPage } from '@/components/layout/MobileOnThisPage'
 
 import { getDoc, getDocs, getDocVersions } from '@/lib/docs'
-import { DocContent, renderDocHtml } from '@/components/docs/DocContent'
+import { renderDocHtml } from '@/components/docs/DocContent'
 import { DocVersionHandler } from '@/components/docs/DocVersionHandler'
 import { CopyPageButton } from '@/components/docs/CopyPageButton'
 import { CopyCodeButton } from '@/components/docs/CopyCodeButton'
@@ -16,7 +15,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { DocViewTracker } from '@/components/docs/DocViewTracker'
-import { ExternalLink, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react'
+import { DocNavLinks, DocSourceLink, DocRequiredImages, DocSidebarPanel } from '@/components/docs/DocClientUI'
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -46,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function DocPageContent({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params
-  const [doc, docs, t] = await Promise.all([getDoc(category, slug), getDocs(), getTranslations('doc')])
+  const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
   if (!doc) notFound()
   
   const [versions, { html: currentHtml, lang: currentLang }] = await Promise.all([
@@ -126,14 +125,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             </div>
           )}
 
-          {doc.required_images && (
-            <div className="flex items-center gap-2 mb-4 px-4 py-2 rounded-full border w-fit text-sm font-medium
-              bg-amber-50 border-amber-200 text-amber-700
-              dark:bg-amber-950/40 dark:border-amber-800/50 dark:text-amber-400">
-              <ImageIcon className="w-4 h-4 shrink-0" />
-              <span>{t('requires_images', { count: doc.required_images })}</span>
-            </div>
-          )}
+          {doc.required_images && <DocRequiredImages count={doc.required_images} />}
 
           <DocVersionHandler 
             doc={doc} 
@@ -143,95 +135,18 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
           />
           <CopyCodeButton />
 
-          {doc.source_url && (
-            <div className="mt-10 pt-6 border-t border-border">
-              <a
-                href={doc.source_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                {t('source')}
-              </a>
-            </div>
-          )}
-
-          {(prevDoc || nextDoc) && (
-            <div className="mt-10 pt-6 border-t border-border flex items-center justify-between gap-4">
-              {prevDoc ? (
-                <Link
-                  href={`/docs/${prevDoc.category}/${prevDoc.slug}`}
-                  className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">{t('previous')}</p>
-                    <p className="font-medium group-hover:text-foreground">{prevDoc.title}</p>
-                  </div>
-                </Link>
-              ) : <div />}
-              {nextDoc ? (
-                <Link
-                  href={`/docs/${nextDoc.category}/${nextDoc.slug}`}
-                  className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors text-right"
-                >
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-0.5">{t('next')}</p>
-                    <p className="font-medium group-hover:text-foreground">{nextDoc.title}</p>
-                  </div>
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
-              ) : <div />}
-            </div>
-          )}
+          {doc.source_url && <DocSourceLink url={doc.source_url} />}
+          <DocNavLinks prevDoc={prevDoc} nextDoc={nextDoc} />
         </main>
 
         {/* Right sidebar */}
         <ScrollFadeAside className="hidden lg:block w-[260px] shrink-0 sticky top-[57px] h-[calc(100vh-57px)] overflow-y-auto scrollbar-none border-l border-border pl-5">
-          {(() => {
-            const docTags = doc.tags ?? []
-            const related = docTags.length > 0
-              ? docs.filter((d) => d.id !== doc.id && (d.tags ?? []).some((t) => docTags.includes(t))).slice(0, 8)
-              : []
-            const sidebarDocs = related.length > 0
-              ? { label: t('related'), items: related }
-              : {
-                  label: t('more_in', { category: doc.category.charAt(0).toUpperCase() + doc.category.slice(1) }),
-                  items: docs.filter((d) => d.id !== doc.id && d.category === doc.category).slice(0, 8),
-                }
-            if (sidebarDocs.items.length === 0) return null
-            return (
-              <div className="pt-1.5 pb-8 pr-1">
-                <p className="text-xs font-semibold tracking-wide text-muted-foreground mb-4">{sidebarDocs.label}</p>
-                <div className="flex flex-col gap-3">
-                  {sidebarDocs.items.map((d) => (
-                    <Link
-                      key={d.id}
-                      href={`/docs/${d.category}/${d.slug}`}
-                      className="group block rounded-md border border-border bg-background p-3 transition-colors hover:border-foreground/30"
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-1.5">
-                        <h3 className="text-[13px] font-medium leading-snug tracking-tight line-clamp-2 group-hover:underline group-hover:underline-offset-2">
-                          {d.title}
-                        </h3>
-                        {d.image_url && (
-                          <span className="shrink-0 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-medium text-foreground">
-                            {t('badge_image')}
-                          </span>
-                        )}
-                      </div>
-                      {d.description && (
-                        <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground/90">
-                          {d.description}
-                        </p>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )
-          })()}
+          <DocSidebarPanel
+            currentId={doc.id}
+            currentCategory={doc.category}
+            docs={docs}
+            tags={doc.tags ?? []}
+          />
         </ScrollFadeAside>
       </div>
       <Footer />

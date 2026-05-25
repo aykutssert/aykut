@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { revalidateTag } from 'next/cache'
+import { revalidateTag, revalidatePath } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
 import { requireAdmin } from '@/lib/auth/admin'
 import sharp from 'sharp'
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       const existing = await pb.collection('docs').getOne(id)
       await pb.collection('docs').update(id, data)
 
-      if (existing.content !== payload.content) {
+      if (payload.category === 'prompts' && existing.content !== payload.content) {
         const versions = await pb.collection('doc_versions').getFullList({
           filter: `doc_id = "${id}"`,
           sort: '-version_number',
@@ -63,18 +63,24 @@ export async function POST(req: Request) {
     } else {
       const newDoc = await pb.collection('docs').create(data)
       docId = newDoc.id
-      await pb.collection('doc_versions').create({
-        doc_id: docId,
-        version_number: 1,
-        content: payload.content,
-        change_summary: versionSummary || 'Initial version',
-        author_handle: '@admin',
-      })
+      if (payload.category === 'prompts') {
+        await pb.collection('doc_versions').create({
+          doc_id: docId,
+          version_number: 1,
+          content: payload.content,
+          change_summary: versionSummary || 'Initial version',
+          author_handle: '@admin',
+        })
+      }
     }
 
     revalidateTag('docs', 'max')
+    revalidatePath(`/docs/${payload.category}/${payload.slug}`)
+    revalidatePath('/docs', 'layout')
+    revalidatePath('/', 'layout')
     return NextResponse.json({ ok: true, id: docId })
   } catch (e: unknown) {
+    console.error('[/api/docs/save] Error:', e)
     return NextResponse.json({ error: String(e) }, { status: 500 })
   }
 }

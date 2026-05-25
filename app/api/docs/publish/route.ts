@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { revalidateTag } from 'next/cache'
+import { revalidateTag, revalidatePath } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
 import { requireAdmin } from '@/lib/auth/admin'
 
@@ -13,8 +13,12 @@ export async function PATCH(req: Request) {
   }
   try {
     const pb = await createAdminPB()
+    const doc = await pb.collection('docs').getOne(id, { fields: 'id,category,slug' })
     await pb.collection('docs').update(id, { published })
     revalidateTag('docs', 'max')
+    revalidatePath(`/docs/${doc.category}/${doc.slug}`)
+    revalidatePath('/docs', 'layout')
+    revalidatePath('/', 'layout')
     return NextResponse.json({ ok: true })
   } catch (e: unknown) {
     return NextResponse.json({ error: String(e) }, { status: 500 })

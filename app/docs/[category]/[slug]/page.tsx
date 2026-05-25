@@ -7,6 +7,7 @@ import { MobileOnThisPage } from '@/components/layout/MobileOnThisPage'
 
 import { getDoc, getDocs, getDocVersions } from '@/lib/docs'
 import { renderDocHtml } from '@/components/docs/DocContent'
+import { renderMarkdownHtml } from '@/lib/render-markdown'
 import { DocVersionHandler } from '@/components/docs/DocVersionHandler'
 import { CopyPageButton } from '@/components/docs/CopyPageButton'
 import { CopyCodeButton } from '@/components/docs/CopyCodeButton'
@@ -16,6 +17,7 @@ import { Footer } from '@/components/layout/Footer'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { DocViewTracker } from '@/components/docs/DocViewTracker'
 import { DocNavLinks, DocSourceLink, DocRequiredImages, DocSidebarPanel } from '@/components/docs/DocClientUI'
+import { BlogToc } from '@/components/docs/BlogToc'
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -48,15 +50,20 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
   const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
   if (!doc) notFound()
   
-  const [versions, { html: currentHtml, lang: currentLang }] = await Promise.all([
+  const isBlog = doc.category === 'blog'
+  const [versions, renderedContent] = await Promise.all([
     getDocVersions(doc.id),
-    renderDocHtml(doc.content)
+    isBlog
+      ? renderMarkdownHtml(doc.content).then((html) => ({ html, lang: 'blog' }))
+      : renderDocHtml(doc.content).then(({ html, lang }) => ({ html, lang })),
   ])
+  const { html: currentHtml, lang: currentLang } = renderedContent
   const likedByMe = false
 
-  const currentIndex = docs.findIndex((d) => d.id === doc.id)
-  const prevDoc = currentIndex > 0 ? docs[currentIndex - 1] : null
-  const nextDoc = currentIndex < docs.length - 1 ? docs[currentIndex + 1] : null
+  const sameCategoryDocs = docs.filter((d) => d.category === doc.category)
+  const currentIndex = sameCategoryDocs.findIndex((d) => d.id === doc.id)
+  const prevDoc = currentIndex > 0 ? sameCategoryDocs[currentIndex - 1] : null
+  const nextDoc = currentIndex < sameCategoryDocs.length - 1 ? sameCategoryDocs[currentIndex + 1] : null
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -68,7 +75,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
         <main className="flex-1 min-w-0 px-4 md:px-10 pt-3 pb-32">
           <div className="mb-8">
             <div className="flex items-start justify-between gap-4 mb-2">
-              <h1 className="text-[1.75rem] font-bold tracking-tight leading-tight" style={{ fontFamily: '"Anthropic Serif Display", Georgia, "Times New Roman", Times, serif' }}>
+              <h1 className="text-[1.4rem] font-bold tracking-tight leading-tight" style={{ fontFamily: '"Anthropic Serif Display", Georgia, "Times New Roman", Times, serif' }}>
                 {doc.title}
               </h1>
               <div className="flex shrink-0 items-center gap-2">
@@ -79,7 +86,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
                     initialLiked={likedByMe}
                   />
                 )}
-                <CopyPageButton content={doc.content} />
+                {doc.category !== 'blog' && <CopyPageButton content={doc.content} />}
               </div>
             </div>
             {doc.description && (
@@ -125,7 +132,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             </div>
           )}
 
-          {doc.required_images && <DocRequiredImages count={doc.required_images} />}
+          {!!doc.required_images && <DocRequiredImages count={doc.required_images} />}
 
           <DocVersionHandler 
             doc={doc} 
@@ -141,12 +148,16 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
 
         {/* Right sidebar */}
         <ScrollFadeAside className="hidden lg:block w-[260px] shrink-0 sticky top-[57px] h-[calc(100vh-57px)] overflow-y-auto scrollbar-none border-l border-border pl-5">
-          <DocSidebarPanel
-            currentId={doc.id}
-            currentCategory={doc.category}
-            docs={docs}
-            tags={doc.tags ?? []}
-          />
+          {isBlog ? (
+            <BlogToc html={currentHtml} />
+          ) : (
+            <DocSidebarPanel
+              currentId={doc.id}
+              currentCategory={doc.category}
+              docs={docs}
+              tags={doc.tags ?? []}
+            />
+          )}
         </ScrollFadeAside>
       </div>
       <Footer />

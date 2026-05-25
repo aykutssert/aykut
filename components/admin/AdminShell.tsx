@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Plus } from 'lucide-react'
+
 import { Suspense } from 'react'
 import { LogoutButton } from '@/components/admin/LogoutButton'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
@@ -30,21 +31,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-sm text-background transition-opacity hover:opacity-90"
             >
               <Plus className="h-3.5 w-3.5" />
-              Bulk import
-            </Link>
-            <Link
-              href="/admin/pets/new"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-sm text-background transition-opacity hover:opacity-90"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              New pet
+              Pets
             </Link>
             <Link
               href="/admin/new"
               className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-sm text-background transition-opacity hover:opacity-90"
             >
               <Plus className="h-3.5 w-3.5" />
-              New blog post
+              Blog
             </Link>
             <LogoutButton />
           </div>

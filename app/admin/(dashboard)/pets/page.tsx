@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Suspense } from 'react'
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
@@ -35,10 +34,7 @@ async function PetList() {
   if (pets.length === 0) {
     return (
       <div className="text-center py-20 text-muted-foreground text-sm">
-        No pets yet.{' '}
-        <Link href="/admin/pets/new" className="underline underline-offset-4 hover:text-foreground">
-          Add the first one.
-        </Link>
+        No pets yet. Use bulk import to add pets.
       </div>
     )
   }

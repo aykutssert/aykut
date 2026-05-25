@@ -51,13 +51,13 @@ export function Navbar({ docs = [] }: { docs?: DocMeta[] }) {
             <Mail className="w-3.5 h-3.5 text-orange-500" />
             {t('contact')}
           </Link>
-          <Link href="/prompts" onClick={() => { if (pathname === '/prompts') window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-            {t('prompts')}
-          </Link>
           <Link href="/docs" className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
             <BookOpen className="w-3.5 h-3.5 text-violet-400" />
             {t('blog')}
+          </Link>
+          <Link href="/prompts" onClick={() => { if (pathname === '/prompts') window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="flex h-8 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+            {t('prompts')}
           </Link>
           <MoreMenu />
         </div>

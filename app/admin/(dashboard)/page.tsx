@@ -3,48 +3,25 @@ import Link from 'next/link'
 import { cacheTag, cacheLife } from 'next/cache'
 import { createAdminPB } from '@/lib/pocketbase'
 import { FileText, PawPrint, FileX } from 'lucide-react'
-import { AdminCharts } from '@/components/admin/AdminCharts'
-
-interface WeeklyPoint { week: string; docs: number; pets: number }
 
 interface DashboardData {
   stats: { totalDocs: number; totalPets: number; draftDocs: number; draftPets: number }
   recent: {
     docs: { id: string; title: string; category: string; published: boolean; created: string }[]
-    pets: { id: string; display_name: string; spritesheet_url: string; published: boolean; created: string }[]
   }
-  weekly: WeeklyPoint[]
 }
 
-function getWeekLabels(count: number): { start: Date; label: string }[] {
-  const now = new Date()
-  return Array.from({ length: count }, (_, i) => {
-    const start = new Date(now)
-    start.setDate(now.getDate() - (count - 1 - i) * 7)
-    start.setHours(0, 0, 0, 0)
-    const label = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    return { start, label }
-  })
-}
-
-// Single PB auth + all queries in one cached function.
 async function getDashboardData(): Promise<DashboardData> {
   'use cache'
   cacheTag('docs', 'pets')
   cacheLife('minutes')
 
   const pb = await createAdminPB()
-  const since = new Date()
-  since.setDate(since.getDate() - 56)
-  const sinceStr = since.toISOString().replace('T', ' ')
 
-  const [allDocs, allPets, recentDocsRes, recentPetsRes, chartDocs, chartPets] = await Promise.all([
+  const [allDocs, allPets, recentDocsRes] = await Promise.all([
     pb.collection('docs').getFullList({ fields: 'published' }),
     pb.collection('pets').getFullList({ fields: 'published' }),
     pb.collection('docs').getList(1, 5, { sort: '-created', fields: 'id,title,category,published,created' }),
-    pb.collection('pets').getList(1, 5, { sort: '-created', fields: 'id,display_name,spritesheet_url,published,created' }),
-    pb.collection('docs').getFullList({ filter: `created >= "${sinceStr}"`, fields: 'created' }),
-    pb.collection('pets').getFullList({ filter: `created >= "${sinceStr}"`, fields: 'created' }),
   ])
 
   const stats = {
@@ -56,20 +33,9 @@ async function getDashboardData(): Promise<DashboardData> {
 
   const recent = {
     docs: recentDocsRes.items as unknown as DashboardData['recent']['docs'],
-    pets: recentPetsRes.items as unknown as DashboardData['recent']['pets'],
   }
 
-  const weeks = getWeekLabels(8)
-  const weekly: WeeklyPoint[] = weeks.map(({ start }, i) => {
-    const end = i < weeks.length - 1 ? weeks[i + 1].start : new Date()
-    const labelDate = i < weeks.length - 1 ? new Date(end.getTime() - 86400000) : new Date()
-    const weekLabel = labelDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    const docCount = chartDocs.filter((d) => new Date(d.created) >= start && new Date(d.created) < end).length
-    const petCount = chartPets.filter((p) => new Date(p.created) >= start && new Date(p.created) < end).length
-    return { week: weekLabel, docs: docCount, pets: petCount }
-  })
-
-  return { stats, recent, weekly }
+  return { stats, recent }
 }
 
 function StatCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: number; href?: string }) {
@@ -86,83 +52,44 @@ function StatCard({ icon, label, value, href }: { icon: React.ReactNode; label: 
 }
 
 async function Dashboard() {
-  const { stats, recent, weekly } = await getDashboardData()
+  const { stats, recent } = await getDashboardData()
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-xl font-semibold mb-4">Overview</h1>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <StatCard icon={<FileText className="w-4 h-4" />} label="Total docs" value={stats.totalDocs} href="/admin/docs" />
+          <StatCard icon={<FileText className="w-4 h-4" />} label="Total posts" value={stats.totalDocs} href="/admin/docs" />
           <StatCard icon={<PawPrint className="w-4 h-4" />} label="Total pets" value={stats.totalPets} href="/admin/pets" />
           <StatCard icon={<FileX className="w-4 h-4" />} label="Drafts" value={stats.draftDocs + stats.draftPets} />
         </div>
       </div>
 
-      <AdminCharts weekly={weekly} />
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold">Recent blog posts</h2>
-            <Link href="/admin/docs" className="text-xs text-muted-foreground hover:text-foreground transition-colors">View all</Link>
-          </div>
-          <div className="border border-border rounded-xl overflow-hidden">
-            {recent.docs.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No blog posts yet.</p>
-            ) : (
-              <ul className="divide-y divide-border">
-                {recent.docs.map((doc) => (
-                  <li key={doc.id}>
-                    <Link href={`/admin/edit/${doc.id}`} className="flex items-center justify-between px-4 py-2.5 hover:bg-muted/50 transition-colors">
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium truncate">{doc.title}</p>
-                        <p className="text-xs text-muted-foreground">{doc.category}</p>
-                      </div>
-                      <span className={`shrink-0 ml-3 text-xs px-1.5 py-0.5 rounded-full ${doc.published ? 'bg-foreground/10 text-foreground' : 'bg-muted text-muted-foreground'}`}>
-                        {doc.published ? 'Published' : 'Draft'}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-semibold">Recent posts</h2>
+          <Link href="/admin/docs" className="text-xs text-muted-foreground hover:text-foreground transition-colors">View all</Link>
         </div>
-
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold">Recent pets</h2>
-            <Link href="/admin/pets" className="text-xs text-muted-foreground hover:text-foreground transition-colors">View all</Link>
-          </div>
-          <div className="border border-border rounded-xl overflow-hidden">
-            {recent.pets.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No pets yet.</p>
-            ) : (
-              <ul className="divide-y divide-border">
-                {recent.pets.map((pet) => (
-                  <li key={pet.id}>
-                    <Link href={`/admin/pets/edit/${pet.id}`} className="flex items-center gap-3 px-4 py-2 hover:bg-muted/50 transition-colors">
-                      <div
-                        className="w-7 h-7 rounded shrink-0"
-                        style={{
-                          backgroundImage: `url(${pet.spritesheet_url})`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundPosition: '0 0',
-                          backgroundSize: 'auto 100%',
-                          imageRendering: 'pixelated',
-                        }}
-                      />
-                      <p className="text-sm font-medium flex-1 truncate">{pet.display_name}</p>
-                      <span className={`shrink-0 text-xs px-1.5 py-0.5 rounded-full ${pet.published ? 'bg-foreground/10 text-foreground' : 'bg-muted text-muted-foreground'}`}>
-                        {pet.published ? 'Published' : 'Draft'}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+        <div className="border border-border rounded-xl overflow-hidden">
+          {recent.docs.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-8">No posts yet.</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {recent.docs.map((doc) => (
+                <li key={doc.id}>
+                  <Link href={`/admin/edit/${doc.id}`} className="flex items-center justify-between px-4 py-2.5 hover:bg-muted/50 transition-colors">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{doc.title}</p>
+                      <p className="text-xs text-muted-foreground">{doc.category}</p>
+                    </div>
+                    <span className={`shrink-0 ml-3 text-xs px-1.5 py-0.5 rounded-full ${doc.published ? 'bg-foreground/10 text-foreground' : 'bg-muted text-muted-foreground'}`}>
+                      {doc.published ? 'Published' : 'Draft'}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>
@@ -177,7 +104,6 @@ export default function AdminPage() {
         <div className="grid grid-cols-3 gap-3">
           {[...Array(3)].map((_, i) => <div key={i} className="h-20 bg-muted animate-pulse rounded-xl" />)}
         </div>
-        <div className="h-64 bg-muted animate-pulse rounded-xl" />
       </div>
     }>
       <Dashboard />

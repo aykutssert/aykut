@@ -14,20 +14,23 @@ import { HeroTyper } from './HeroTyper'
 import { KitchenShowcaseLazy as KitchenShowcase } from './LazyDemos'
 import type { DocMeta } from '@/types'
 
-type RecentPrompt = {
+type RecentPost = {
   id: string
   title: string
   slug: string
   description: string | null
+  image_url?: string | null
   tags: string[] | null
+  created_at?: string | null
 }
 
 type Props = {
   docs: DocMeta[]
-  recentPrompts: RecentPrompt[]
+  recentBlogPosts: RecentPost[]
+  recentPrompts: RecentPost[]
 }
 
-export function LandingClient({ docs, recentPrompts }: Props) {
+export function LandingClient({ docs, recentBlogPosts, recentPrompts }: Props) {
   const t = useTranslations('landing')
 
   return (
@@ -326,47 +329,57 @@ export function LandingClient({ docs, recentPrompts }: Props) {
         </Link>
         </FadeInSection>
 
-        {/* ── Blog posts ── */}
-        {recentPrompts.length > 0 && (
-          <FadeInSection>
-          <div className="mt-8">
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-xs font-semibold tracking-wide text-muted-foreground">{t('blog.latest')}</p>
-              <Link href="/prompts" className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground">
-                {t('blog.all')} <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {recentPrompts.map((post) => (
-                <Link key={post.id} href={`/docs/prompts/${post.slug}`}
-                  className="group flex flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-                  <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
-                    <BookOpen className="h-3 w-3" />
-                    {t('blog.post_label')}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold tracking-tight line-clamp-2">{post.title}</h3>
-                    {post.description && (
-                      <p className="mt-1.5 text-sm leading-6 text-muted-foreground line-clamp-2">{post.description}</p>
-                    )}
-                  </div>
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="mt-auto flex flex-wrap gap-1">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className="rounded-md border border-border bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground/70">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                  <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-                    <span className="group-hover:underline underline-offset-2">{t('blog.read')}</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
+        {/* ── Recent content: blog first, prompts fallback ── */}
+        {(recentBlogPosts.length > 0 || recentPrompts.length > 0) && (() => {
+          const isBlog = recentBlogPosts.length > 0
+          const posts = isBlog ? recentBlogPosts : recentPrompts
+          const category = isBlog ? 'blog' : 'prompts'
+          const allHref = isBlog ? '/docs' : '/prompts'
+          return (
+            <FadeInSection>
+            <div className="mt-8">
+              <div className="mb-4 flex items-center justify-between">
+                <p className="text-xs font-semibold tracking-wide text-muted-foreground">{t('blog.latest')}</p>
+                <Link href={allHref} className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground">
+                  {t('blog.all')} <ArrowRight className="h-3 w-3" />
                 </Link>
-              ))}
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {posts.map((post) => (
+                  <Link key={post.id} href={`/docs/${category}/${post.slug}`}
+                    className="group overflow-hidden rounded-xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
+                    {post.image_url && (
+                      <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+                        <div
+                          className="absolute inset-0 scale-110 bg-cover bg-center blur-xl opacity-60"
+                          style={{ backgroundImage: `url(${post.image_url})` }}
+                        />
+                        <img
+                          src={post.image_url}
+                          alt={post.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="relative z-10 h-full w-full object-contain"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-2 p-4">
+                      <h3 className="font-semibold tracking-tight line-clamp-2 text-sm">{post.title}</h3>
+                      {post.description && (
+                        <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">{post.description}</p>
+                      )}
+                      <div className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-foreground">
+                        <span className="group-hover:underline underline-offset-2">{t('blog.read')}</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-          </FadeInSection>
-        )}
+            </FadeInSection>
+          )
+        })()}
       </main>
 
       {/* ── About ── */}

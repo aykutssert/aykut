@@ -94,7 +94,7 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
   return (
     <div className="space-y-6">
       {/* Tabs */}
-      <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/40 w-fit">
+      <div className={cn("flex items-center gap-1 p-1 rounded-lg border border-border bg-muted/40 w-fit", currentLang === 'blog' && "hidden")}>
         <button
           type="button"
           onClick={() => setActiveTab('content')}
@@ -123,12 +123,31 @@ export function DocVersionHandler({ doc, versions, currentHtml, currentLang }: P
       </div>
 
       {activeTab === 'content' ? (
-        <DocRawContent
-          html={currentHtml}
-          content={doc.content}
-          variables={doc.variables ?? []}
-          withLines={currentLang !== 'markdown'}
-        />
+        currentLang === 'blog' ? (
+          <div
+            className="prose prose-sm prose-neutral dark:prose-invert max-w-none
+              prose-headings:font-bold prose-headings:tracking-tight
+              prose-h1:text-xl prose-h2:text-lg prose-h2:mt-8 prose-h2:mb-3
+              prose-h3:text-sm prose-h3:mt-6 prose-h3:mb-2
+              prose-p:leading-6 prose-p:text-foreground/90
+              prose-strong:text-foreground
+              prose-code:text-[0.8em] prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
+              prose-pre:bg-transparent prose-pre:p-0 prose-pre:border prose-pre:border-border prose-pre:rounded-lg prose-pre:overflow-hidden
+              prose-blockquote:border-l-2 prose-blockquote:border-border prose-blockquote:text-muted-foreground
+              prose-hr:border-border
+              prose-a:text-foreground prose-a:underline-offset-4
+              [&_figure]:my-4 [&_figure[data-rehype-pretty-code-figure]]:border [&_figure[data-rehype-pretty-code-figure]]:border-border [&_figure[data-rehype-pretty-code-figure]]:rounded-lg [&_figure[data-rehype-pretty-code-figure]]:overflow-hidden
+              [&_figure[data-rehype-pretty-code-figure]_pre]:m-0 [&_figure[data-rehype-pretty-code-figure]_pre]:rounded-none [&_figure[data-rehype-pretty-code-figure]_pre]:border-0"
+            dangerouslySetInnerHTML={{ __html: currentHtml }}
+          />
+        ) : (
+          <DocRawContent
+            html={currentHtml}
+            content={doc.content}
+            variables={doc.variables ?? []}
+            withLines={currentLang !== 'markdown'}
+          />
+        )
       ) : (
         <div className="space-y-4">
           <div className="flex items-center justify-between">

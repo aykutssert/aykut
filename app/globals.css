@@ -178,7 +178,9 @@ button:disabled { cursor: not-allowed !important; }
   100% { transform: translateX(220%); }
 }
 
-/* rehype-pretty-code dual theme */
+/* rehype-pretty-code dual theme — span token colors */
+/* When --shiki-light/dark are defined (language specified), spans use them.
+   When not defined (no language), spans inherit the pre fallback color below. */
 .prose pre span {
   color: var(--shiki-light) !important;
 }
@@ -187,9 +189,16 @@ button:disabled { cursor: not-allowed !important; }
   color: var(--shiki-dark) !important;
 }
 
+/* Fallback text color for code blocks without a language (no shiki variables).
+   Matches one-light / one-dark-pro default text colors. */
 .prose pre {
+  color: #383a42;
   white-space: pre-wrap !important;
   word-break: break-all !important;
+}
+
+.dark .prose pre {
+  color: #abb2bf;
 }
 
 /* Prose direct color overrides — bypasses variable cascade issues */
@@ -200,7 +209,15 @@ button:disabled { cursor: not-allowed !important; }
 .prose h5,
 .prose h6 {
   color: hsl(var(--foreground));
-  font-family: "Anthropic Serif Display", Georgia, "Times New Roman", Times, serif;
+}
+
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a,
+.prose h5 a,
+.prose h6 a {
+  text-decoration: none;
 }
 
 .prose h1 { font-size: 1.5rem; }
@@ -277,6 +294,28 @@ button:disabled { cursor: not-allowed !important; }
   font-size: 0.875rem;
   line-height: 1.7;
   padding: 1rem 1.25rem;
+  background: #EEEEE8 !important;
+}
+
+.dark [data-rehype-pretty-code-figure] pre {
+  background: #1E1C1A !important;
+}
+
+/* Plain pre (no language, no figure wrapper) */
+.prose pre:not([data-rehype-pretty-code-figure] pre) {
+  background: #EEEEE8 !important;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+}
+
+.dark .prose pre:not([data-rehype-pretty-code-figure] pre) {
+  background: #1E1C1A !important;
+}
+
+/* Copy button lives on the figure to avoid pre's overflow clipping */
+[data-rehype-pretty-code-figure] button[data-copy-btn] {
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
 
 [data-rehype-pretty-code-figure] [data-line] {

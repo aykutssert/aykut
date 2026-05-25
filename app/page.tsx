@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { getDocs, getRecentPrompts } from '@/lib/docs'
+import { getDocs, getRecentBlogPosts, getRecentPrompts } from '@/lib/docs'
 import { LandingClient } from '@/components/landing/LandingClient'
+import { DiscoverWidget } from '@/components/layout/DiscoverWidget'
 
 export const metadata: Metadata = {
   title: 'Aykut Sert',
@@ -8,8 +9,9 @@ export const metadata: Metadata = {
 }
 
 export default async function LandingPage() {
-  const [docs, recentPrompts] = await Promise.all([
+  const [docs, recentBlogPosts, recentPrompts] = await Promise.all([
     getDocs().catch(() => []),
+    getRecentBlogPosts(3).catch(() => []),
     getRecentPrompts(3).catch(() => []),
   ])
 
@@ -47,7 +49,8 @@ export default async function LandingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LandingClient docs={docs} recentPrompts={recentPrompts} />
+      <LandingClient docs={docs} recentBlogPosts={recentBlogPosts} recentPrompts={recentPrompts} />
+      <DiscoverWidget />
     </>
   )
 }

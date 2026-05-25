@@ -551,7 +551,7 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               disabled={saving}
               className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create doc'}
+              {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create'}
             </button>
           </div>
         </div>

@@ -29,6 +29,7 @@ export interface DocMeta {
   description: string | null
   image_url: string | null
   likes_count?: number | null
+  created_at?: string | null
 }
 
 export type TaggedDoc = Pick<

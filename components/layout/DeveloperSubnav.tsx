@@ -10,8 +10,8 @@ export function DeveloperSubnav() {
   const t = useTranslations('nav')
 
   const links = [
-    { href: '/prompts', label: t('prompts') },
     { href: '/docs', label: t('blog') },
+    { href: '/prompts', label: t('prompts') },
   ]
 
   return (

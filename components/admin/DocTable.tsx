@@ -18,22 +18,6 @@ function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-const CONTENT_FULL = 3000
-
-function ContentLength({ content }: { content: string }) {
-  const len = content.length
-  const pct = Math.min((len / CONTENT_FULL) * 100, 100)
-  const color = pct < 20 ? 'bg-red-400' : pct < 60 ? 'bg-amber-400' : 'bg-emerald-400'
-  return (
-    <div className="flex items-center gap-2 min-w-[64px]">
-      <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
-      </div>
-      <span className="text-xs tabular-nums text-muted-foreground shrink-0">{len < 1000 ? len : `${(len / 1000).toFixed(1)}k`}</span>
-    </div>
-  )
-}
-
 function SortIcon({ active, dir }: { active: boolean; dir: SortDir }) {
   if (!active) return <ChevronsUpDown className="w-3 h-3 opacity-30" />
   return active && dir === 'asc' ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />
@@ -172,20 +156,20 @@ export function DocTable({ docs: initialDocs }: { docs: Doc[] }) {
               ))}
             </div>
           )}
-          <p className="text-xs text-muted-foreground shrink-0">{filtered.length} doc{filtered.length !== 1 ? 's' : ''}</p>
+          <p className="text-xs text-muted-foreground shrink-0">{filtered.length} post{filtered.length !== 1 ? 's' : ''}</p>
         </div>
       </div>
 
       {mode === 'reorder' && active !== 'All' ? (
         <ReorderPanel docs={reorderDocs} category={active} />
       ) : filtered.length === 0 ? (
-        <p className="text-center py-16 text-sm text-muted-foreground">{query ? 'No docs match your search.' : 'No docs in this category.'}</p>
+        <p className="text-center py-16 text-sm text-muted-foreground">{query ? 'No posts match your search.' : 'No posts in this category.'}</p>
       ) : (
         <div className="border border-border rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/50">
-                {([['order_index', '#'], ['title', 'Title'], ['category', 'Category'], ['slug', 'Slug'], ['updated_at', 'Updated'], ['content', 'Length'], ['published', 'Status']] as [SortKey | string, string][]).map(([key, label]) => {
+                {([['order_index', '#'], ['title', 'Title'], ['category', 'Category'], ['updated_at', 'Updated'], ['published', 'Status']] as [SortKey | string, string][]).map(([key, label]) => {
                   const sortable = ['order_index', 'title', 'updated_at', 'published'].includes(key)
                   return (
                     <th
@@ -209,9 +193,7 @@ export function DocTable({ docs: initialDocs }: { docs: Doc[] }) {
                   <td className="px-4 py-3 text-muted-foreground text-xs font-mono">{doc.order_index}</td>
                   <td className="px-4 py-3 font-medium">{doc.title}</td>
                   <td className="px-4 py-3 text-muted-foreground">{doc.category}</td>
-                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{doc.slug}</td>
                   <td className="px-4 py-3 text-muted-foreground text-xs">{fmtDate(doc.updated_at)}</td>
-                  <td className="px-4 py-3"><ContentLength content={doc.content} /></td>
                   <td className="px-4 py-3">
                     <button
                       onClick={() => handleTogglePublish(doc.id, doc.published)}

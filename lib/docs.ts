@@ -56,6 +56,7 @@ function mapDocMeta(r: Record<string, unknown>): DocMeta {
     tags: parseTags(r.tags),
     description: (r.description as string) || null,
     image_url: resolveDocImageUrl(r),
+    created_at: (r.created as string) || null,
   }
 }
 
@@ -312,6 +313,31 @@ export async function getPromptDocsWithPreviews({
   const docs = await getPromptDocsFiltered({ q, tags, sort })
   const withLikes = docs.map((doc) => ({ ...doc, liked_by_me: false as boolean | undefined }))
   return withPromptPreviews(withLikes, (doc) => (doc.image_url ? 4 : 8))
+}
+
+export async function getRecentBlogPosts(limit = 3): Promise<Pick<TaggedDoc, 'id' | 'title' | 'slug' | 'description' | 'image_url' | 'tags' | 'created_at'>[]> {
+  'use cache'
+  cacheTag('docs', 'blog')
+  cacheLife('max')
+  try {
+    const pb = createPB()
+    const records = await pb.collection('docs').getList(1, limit, {
+      filter: 'published = true && category = "blog"',
+      sort: '-created',
+      fields: 'id,title,slug,description,image_url,image,tags,created',
+    })
+    return records.items.map((r) => ({
+      id: r.id,
+      title: r.title as string,
+      slug: r.slug as string,
+      description: (r.description as string) || null,
+      image_url: resolveDocImageUrl(r as unknown as Record<string, unknown>),
+      tags: parseTags(r.tags),
+      created_at: r.created,
+    }))
+  } catch {
+    return []
+  }
 }
 
 export async function getRecentPrompts(limit = 3): Promise<Pick<TaggedDoc, 'id' | 'title' | 'slug' | 'description' | 'image_url' | 'tags' | 'created_at'>[]> {

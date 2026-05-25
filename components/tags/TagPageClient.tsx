@@ -74,9 +74,6 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
               className="relative z-10 block w-full"
             />
             <div className="absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t from-background/75 via-background/25 to-transparent dark:h-20 dark:from-[#080808] dark:via-[#080808]/70" />
-            <span suppressHydrationWarning className="absolute right-2.5 top-2.5 z-20 rounded-md border border-border bg-background/85 px-2 py-0.5 text-[10px] font-medium text-foreground shadow-sm backdrop-blur">
-              {tp('badge_image')}
-            </span>
           </div>
         ) : null}
 
@@ -87,9 +84,6 @@ function TagDocCard({ doc }: { doc: TaggedDocWithPreview }) {
                 {doc.title}
               </h2>
             </Link>
-            {!doc.image_url && (
-              <span suppressHydrationWarning className="shrink-0 rounded-md border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{tp('badge_text')}</span>
-            )}
           </div>
           {doc.description && (
             <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">

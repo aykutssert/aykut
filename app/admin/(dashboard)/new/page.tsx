@@ -9,7 +9,7 @@ export default async function NewDocPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-6">New blog post</h1>
+      <h1 className="text-xl font-semibold mb-6">New blog</h1>
       <DocForm categories={categories} allDocs={allDocs} />
     </div>
   )

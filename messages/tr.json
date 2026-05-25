@@ -284,16 +284,66 @@
     "off": "KAPALI"
   },
   "pet": {
-    "click": ["Merhaba!", "Selam!", "Seni görmek güzel!", "Hehe!"],
-    "hover": ["Merhaba!", "Selam!", "Hey!", "Seni görmek güzel!"],
-    "grabbed": ["Vay be!", "Bırak beni!", "Serbest bırak!", "Hey!", "Uçuş zamanı!"],
-    "thrown": ["Ay!", "Hey, dikkat et!", "Acıttı!", "Beni atma!", "Deli misin?!", "Kafam...", "Neden yaptın bunu?"],
-    "idle": ["Ne harika bir sayfa!", "Sürüklemeyi dene!", "Codex tarafından oluşturuldum.", "Code review lazım mı?", "Burası çok sessiz...", "Tıkla bana!", "Kod mu yazıyorsun?", "Bloop."],
-    "food": ["Nefis!", "🍎❤️", "Harika!"],
+    "click": [
+      "Merhaba!",
+      "Selam!",
+      "Seni görmek güzel!",
+      "Hehe!"
+    ],
+    "hover": [
+      "Merhaba!",
+      "Selam!",
+      "Hey!",
+      "Seni görmek güzel!"
+    ],
+    "grabbed": [
+      "Vay be!",
+      "Bırak beni!",
+      "Serbest bırak!",
+      "Hey!",
+      "Uçuş zamanı!"
+    ],
+    "thrown": [
+      "Ay!",
+      "Hey, dikkat et!",
+      "Acıttı!",
+      "Beni atma!",
+      "Deli misin?!",
+      "Kafam...",
+      "Neden yaptın bunu?"
+    ],
+    "idle": [
+      "Ne harika bir sayfa!",
+      "Sürüklemeyi dene!",
+      "Codex tarafından oluşturuldum.",
+      "Code review lazım mı?",
+      "Burası çok sessiz...",
+      "Tıkla bana!",
+      "Kod mu yazıyorsun?",
+      "Bloop."
+    ],
+    "food": [
+      "Nefis!",
+      "🍎❤️",
+      "Harika!"
+    ],
     "typing_idle": "Ne yazıyoruz? 🤔",
     "typing_slow": "Daha hızlı yaz! ⌨️",
-    "typing_comments": ["Yazıma dikkat et! 🧐", "Öyle yazılmıyor sanırım...", "Vay be, ne hızlı yazıyorsun! ⚡", "Derlediğinden emin ol!", "İlginç..."],
-    "reading": ["Hmm, ilginç...", "Kopyalayacak mısın?", "İyi okuma!", "Ben de okuyordum!", "Not alıyor musun?", "Büyüleyici."],
+    "typing_comments": [
+      "Yazıma dikkat et! 🧐",
+      "Öyle yazılmıyor sanırım...",
+      "Vay be, ne hızlı yazıyorsun! ⚡",
+      "Derlediğinden emin ol!",
+      "İlginç..."
+    ],
+    "reading": [
+      "Hmm, ilginç...",
+      "Kopyalayacak mısın?",
+      "İyi okuma!",
+      "Ben de okuyordum!",
+      "Not alıyor musun?",
+      "Büyüleyici."
+    ],
     "feed": "Besle"
   }
 }

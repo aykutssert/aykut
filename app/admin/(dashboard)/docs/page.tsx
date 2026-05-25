@@ -9,7 +9,7 @@ import type { Doc } from '@/types'
 async function getAllDocs(): Promise<Doc[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('hours')
 
   const pb = await createAdminPB()
   const records = await pb.collection('docs').getFullList({

@@ -7,7 +7,6 @@ const PUBLIC_API_PREFIXES = [
   '/api/search',
   '/api/auth',
   '/api/docs/like',
-  '/api/feedback',
   '/api/pets/like',
   '/api/pets/likes',
   '/api/pets/download',
@@ -36,12 +35,6 @@ async function isAdmin(request: NextRequest): Promise<boolean> {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (LOCK_PRODUCTION_SITE && process.env.NODE_ENV === 'production') {
-    if (pathname.startsWith('/admin')) {
-      return new NextResponse(null, { status: 404 })
-    }
-  }
-
   const admin = await isAdmin(request)
 
   // Public API routes pass through
@@ -53,8 +46,13 @@ export async function proxy(request: NextRequest) {
   }
 
   // Admin route protection
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    if (!admin) {
+  if (pathname.startsWith('/admin')) {
+    // In production with lock enabled, non-admins get 404 except login page
+    if (LOCK_PRODUCTION_SITE && process.env.NODE_ENV === 'production' && !admin && pathname !== '/admin/login') {
+      return new NextResponse(null, { status: 404 })
+    }
+
+    if (pathname !== '/admin/login' && !admin) {
       const url = request.nextUrl.clone()
       url.pathname = '/admin/login'
       return NextResponse.redirect(url)

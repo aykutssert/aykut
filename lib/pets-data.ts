@@ -8,7 +8,7 @@ export { PER_PAGE }
 export async function getPet(id: string): Promise<Pet | null> {
   'use cache'
   cacheTag('pets', `pet-${id}`)
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const record = await pb.collection('pets').getFirstListItem(

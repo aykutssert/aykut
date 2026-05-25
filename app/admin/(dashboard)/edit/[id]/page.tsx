@@ -13,7 +13,7 @@ interface Props {
 async function getDocById(id: string): Promise<Doc | null> {
   'use cache'
   cacheTag('docs', `doc-admin-${id}`)
-  cacheLife('max')
+  cacheLife('hours')
 
   const pb = await createAdminPB()
   try {

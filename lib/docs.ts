@@ -80,7 +80,7 @@ function mapTaggedDoc(r: Record<string, unknown>): TaggedDoc {
 export async function getDocVersions(docId: string): Promise<DocVersion[]> {
   'use cache'
   cacheTag('docs', `versions-${docId}`)
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('doc_versions').getFullList({
@@ -104,7 +104,7 @@ export async function getDocVersions(docId: string): Promise<DocVersion[]> {
 export async function getDocs(): Promise<DocMeta[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -120,7 +120,7 @@ export async function getDocs(): Promise<DocMeta[]> {
 export async function getDoc(category: string, slug: string): Promise<Doc | null> {
   'use cache'
   cacheTag('docs', `doc-${category}-${slug}`)
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const record = await pb.collection('docs').getFirstListItem(
@@ -135,7 +135,7 @@ export async function getDoc(category: string, slug: string): Promise<Doc | null
 export async function getCategories(): Promise<string[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -152,7 +152,7 @@ export async function getCategories(): Promise<string[]> {
 export async function getAllCategories(): Promise<string[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -169,7 +169,7 @@ export async function getAllCategories(): Promise<string[]> {
 export async function getAllDocsMeta(): Promise<Pick<Doc, 'id' | 'title' | 'slug' | 'category' | 'order_index'>[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -191,7 +191,7 @@ export async function getAllDocsMeta(): Promise<Pick<Doc, 'id' | 'title' | 'slug
 export async function getDocsByTag(tag: string): Promise<TaggedDoc[]> {
   'use cache'
   cacheTag('docs', `tag-${tag}`)
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -207,7 +207,7 @@ export async function getDocsByTag(tag: string): Promise<TaggedDoc[]> {
 export async function getPromptDocs(): Promise<TaggedDoc[]> {
   'use cache'
   cacheTag('docs', 'prompts')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -231,7 +231,7 @@ export async function getPromptDocsFiltered({
 }): Promise<TaggedDoc[]> {
   'use cache'
   cacheTag('docs', 'prompts')
-  cacheLife('max')
+  cacheLife('days')
 
   try {
     const pb = createPB()
@@ -267,7 +267,7 @@ export async function getPromptDocsFiltered({
 export async function getAllTags(): Promise<string[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -284,7 +284,7 @@ export async function getAllTags(): Promise<string[]> {
 export async function getAllDocParams(): Promise<{ category: string; slug: string }[]> {
   'use cache'
   cacheTag('docs')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getFullList({
@@ -308,7 +308,7 @@ export async function getPromptDocsWithPreviews({
 }): Promise<TaggedDocWithPreview[]> {
   'use cache'
   cacheTag('docs', 'prompts')
-  cacheLife('max')
+  cacheLife('days')
 
   const docs = await getPromptDocsFiltered({ q, tags, sort })
   const withLikes = docs.map((doc) => ({ ...doc, liked_by_me: false as boolean | undefined }))
@@ -318,7 +318,7 @@ export async function getPromptDocsWithPreviews({
 export async function getRecentBlogPosts(limit = 3): Promise<Pick<TaggedDoc, 'id' | 'title' | 'slug' | 'description' | 'image_url' | 'tags' | 'created_at'>[]> {
   'use cache'
   cacheTag('docs', 'blog')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getList(1, limit, {
@@ -343,7 +343,7 @@ export async function getRecentBlogPosts(limit = 3): Promise<Pick<TaggedDoc, 'id
 export async function getRecentPrompts(limit = 3): Promise<Pick<TaggedDoc, 'id' | 'title' | 'slug' | 'description' | 'image_url' | 'tags' | 'created_at'>[]> {
   'use cache'
   cacheTag('docs', 'prompts')
-  cacheLife('max')
+  cacheLife('days')
   try {
     const pb = createPB()
     const records = await pb.collection('docs').getList(1, limit, {

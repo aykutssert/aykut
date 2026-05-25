@@ -11,7 +11,9 @@ import { LikeButton } from '@/components/pets/LikeButton'
 import { ShareButton } from '@/components/pets/ShareModal'
 import { CurlCommand } from '@/components/pets/CurlCommand'
 import { BackButton } from '@/components/pets/BackButton'
-import { getTranslations } from 'next-intl/server'
+import { cookies } from 'next/headers'
+import enMessages from '@/messages/en.json'
+import trMessages from '@/messages/tr.json'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -40,7 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function PetPageContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const [pet, docs, t] = await Promise.all([getPet(id), getDocs(), getTranslations('pets_page')])
+  const [pet, docs, cookieStore] = await Promise.all([getPet(id), getDocs(), cookies()])
+  const locale = cookieStore.get('locale')?.value === 'tr' ? 'tr' : 'en'
+  const messages = locale === 'tr' ? trMessages : enMessages
+  const t = (key: keyof typeof enMessages.pets_page) => messages.pets_page[key]
   if (!pet) notFound()
 
   return (

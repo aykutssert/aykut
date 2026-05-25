@@ -7,7 +7,7 @@ import type { Pet } from '@/lib/pets'
 async function getAllPets(): Promise<Pet[]> {
   'use cache'
   cacheTag('pets')
-  cacheLife('max')
+  cacheLife('hours')
 
   const pb = await createAdminPB()
   const records = await pb.collection('pets').getFullList({

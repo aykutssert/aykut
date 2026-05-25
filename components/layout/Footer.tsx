@@ -9,12 +9,6 @@ export function Footer() {
   return (
     <footer className="border-t border-border mt-auto">
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pt-5 pb-3">
-        <p className="text-xs text-muted-foreground/50 text-center leading-relaxed mb-5">
-          {t.rich('disclaimer', {
-            link: (chunks) => <a href="https://prompts.chat/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">{chunks}</a>,
-            email: (chunks) => <a href="mailto:aykutssert@gmail.com" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">{chunks}</a>,
-          })}
-        </p>
       </div>
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">

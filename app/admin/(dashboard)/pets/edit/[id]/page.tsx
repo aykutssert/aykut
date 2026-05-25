@@ -12,7 +12,7 @@ interface Props {
 async function getPetById(id: string): Promise<Pet | null> {
   'use cache'
   cacheTag('pets', `pet-admin-${id}`)
-  cacheLife('max')
+  cacheLife('hours')
 
   const pb = await createAdminPB()
   try {

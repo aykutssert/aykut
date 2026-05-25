@@ -1,12 +1,13 @@
 'use client'
 
-import { useLocaleContext } from './LocaleProvider'
+import { useLocale } from 'next-intl'
 
 export function LanguageToggle() {
-  const { locale, setLocale } = useLocaleContext()
+  const locale = useLocale()
 
   function handleToggle() {
-    setLocale(locale === 'en' ? 'tr' : 'en')
+    const next = locale === 'en' ? 'tr' : 'en'
+    document.cookie = `locale=${next};path=/;max-age=31536000`
     window.location.reload()
   }
 

@@ -13,7 +13,7 @@ const VALID_ID = /^[a-z0-9]{15}$/i
 async function renderDocPreview(doc: TaggedDoc, maxLines: number): Promise<TaggedDocWithPreview> {
   'use cache'
   cacheTag('docs', `doc-${doc.id}`)
-  cacheLife('max')
+  cacheLife('days')
   const preview = await renderPromptPreview(doc.content, maxLines)
   return { ...doc, ...preview }
 }

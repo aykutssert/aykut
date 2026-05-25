@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { cookies } from 'next/headers'
 import { ScrollFadeAside } from '@/components/layout/ScrollFadeAside'
 import { MobileOnThisPage } from '@/components/layout/MobileOnThisPage'
 
@@ -47,6 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function DocPageContent({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params
+  const cookieStore = await cookies()
+  const locale = cookieStore.get('locale')?.value === 'tr' ? 'tr-TR' : 'en-US'
   const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
   if (!doc) notFound()
   
@@ -97,7 +100,7 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
                 <span>
                   Last updated{' '}
                   <time dateTime={versions[0].created_at}>
-                    {new Date(versions[0].created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    {new Date(versions[0].created_at).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
                   </time>
                 </span>
                 <span className="text-border">·</span>

@@ -6,6 +6,7 @@ import { slugify, cn } from '@/lib/utils'
 import { ChevronDown, ImagePlus, X, Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { ConfirmDialog } from './ConfirmDialog'
+import { DocVersionDiff } from './DocVersionDiff'
 import type { Doc } from '@/types'
 
 interface DocFormProps {
@@ -502,6 +503,10 @@ export function DocForm({ doc, categories, allDocs }: DocFormProps) {
               placeholder="What changed in this version? (e.g. Fixed typo, Added more examples...)"
             />
           </div>
+        )}
+
+        {isEdit && doc && (
+          <DocVersionDiff docId={doc.id} currentContent={content} />
         )}
 
         <div className="flex items-center justify-between pt-2">

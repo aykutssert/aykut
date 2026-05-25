@@ -50,7 +50,17 @@ export async function POST(req: Request) {
           sort: '-version_number',
           fields: 'version_number',
         })
-        const nextVersion = (versions[0]?.version_number ?? 0) + 1
+        // No versions yet: save old content as v1 first, then new as v2
+        if (versions.length === 0) {
+          await pb.collection('doc_versions').create({
+            doc_id: id,
+            version_number: 1,
+            content: existing.content,
+            change_summary: 'Initial version',
+            author_handle: '@admin',
+          })
+        }
+        const nextVersion = (versions[0]?.version_number ?? 1) + 1
         await pb.collection('doc_versions').create({
           doc_id: id,
           version_number: nextVersion,

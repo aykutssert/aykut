@@ -19,6 +19,8 @@ import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { DocViewTracker } from '@/components/docs/DocViewTracker'
 import { DocNavLinks, DocSourceLink, DocRequiredImages, DocSidebarPanel } from '@/components/docs/DocClientUI'
 import { BlogToc } from '@/components/docs/BlogToc'
+import enMessages from '@/messages/en.json'
+import trMessages from '@/messages/tr.json'
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -49,7 +51,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 async function DocPageContent({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params
   const cookieStore = await cookies()
-  const locale = cookieStore.get('locale')?.value === 'tr' ? 'tr-TR' : 'en-US'
+  const localeLang = cookieStore.get('locale')?.value === 'tr' ? 'tr' : 'en'
+  const locale = localeLang === 'tr' ? 'tr-TR' : 'en-US'
+  const blogT = (localeLang === 'tr' ? trMessages : enMessages).landing.blog
   const [doc, docs] = await Promise.all([getDoc(category, slug), getDocs()])
   if (!doc) notFound()
   
@@ -98,13 +102,13 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             {isBlog && versions.length > 0 && (
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-xs text-muted-foreground">
                 <span>
-                  Last updated{' '}
+                  {blogT.last_updated}{' '}
                   <time dateTime={versions[0].created_at}>
                     {new Date(versions[0].created_at).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
                   </time>
                 </span>
                 <span className="text-border">·</span>
-                <span>Rev {versions[0].version_number}</span>
+                <span>{blogT.revision} {versions[0].version_number}</span>
                 {versions[0].change_summary && versions[0].version_number > 1 && (
                   <>
                     <span className="text-border">·</span>

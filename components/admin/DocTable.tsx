@@ -34,7 +34,7 @@ function sortDocs(docs: Doc[], key: SortKey, dir: SortDir) {
   })
 }
 
-export function DocTable({ docs: initialDocs }: { docs: Doc[] }) {
+export function DocTable({ docs: initialDocs, versionCounts = {} }: { docs: Doc[]; versionCounts?: Record<string, number> }) {
   const router = useRouter()
   const [docs, setDocs] = useState(initialDocs)
   const categories = ['All', ...Array.from(new Set(docs.map((d) => d.category))).sort()]
@@ -161,7 +161,7 @@ export function DocTable({ docs: initialDocs }: { docs: Doc[] }) {
       </div>
 
       {mode === 'reorder' && active !== 'All' ? (
-        <ReorderPanel docs={reorderDocs} category={active} />
+        <ReorderPanel docs={reorderDocs} category={active} versionCounts={versionCounts} />
       ) : filtered.length === 0 ? (
         <p className="text-center py-16 text-sm text-muted-foreground">{query ? 'No posts match your search.' : 'No posts in this category.'}</p>
       ) : (

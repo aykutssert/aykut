@@ -19,7 +19,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { GripVertical, Loader2 } from 'lucide-react'
 import type { Doc } from '@/types'
 
-function SortableItem({ doc }: { doc: Pick<Doc, 'id' | 'title' | 'order_index'> }) {
+function SortableItem({ doc, versionCount }: { doc: Pick<Doc, 'id' | 'title' | 'order_index'>; versionCount?: number }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: doc.id })
   return (
     <div
@@ -31,12 +31,17 @@ function SortableItem({ doc }: { doc: Pick<Doc, 'id' | 'title' | 'order_index'> 
         <GripVertical className="w-4 h-4" />
       </button>
       <span className="font-mono text-xs text-muted-foreground w-6 text-right shrink-0">{doc.order_index}</span>
-      <span className="truncate">{doc.title}</span>
+      <span className="truncate flex-1">{doc.title}</span>
+      {versionCount !== undefined && (
+        <span className="shrink-0 font-mono text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+          v{versionCount}
+        </span>
+      )}
     </div>
   )
 }
 
-export function ReorderPanel({ docs, category }: { docs: Pick<Doc, 'id' | 'title' | 'order_index'>[]; category: string }) {
+export function ReorderPanel({ docs, category, versionCounts = {} }: { docs: Pick<Doc, 'id' | 'title' | 'order_index'>[]; category: string; versionCounts?: Record<string, number> }) {
   const [items, setItems] = useState(docs)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -71,7 +76,7 @@ export function ReorderPanel({ docs, category }: { docs: Pick<Doc, 'id' | 'title
     <div className="space-y-2">
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-          {items.map((doc) => <SortableItem key={doc.id} doc={doc} />)}
+          {items.map((doc) => <SortableItem key={doc.id} doc={doc} versionCount={versionCounts[doc.id]} />)}
         </SortableContext>
       </DndContext>
       <button

@@ -35,8 +35,22 @@ async function getAllDocs(): Promise<Doc[]> {
   })) as Doc[]
 }
 
+async function getVersionCounts(): Promise<Record<string, number>> {
+  'use cache'
+  cacheTag('docs')
+  cacheLife('hours')
+
+  const pb = await createAdminPB()
+  const records = await pb.collection('doc_versions').getFullList({ fields: 'doc_id' })
+  const counts: Record<string, number> = {}
+  for (const r of records) {
+    counts[r.doc_id] = (counts[r.doc_id] ?? 0) + 1
+  }
+  return counts
+}
+
 async function DocList() {
-  const docs = await getAllDocs()
+  const [docs, versionCounts] = await Promise.all([getAllDocs(), getVersionCounts()])
 
   if (docs.length === 0) {
     return (
@@ -52,7 +66,7 @@ async function DocList() {
   return (
     <div>
       <h1 className="text-xl font-semibold mb-6">All docs</h1>
-      <DocTable docs={docs} />
+      <DocTable docs={docs} versionCounts={versionCounts} />
     </div>
   )
 }

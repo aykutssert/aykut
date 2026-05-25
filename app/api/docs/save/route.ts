@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       const existing = await pb.collection('docs').getOne(id)
       await pb.collection('docs').update(id, data)
 
-      if (payload.category === 'prompts' && existing.content !== payload.content) {
+      if ((payload.category === 'prompts' || payload.category === 'blog') && existing.content !== payload.content) {
         const versions = await pb.collection('doc_versions').getFullList({
           filter: `doc_id = "${id}"`,
           sort: '-version_number',
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     } else {
       const newDoc = await pb.collection('docs').create(data)
       docId = newDoc.id
-      if (payload.category === 'prompts') {
+      if (payload.category === 'prompts' || payload.category === 'blog') {
         await pb.collection('doc_versions').create({
           doc_id: docId,
           version_number: 1,

@@ -92,6 +92,24 @@ async function DocPageContent({ params }: { params: Promise<{ category: string; 
             {doc.description && (
               <p className="text-sm text-muted-foreground mt-2">{doc.description}</p>
             )}
+            {isBlog && versions.length > 0 && (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 text-xs text-muted-foreground">
+                <span>
+                  Last updated{' '}
+                  <time dateTime={versions[0].created_at}>
+                    {new Date(versions[0].created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </time>
+                </span>
+                <span className="text-border">·</span>
+                <span>Rev {versions[0].version_number}</span>
+                {versions[0].change_summary && versions[0].version_number > 1 && (
+                  <>
+                    <span className="text-border">·</span>
+                    <span className="italic">{versions[0].change_summary}</span>
+                  </>
+                )}
+              </div>
+            )}
             {doc.tags && doc.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {doc.tags.map((tag) => (

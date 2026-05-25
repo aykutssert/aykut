@@ -166,9 +166,6 @@ export function TagPageClient({
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const shownAuthStatusRef = useRef<string | undefined>(undefined)
   const hasActiveFilters = activeTags.length > 0 || promptQuery.trim() !== '' || tagQuery.trim() !== '' || sort !== 'default'
-  // Shuffle state: null = SSR/hydration order (server-consistent), array = post-mount shuffled
-  const [shuffledDocs, setShuffledDocs] = useState<TaggedDocWithPreview[] | null>(null)
-
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setPromptQuery(initialQuery)
@@ -217,22 +214,7 @@ export function TagPageClient({
       return a.localeCompare(b)
     })
 
-  // Shuffle runs only on the client (inside useEffect) so SSR and hydration
-  // both see the same server-provided order — no hydration mismatch.
-  useEffect(() => {
-    if (sort !== 'default') {
-      setShuffledDocs(null)
-      return
-    }
-    const arr = [...docs]
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]
-    }
-    setShuffledDocs(arr)
-  }, [docs, sort])
-
-  const displayDocs = sort === 'default' ? (shuffledDocs ?? docs) : docs
+  const displayDocs = docs
 
   const grouped = displayDocs.reduce<Record<string, TaggedDocWithPreview[]>>((acc, doc) => {
     if (!acc[doc.category]) acc[doc.category] = []

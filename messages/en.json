@@ -17,7 +17,7 @@
   },
   "footer": {
     "built_by": "Built by",
-    "disclaimer": "Prompt data via <link>Awesome ChatGPT Prompts</link>. Pets shared by the community — some may reference existing characters or brands; takedown requests to <email>aykutssert@gmail.com</email>.",
+    "disclaimer": "Prompt data via <link>Awesome ChatGPT Prompts</link>. Pets shared by the community - some may reference existing characters or brands; takedown requests to <email>aykutssert@gmail.com</email>.",
     "blog": "Blog"
   },
   "search": {
@@ -149,7 +149,7 @@
     "hero": {
       "badge": "Full-stack · Backend · Mobile · AI",
       "by": "by",
-      "description": "Building production-grade software across the stack — microservice backends, iOS apps, and AI integrations.",
+      "description": "Building production-grade software across the stack - microservice backends, iOS apps, and AI integrations.",
       "cta_projects": "View projects",
       "cta_contact": "Contact me"
     },
@@ -171,7 +171,7 @@
       "app_store": "App Store",
       "mypetroutine": {
         "title": "Pet care tracker",
-        "description": "iOS app on the App Store for tracking daily pet care — feeding, grooming, vet visits."
+        "description": "iOS app on the App Store for tracking daily pet care - feeding, grooming, vet visits."
       },
       "flamy": {
         "title": "Habit tracker",
@@ -187,21 +187,23 @@
       },
       "surge": {
         "title": "Distributed load tester",
-        "description": "HTTP load testing engine — up to 5,000 requests, configurable concurrency, live latency percentiles."
+        "description": "HTTP load testing engine - up to 5,000 requests, configurable concurrency, live latency percentiles."
       },
       "uptime": {
         "title": "Self-hosted uptime monitor",
-        "description": "Real-time uptime monitoring dashboard — response time charts, downtime alerts, and per-minute checks."
+        "description": "Real-time uptime monitoring dashboard - response time charts, downtime alerts, and per-minute checks."
       },
       "cadie": {
         "title": "Language learning app",
         "description": "Mobile app for learning new languages with spaced repetition and AI-powered feedback."
+      },
+      "scout": {
+        "title": "Code intelligence for AI agents",
+        "description": "Go-powered npm tool that scans repos for security, performance, and architecture issues - structured JSON output optimized for AI coding agents."
       }
     },
     "in_progress": {
-      "label": "In progress",
-      "securebank": "Banking API & dashboard · Go · Next.js · PostgreSQL",
-      "surge": "Load testing tool · Go · C# .NET 8 · RabbitMQ · MongoDB"
+      "label": "In progress"
     },
     "toolkit": {
       "badge": "Developer",
@@ -228,7 +230,7 @@
       "tshirt": {
         "badge": "T-Shirt Studio",
         "title": "3D t-shirt designer",
-        "description": "UV canvas editor with drag, scale & rotate — renders live on a real 3D shirt model with WebGL.",
+        "description": "UV canvas editor with drag, scale & rotate - renders live on a real 3D shirt model with WebGL.",
         "live": "Live demo"
       }
     },
@@ -237,13 +239,13 @@
       "role": "Full-Stack Developer",
       "location": "İstanbul, Turkey",
       "bio": "2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.",
-      "education": "Gebze Technical University — Computer Engineering, 2021–2026",
+      "education": "Gebze Technical University - Computer Engineering, 2021–2026",
       "experience": {
         "label": "Experience",
         "borusan_role": "Full-Stack Developer",
-        "borusan_desc": "Microservice backend for a vehicle rental platform — C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
+        "borusan_desc": "Microservice backend for a vehicle rental platform - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
         "negzel_role": "Full-Stack Developer",
-        "negzel_desc": "Internal project management APIs and an RAG-based document search module — embedding, vector database, LLM integration."
+        "negzel_desc": "Internal project management APIs and an RAG-based document search module - embedding, vector database, LLM integration."
       }
     },
     "contact": {

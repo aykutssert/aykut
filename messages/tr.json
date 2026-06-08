@@ -17,7 +17,7 @@
   },
   "footer": {
     "built_by": "Built by",
-    "disclaimer": "Prompt verisi <link>Awesome ChatGPT Prompts</link> üzerinden. Topluluk tarafından paylaşılan Pets — bazıları mevcut karakterlere veya markalara atıfta bulunabilir; kaldırma talepleri için <email>aykutssert@gmail.com</email>.",
+    "disclaimer": "Prompt verisi <link>Awesome ChatGPT Prompts</link> üzerinden. Topluluk tarafından paylaşılan Pets - bazıları mevcut karakterlere veya markalara atıfta bulunabilir; kaldırma talepleri için <email>aykutssert@gmail.com</email>.",
     "blog": "Blog"
   },
   "search": {
@@ -171,7 +171,7 @@
       "app_store": "App Store",
       "mypetroutine": {
         "title": "Evcil hayvan takip uygulaması",
-        "description": "App Store'da yayınlanan iOS uygulaması — besleme, bakım ve veteriner ziyaretlerini takip eder."
+        "description": "App Store'da yayınlanan iOS uygulaması - besleme, bakım ve veteriner ziyaretlerini takip eder."
       },
       "flamy": {
         "title": "Alışkanlık takip uygulaması",
@@ -187,26 +187,28 @@
       },
       "surge": {
         "title": "Dağıtık yük testi aracı",
-        "description": "HTTP yük testi motoru — 5.000'e kadar istek, yapılandırılabilir eşzamanlılık, canlı gecikme yüzdelikleri."
+        "description": "HTTP yük testi motoru - 5.000'e kadar istek, yapılandırılabilir eşzamanlılık, canlı gecikme yüzdelikleri."
       },
       "uptime": {
         "title": "Self-hosted uptime monitörü",
-        "description": "Gerçek zamanlı uptime izleme paneli — yanıt süresi grafikleri, kesinti uyarıları ve dakika bazlı kontroller."
+        "description": "Gerçek zamanlı uptime izleme paneli - yanıt süresi grafikleri, kesinti uyarıları ve dakika bazlı kontroller."
       },
       "cadie": {
         "title": "Dil öğrenme uygulaması",
         "description": "Aralıklı tekrar ve yapay zeka destekli geri bildirimle yeni diller öğreten mobil uygulama."
+      },
+      "scout": {
+        "title": "Yapay zeka ajanları için kod analizi",
+        "description": "Go ile yazılmış, repoları güvenlik, performans ve mimari sorunlar için tarayan npm aracı - yapay zeka kodlama ajanları için optimize edilmiş JSON çıktısı."
       }
     },
     "in_progress": {
-      "label": "Geliştiriliyor",
-      "securebank": "Bankacılık API'si & paneli · Go · Next.js · PostgreSQL",
-      "surge": "Yük testi aracı · Go · C# .NET 8 · RabbitMQ · MongoDB"
+      "label": "Geliştiriliyor"
     },
     "toolkit": {
       "badge": "Geliştirici",
       "title": "Geliştirici araç seti",
-      "description": "Tam metin arama destekli blog, küratörlü prompt kütüphanesi ve piksel sanat Codex pet koleksiyonu — herkese açık REST API ve npm CLI ile.",
+      "description": "Tam metin arama destekli blog, küratörlü prompt kütüphanesi ve piksel sanat Codex pet koleksiyonu - herkese açık REST API ve npm CLI ile.",
       "explore": "Keşfet",
       "npm_cli": "tek komutla kurulum için npm cli yayınlandı"
     },
@@ -228,7 +230,7 @@
       "tshirt": {
         "badge": "T-Shirt Studio",
         "title": "3D tişört tasarımcısı",
-        "description": "Sürükle, ölçekle ve döndür özellikli UV canvas editörü — WebGL ile gerçek 3D tişört modelinde canlı render.",
+        "description": "Sürükle, ölçekle ve döndür özellikli UV canvas editörü - WebGL ile gerçek 3D tişört modelinde canlı render.",
         "live": "Canlı demo"
       }
     },
@@ -237,13 +239,13 @@
       "role": "Full-Stack Developer",
       "location": "İstanbul, Türkiye",
       "bio": "C# ve ASP.NET Core ile mikroservis backend'leri, Next.js ile full-stack web uygulamaları ve Swift ile iOS uygulamaları geliştirerek 2+ yıl profesyonel deneyim kazandım. Yapay zeka entegrasyonları, dağıtık sistemler ve clean architecture odağım.",
-      "education": "Gebze Teknik Üniversitesi — Bilgisayar Mühendisliği, 2021–2026",
+      "education": "Gebze Teknik Üniversitesi - Bilgisayar Mühendisliği, 2021–2026",
       "experience": {
         "label": "Deneyim",
         "borusan_role": "Full-Stack Developer",
-        "borusan_desc": "Araç kiralama platformu için mikroservis backend — C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
+        "borusan_desc": "Araç kiralama platformu için mikroservis backend - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
         "negzel_role": "Full-Stack Developer",
-        "negzel_desc": "Dahili proje yönetim API'leri ve RAG tabanlı doküman arama modülü — embedding, vektör veritabanı, LLM entegrasyonu."
+        "negzel_desc": "Dahili proje yönetim API'leri ve RAG tabanlı doküman arama modülü - embedding, vektör veritabanı, LLM entegrasyonu."
       }
     },
     "contact": {

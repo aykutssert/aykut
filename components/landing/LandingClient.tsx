@@ -139,6 +139,28 @@ export function LandingClient({ docs, recentBlogPosts, recentPrompts }: Props) {
         <StaggeredGrid id="projects" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" style={{ scrollMarginTop: '72px' }}>
 
           <TiltCard>
+          <a href="https://scout-skill.vercel.app/" target="_blank" rel="noopener noreferrer"
+            className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
+            <div className="flex items-center gap-3">
+              <Image src="/logo/scout.svg" alt="Scout" width={40} height={40} sizes="40px" className="rounded-xl shrink-0" unoptimized />
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 dark:border-indigo-800/40 dark:bg-indigo-950/40 dark:text-indigo-300">
+                <Code2 className="h-3 w-3" />
+                Scout
+              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold tracking-tight">{t('projects.scout.title')}</h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.scout.description')}</p>
+            </div>
+            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · AST · npm</p>
+            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
+              <ExternalLink className="h-3 w-3" />
+            </div>
+          </a>
+          </TiltCard>
+
+          <TiltCard>
           <a href="https://apps.apple.com/us/app/my-pet-routine/id6768613964" target="_blank" rel="noopener noreferrer"
             className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
             <div className="flex items-center gap-3">
@@ -272,26 +294,6 @@ export function LandingClient({ docs, recentBlogPosts, recentPrompts }: Props) {
 
         </StaggeredGrid>
 
-        {/* ── In progress ── */}
-        <div className="mt-4 rounded-2xl border border-border bg-background px-5 py-4">
-          <p className="mb-3 text-[10px] font-semibold tracking-wide text-muted-foreground/50">{t('in_progress.label')}</p>
-          <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
-              <Image src="/logo/securebank.svg" alt="SecureBank" width={32} height={32} sizes="32px" className="rounded-lg shrink-0" unoptimized />
-              <div>
-                <p className="text-sm font-medium">SecureBank</p>
-                <p className="text-xs text-muted-foreground">{t('in_progress.securebank')}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
-              <Image src="/logo/surge.png" alt="Surge" width={32} height={32} sizes="32px" className="rounded-lg shrink-0" />
-              <div>
-                <p className="text-sm font-medium">Surge</p>
-                <p className="text-xs text-muted-foreground">{t('in_progress.surge')}</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Developer Toolkit */}
         <FadeInSection delay={0}>

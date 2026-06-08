@@ -10,16 +10,31 @@
  * great without a separate markdown→HTML pipeline.
  */
 
-import { codeToHtml } from 'shiki'
+import { getSingletonHighlighter } from 'shiki'
 import { normalizeContent } from '@/lib/utils'
 import { detectLang } from '@/components/docs/DocContent'
+
+const THEMES = ['one-dark-pro', 'one-light'] as const
+const LANGS = [
+  'markdown', 'json', 'jsonc', 'yaml', 'python', 'javascript', 'typescript',
+  'tsx', 'jsx', 'bash', 'sh', 'text', 'plaintext',
+] as const
+
+export async function getHighlighter() {
+  return getSingletonHighlighter({ themes: THEMES, langs: LANGS })
+}
 
 export async function renderCode(content: string): Promise<{ html: string; lang: string; code: string }> {
   const normalized = normalizeContent(content)
   const { lang, code } = detectLang(normalized)
 
-  let html = await codeToHtml(code, {
-    lang,
+  const highlighter = await getHighlighter()
+  const safeLoad = highlighter.getLoadedLanguages().includes(lang as never)
+    ? lang
+    : 'text'
+
+  let html = highlighter.codeToHtml(code, {
+    lang: safeLoad,
     themes: { dark: 'one-dark-pro', light: 'one-light' },
     defaultColor: false,
   })

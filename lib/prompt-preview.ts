@@ -1,6 +1,6 @@
-import { codeToHtml } from 'shiki'
 import { detectLang } from '@/components/docs/DocContent'
 import { normalizeContent } from '@/lib/utils'
+import { getHighlighter } from '@/lib/render'
 import type { TaggedDoc } from '@/types'
 
 export type TaggedDocWithPreview = TaggedDoc & {
@@ -48,8 +48,10 @@ function wrapTextLine(line: string, maxChars = 58) {
 export async function renderPromptPreview(content: string, maxLines: number) {
   const { lang, code, remaining } = previewCode(content, maxLines)
 
-  let html = await codeToHtml(code, {
-    lang,
+  const highlighter = await getHighlighter()
+  const safeLang = highlighter.getLoadedLanguages().includes(lang as never) ? lang : 'text'
+  let html = highlighter.codeToHtml(code, {
+    lang: safeLang,
     themes: { dark: 'one-dark-pro', light: 'one-light' },
     defaultColor: false,
   })

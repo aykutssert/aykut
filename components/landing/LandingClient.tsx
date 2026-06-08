@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Activity, ArrowRight, Code2, GraduationCap, Mail, MapPin, PawPrint, Shirt, Sparkles, ExternalLink, ChevronDown, BookOpen } from 'lucide-react'
+import { Activity, ArrowRight, Code2, GraduationCap, Mail, MapPin, PawPrint, Sparkles, ExternalLink, ChevronDown } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -11,7 +11,6 @@ import { StaggeredGrid } from './StaggeredGrid'
 import { TerminalTyper } from './TerminalTyper'
 import { TiltCard } from './TiltCard'
 import { HeroTyper } from './HeroTyper'
-import { KitchenShowcaseLazy as KitchenShowcase } from './LazyDemos'
 import type { DocMeta } from '@/types'
 
 type RecentPost = {
@@ -477,55 +476,6 @@ export function LandingClient({ docs, recentBlogPosts, recentPrompts }: Props) {
               </div>
             </a>
           </StaggeredGrid>
-        </div>
-      </section>
-
-      {/* ── Interactive demos ── */}
-      <section className="border-t border-border">
-        <div className="mx-auto w-full max-w-[1400px] px-4 py-16 md:px-0">
-          <FadeInSection>
-          <p className="mb-4 text-xs font-semibold tracking-wide text-muted-foreground">{t('demos.title')}</p>
-          <div className="grid gap-4 md:grid-cols-2">
-
-            <div className="relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background">
-              <div className="flex flex-col p-6 pb-6">
-                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/40 dark:text-amber-300">
-                  <Sparkles className="h-3 w-3" />
-                  {t('demos.kitchen.badge')}
-                </div>
-                <h2 className="text-xl font-bold tracking-tight">{t('demos.kitchen.title')}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{t('demos.kitchen.description')}</p>
-              </div>
-              <div className="flex flex-1 flex-col overflow-hidden border-t border-border" style={{ minHeight: 450 }}>
-                <KitchenShowcase />
-              </div>
-            </div>
-
-            <Link href="/tshirt-studio"
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-background transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-xl hover:shadow-foreground/5">
-              <div className="flex flex-col p-6 pb-6">
-                <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
-                  <Shirt className="h-3 w-3" />
-                  {t('demos.tshirt.badge')}
-                </div>
-                <h2 className="text-xl font-bold tracking-tight">{t('demos.tshirt.title')}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{t('demos.tshirt.description')}</p>
-              </div>
-              <div className="relative flex flex-1 overflow-hidden border-t border-border bg-[#111111]" style={{ minHeight: 450 }}>
-                <div className="flex items-center justify-center h-full w-full">
-                  <Shirt className="w-20 h-20 text-white/15" />
-                </div>
-                <div className="absolute left-3 bottom-3 z-10">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
-                    {t('demos.tshirt.live')}
-                    <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-          </div>
-          </FadeInSection>
         </div>
       </section>
 

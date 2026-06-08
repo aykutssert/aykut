@@ -117,24 +117,6 @@ export function MobileNav({ docs }: { docs: DocMeta[] }) {
                 </Link>
               </div>
 
-              <div className="mb-4 border-b border-border pb-3">
-                <p className="mb-1.5 px-2 text-[10px] font-semibold tracking-wide text-muted-foreground/70">
-                  {t('studio')}
-                </p>
-                <Link
-                  href="/tshirt-studio"
-                  className={cn(
-                    'flex items-center gap-2 rounded-md px-2 py-2 text-sm font-medium transition-colors',
-                    pathname.startsWith('/tshirt-studio')
-                      ? 'bg-[#E5E5DF] text-foreground dark:bg-[#1E1917]'
-                      : 'text-muted-foreground hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]'
-                  )}
-                >
-                  <Sparkles className="h-4 w-4" />
-                  T-Shirt Studio
-                </Link>
-              </div>
-
               <div className="mb-3 space-y-1 border-b border-border pb-3">
                 <p className="mb-1.5 px-2 text-[10px] font-semibold tracking-wide text-muted-foreground/70">
                   {t('developers')}

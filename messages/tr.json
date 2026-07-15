@@ -1,291 +1,10 @@
 {
   "nav": {
-    "search": "Blog'da ara...",
-    "projects": "Projeler",
+    "projects": "Proje",
+    "experience": "Deneyim",
     "about": "Hakkımda",
-    "contact": "İletişim",
     "blog": "Blog",
-    "prompts": "Promptlar",
-    "pets": "Codex Pets",
-    "sign_in": "Giriş yap",
-    "more": "Daha fazla",
-    "navigate": "Gezin",
-    "studio": "Stüdyo",
-    "developers": "Geliştiriciler",
-    "liked": "Beğendiklerim",
-    "categories": "Kategoriler"
-  },
-  "footer": {
-    "built_by": "Built by",
-    "disclaimer": "Prompt verisi <link>Awesome ChatGPT Prompts</link> üzerinden. Topluluk tarafından paylaşılan Pets - bazıları mevcut karakterlere veya markalara atıfta bulunabilir; kaldırma talepleri için <email>aykutssert@gmail.com</email>.",
-    "blog": "Blog"
-  },
-  "search": {
-    "recently_viewed": "Son görüntülenenler",
-    "filtering_by_tag": "Etikete göre filtreleniyor:",
-    "no_results": "\"{query}\" için sonuç bulunamadı"
-  },
-  "prompts_page": {
-    "filters": "Filtreler",
-    "filter": "Filtrele",
-    "clear": "Temizle",
-    "search_prompts": "Prompt ara",
-    "placeholder_content": "Başlık, içerik...",
-    "search_tags": "Etiket ara",
-    "placeholder_tags": "Etiket ara...",
-    "sort": "Sırala",
-    "sort_default": "Varsayılan",
-    "sort_alpha": "A-Z",
-    "sort_newest": "En yeni",
-    "sort_oldest": "En eski",
-    "prompts_heading": "Promptlar",
-    "result_count": "{count} sonuç",
-    "prompt_copied": "Prompt kopyalandı.",
-    "badge_image": "Görsel",
-    "badge_text": "Metin"
-  },
-  "docs_page": {
-    "articles_and_references": "Makaleler ve referanslar",
-    "article_count": "{cats} kategoride {count} makale.",
-    "article_count_short": "{count} makale",
-    "categories": "Kategoriler",
-    "prompts_link": "Promptlar",
-    "no_posts_yet": "Henüz yazı yok",
-    "article_coming": "İlk makale yolda.",
-    "browse_prompts": "Promptlara göz at"
-  },
-  "auth": {
-    "sign_in": "Giriş yap",
-    "sign_up": "Kayıt ol",
-    "create_account": "Hesap oluştur",
-    "reset_password": "Şifreyi sıfırla",
-    "send_reset_link": "Sıfırlama linki gönder",
-    "back_to_signin": "Girişe dön",
-    "forgot_password": "Şifremi unuttum",
-    "have_account": "Hesabın var mı?",
-    "username": "Kullanıcı adı",
-    "email": "E-posta",
-    "password": "Şifre",
-    "desc_signin": "Kernel hesabınla devam et.",
-    "desc_signup": "Hesabını oluştur ve Kernel özelliklerini profiline bağla.",
-    "desc_forgot": "E-postanı gir, sıfırlama linki gönderelim.",
-    "success_signup": "Hesap oluşturuldu. E-postanı kontrol et.",
-    "success_reset": "Şifre sıfırlama linki gönderildi. E-postanı kontrol et.",
-    "error_load": "Giriş yapıldı, ancak kullanıcı bilgileri yüklenemedi.",
-    "sign_in_to_like": "Beğenmek için giriş yap.",
-    "liked": "Beğendiklerim",
-    "logout": "Çıkış yap"
-  },
-  "account": {
-    "library": "Kütüphane",
-    "library_desc": "Kaydettiğin blog yazılarını ve pet arkadaşlarını yönet.",
-    "search_in_prompts": "Blog yazılarında ara...",
-    "search_in_pets": "Petlerde ara...",
-    "pets_tab": "Petler",
-    "prompts_tab": "Blog",
-    "matched": "{count} eşleşme",
-    "total_count": "{count} toplam",
-    "no_results": "\"{query}\" için sonuç bulunamadı",
-    "try_different": "Farklı bir kelime dene veya aramayı temizle.",
-    "no_liked_prompts": "Henüz beğenilen blog yazısı yok",
-    "no_liked_pets": "Henüz beğenilen pet yok",
-    "heart_prompt_hint": "Herhangi bir blog yazısında kalp işaretine basarak buraya kaydedebilirsin.",
-    "heart_pet_hint": "Herhangi bir pet'in kalp ikonuna tıklayarak favorilerini burada toplayabilirsin.",
-    "browse_prompts": "Blog'a göz at",
-    "browse_pets": "Petlere göz at",
-    "view_liked_pets": "Beğenilen petleri gör",
-    "view_liked_prompts": "Beğenilen blog yazılarını gör"
-  },
-  "pets_page": {
-    "description": "OpenAI Codex ile oluşturulan piksel sanat evcil hayvan spriteleri.",
-    "no_pets_found": "\"{q}\" için pet bulunamadı",
-    "try_different": "Farklı bir şey dene.",
-    "clear_search": "Aramayı temizle",
-    "no_pets_yet": "Henüz pet yok.",
-    "search_placeholder": "Pet ara…",
-    "find": "Ara",
-    "newest": "En yeni",
-    "most_liked": "En çok beğenilen",
-    "most_viewed": "En çok görüntülenen",
-    "liked_short": "Beğenilen",
-    "viewed_short": "Görüntülenen",
-    "include_nsfw": "NSFW içerik",
-    "pet_count": "{count} pet",
-    "page_of": "Sayfa {page} / {total}",
-    "back": "Geri",
-    "view": "Görüntüle",
-    "download": "İndir",
-    "more_lines": "+{count} satır daha",
-    "animations": "Animasyonlar",
-    "codex_pet": "Codex Pet",
-    "download_codex_pet": ".codex-pet İndir",
-    "unzip_instruction": "Paketi indir, ardından şu konuma çıkart:",
-    "source": "Kaynak",
-    "terminal_instruction": "Ya da bu komutu terminale kopyala ve çalıştır."
-  },
-  "doc": {
-    "related": "İlgili",
-    "more_in": "{category} kategorisinden daha fazlası",
-    "previous": "Önceki",
-    "next": "Sonraki",
-    "source": "Kaynak",
-    "badge_image": "Görsel",
-    "requires_images": "{count} görsel gerekli",
-    "copy_prompt": "Promptu kopyala",
-    "copied": "Kopyalandı!",
-    "categories": "Kategoriler",
-    "tab_content": "İçerik",
-    "tab_versions": "Sürümler",
-    "version_history": "Sürüm Geçmişi",
-    "compare_latest": "Son Sürümle Karşılaştır",
-    "current_version": "Güncel Sürüm",
-    "no_description": "Açıklama girilmemiş",
-    "diff_title": "v{from} → Güncel Sürüm",
-    "diff_subtitle": "v{from} ile güncel sürüm arasındaki değişiklikler",
-    "close": "Kapat"
-  },
-  "hero_text": "Yaptıklarım",
-  "landing": {
-    "hero": {
-      "badge": "Full-stack · Backend · Mobil · Yapay Zeka",
-      "by": "by",
-      "description": "Mikroservis mimarileri, iOS uygulamaları ve yapay zeka entegrasyonları üzerine yazılımlar geliştiriyorum.",
-      "cta_projects": "Projelere bak",
-      "cta_contact": "İletişime geç"
-    },
-    "identity": {
-      "role": "Full-Stack Developer · 2+ yıl profesyonel · C# · Go · Swift · TypeScript · İstanbul"
-    },
-    "stack": {
-      "title": "Teknoloji Stack'i",
-      "languages": "Diller",
-      "frameworks": "Framework'ler",
-      "data": "Veri & Mesajlaşma",
-      "ai": "Yapay Zeka & API",
-      "architecture": "Mimari",
-      "cloud": "Bulut & Altyapı"
-    },
-    "projects": {
-      "title": "Projeler",
-      "open": "Aç",
-      "app_store": "App Store",
-      "mypetroutine": {
-        "title": "Evcil hayvan takip uygulaması",
-        "description": "App Store'da yayınlanan iOS uygulaması - besleme, bakım ve veteriner ziyaretlerini takip eder."
-      },
-      "flamy": {
-        "title": "Alışkanlık takip uygulaması",
-        "description": "Seri takibi, kilometre taşı rozetleri ve ilerleme grafikleriyle alışkanlık oluşturan iOS uygulaması."
-      },
-      "trippack": {
-        "title": "Seyahat bavul uygulaması",
-        "description": "Gideceğin yere, süreye ve aktivitelere göre yapay zeka destekli bavul listesi oluşturan iOS uygulaması."
-      },
-      "localseo": {
-        "title": "Yerel SEO sitesi",
-        "description": "İstanbul'un tezgah taşı pazarını Google'da hedefleyen çok bölgeli açılış sayfası yapısı."
-      },
-      "surge": {
-        "title": "Dağıtık yük testi aracı",
-        "description": "HTTP yük testi motoru - 5.000'e kadar istek, yapılandırılabilir eşzamanlılık, canlı gecikme yüzdelikleri."
-      },
-      "uptime": {
-        "title": "Self-hosted uptime monitörü",
-        "description": "Gerçek zamanlı uptime izleme paneli - yanıt süresi grafikleri, kesinti uyarıları ve dakika bazlı kontroller."
-      },
-      "cadie": {
-        "title": "Dil öğrenme uygulaması",
-        "description": "Aralıklı tekrar ve yapay zeka destekli geri bildirimle yeni diller öğreten mobil uygulama."
-      },
-      "scout": {
-        "title": "Yapay zeka ajanları için kod analizi",
-        "description": "Go ile yazılmış, repoları güvenlik, performans ve mimari sorunlar için tarayan npm aracı - yapay zeka kodlama ajanları için optimize edilmiş JSON çıktısı."
-      }
-    },
-    "in_progress": {
-      "label": "Geliştiriliyor"
-    },
-    "toolkit": {
-      "badge": "Geliştirici",
-      "title": "Geliştirici araç seti",
-      "description": "Tam metin arama destekli blog, küratörlü prompt kütüphanesi ve piksel sanat Codex pet koleksiyonu - herkese açık REST API ve npm CLI ile.",
-      "explore": "Keşfet",
-      "npm_cli": "tek komutla kurulum için npm cli yayınlandı"
-    },
-    "blog": {
-      "latest": "Son içerikler",
-      "all": "Tüm yazılar",
-      "read": "Oku",
-      "post_label": "Yazı",
-      "last_updated": "Son güncelleme",
-      "revision": "Revizyon"
-    },
-    "demos": {
-      "title": "Canlı demolar",
-      "kitchen": {
-        "badge": "Kitchen Studio",
-        "title": "Yapay zeka tezgah görselleştirici",
-        "description": "Mutfak fotoğrafı yükle, yapay zeka ile gerçekçi tezgah alternatifleri oluştur."
-      },
-      "tshirt": {
-        "badge": "T-Shirt Studio",
-        "title": "3D tişört tasarımcısı",
-        "description": "Sürükle, ölçekle ve döndür özellikli UV canvas editörü - WebGL ile gerçek 3D tişört modelinde canlı render.",
-        "live": "Canlı demo"
-      }
-    },
-    "about": {
-      "label": "Hakkımda",
-      "role": "Full-Stack Developer",
-      "location": "İstanbul, Türkiye",
-      "bio": "C# ve ASP.NET Core ile mikroservis backend'leri, Next.js ile full-stack web uygulamaları ve Swift ile iOS uygulamaları geliştirerek 2+ yıl profesyonel deneyim kazandım. Yapay zeka entegrasyonları, dağıtık sistemler ve clean architecture odağım.",
-      "education": "Gebze Teknik Üniversitesi - Bilgisayar Mühendisliği, 2021–2026",
-      "experience": {
-        "label": "Deneyim",
-        "borusan_role": "Full-Stack Developer",
-        "borusan_desc": "Araç kiralama platformu için mikroservis backend - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
-        "negzel_role": "Full-Stack Developer",
-        "negzel_desc": "Dahili proje yönetim API'leri ve RAG tabanlı doküman arama modülü - embedding, vektör veritabanı, LLM entegrasyonu."
-      }
-    },
-    "contact": {
-      "label": "İletişim",
-      "email": "E-posta",
-      "github": "GitHub",
-      "linkedin": "LinkedIn"
-    }
-  },
-  "not_found": {
-    "title": "Sayfa bulunamadı",
-    "description": "Aradığın sayfa mevcut değil veya taşınmış.",
-    "browse_pets": "Petlere göz at",
-    "read_docs": "Blog'a göz at"
-  },
-  "reset_password": {
-    "error_mismatch": "Şifreler eşleşmiyor.",
-    "error_update": "Şifre güncellenemedi.",
-    "success_updated": "Şifre güncellendi. Yönlendiriliyor...",
-    "heading": "Şifreyi sıfırla",
-    "description": "Kernel hesabın için yeni bir şifre seç.",
-    "label_new_password": "Yeni şifre",
-    "label_confirm_password": "Şifreyi onayla",
-    "submit": "Şifreyi güncelle"
-  },
-  "tshirt": {
-    "tab_design": "Tasarım",
-    "tab_preview": "3D Önizleme",
-    "editor_heading": "Tasarım Editörü",
-    "upload": "Yükle",
-    "reset": "Sıfırla",
-    "label_color": "Renk",
-    "color_picker_hint": "Herhangi bir renk seçmek için tıkla",
-    "label_brightness": "Parlaklık",
-    "download": "İndir"
-  },
-  "more_menu": {
-    "label_pet": "Pet",
-    "on": "AÇIK",
-    "off": "KAPALI"
+    "more": "Daha fazla"
   },
   "pet": {
     "click": [
@@ -326,11 +45,6 @@
       "Kod mu yazıyorsun?",
       "Bloop."
     ],
-    "food": [
-      "Nefis!",
-      "🍎❤️",
-      "Harika!"
-    ],
     "typing_idle": "Ne yazıyoruz? 🤔",
     "typing_slow": "Daha hızlı yaz! ⌨️",
     "typing_comments": [
@@ -347,7 +61,178 @@
       "Ben de okuyordum!",
       "Not alıyor musun?",
       "Büyüleyici."
-    ],
-    "feed": "Besle"
+    ]
+  },
+  "landing": {
+    "hero": {
+      "text": "Yaptıklarım",
+      "badge": "Computer Engineer",
+      "by": "by",
+      "description": "Mikroservis mimarileri, iOS uygulamaları ve yapay zeka entegrasyonları üzerine yazılımlar geliştiriyorum.",
+      "cta_projects": "Projelere bak",
+      "cta_contact": "İletişime geç"
+    },
+    "identity": {
+      "role": "Full-Stack Developer · 2+ yıl profesyonel · C# · Go · Swift · TypeScript · İstanbul"
+    },
+    "stack": {
+      "title": "Yetenekler",
+      "groups": [
+        {
+          "label": "Programlama Dilleri",
+          "items": [
+            "C#",
+            "Python",
+            "C/C++"
+          ]
+        },
+        {
+          "label": "Mimari & Tasarım",
+          "items": [
+            "OOP",
+            "Algoritma & Veri Yapıları",
+            "Sistem Tasarımı",
+            "Mikroservis",
+            "Katmanlı Mimari",
+            "REST & WebSocket",
+            "CQRS",
+            "Dependency Injection",
+            "Repository / Unit of Work",
+            "Mesaj Kuyruğu (RabbitMQ)",
+            "Caching",
+            "Zamanlanmış İşler (Quartz)",
+            "Clean Code / SOLID"
+          ]
+        },
+        {
+          "label": "Veritabanı & ORM",
+          "items": [
+            "MSSQL",
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "SQLite",
+            "EF Core",
+            "Dapper",
+            "Firebase",
+            "Supabase"
+          ]
+        },
+        {
+          "label": "Altyapı & DevOps",
+          "items": [
+            "Docker",
+            "Linux / VPS",
+            "Nginx",
+            "Cloudflare",
+            "Git",
+            "Azure DevOps",
+            "CI/CD"
+          ]
+        },
+        {
+          "label": "Kimlik & Kalite",
+          "items": [
+            "JWT",
+            "OAuth",
+            "ASP.NET Identity",
+            "Unit Testing",
+            "Code Review",
+            "Loglama (Serilog / Seq)",
+            "Agile / Scrum"
+          ]
+        }
+      ]
+    },
+    "projects": {
+      "title": "Projeler",
+      "open": "Aç",
+      "app_store": "App Store",
+      "premium": {
+        "title": "Premium Kiralama",
+        "badge": "Borusan Otomotiv · Mikroservis Backend",
+        "description": "Rezervasyon, ödeme ve filo akışlarını kapsayan canlı kurumsal ve uzun dönem araç kiralama platformu backend'i."
+      },
+      "inference": {
+        "title": "Inference Serving Engine",
+        "badge": "Model Sunum Altyapısı",
+        "description": "Chat/completion arayüzleri, streaming yanıt, rate limiting, kuyruklama, metrikler ve RunPod üzerinde NVIDIA GPU dağıtımı içeren dil modeli API sunucusu."
+      },
+      "fileupload": {
+        "title": "Büyük dosya yükleme servisi",
+        "badge": "Dağıtık Backend",
+        "description": "Multipart upload, devam edebilme, kalıcı kuyruklar ve asenkron worker'larla production-grade büyük dosya yükleme ve işleme servisi."
+      },
+      "iosapps": {
+        "title": "iOS uygulamaları",
+        "description": "Evcil hayvan bakımı, alışkanlık, seyahat bavulu ve dil öğrenme odağında yayınlanan SwiftUI uygulamaları."
+      },
+      "mypetroutine": {
+        "title": "Evcil hayvan takip uygulaması",
+        "description": "App Store'da yayınlanan iOS uygulaması - besleme, bakım ve veteriner ziyaretlerini takip eder."
+      },
+      "flamy": {
+        "title": "Alışkanlık takip uygulaması",
+        "description": "Seri takibi, kilometre taşı rozetleri ve ilerleme grafikleriyle alışkanlık oluşturan iOS uygulaması."
+      },
+      "trippack": {
+        "title": "Seyahat bavul uygulaması",
+        "description": "Gideceğin yere, süreye ve aktivitelere göre yapay zeka destekli bavul listesi oluşturan iOS uygulaması."
+      },
+      "localseo": {
+        "title": "Müşteri siteleri",
+        "description": "Yerel servis aramalarını Google'da hedefleyen çok bölgeli açılış sayfası yapısı.",
+        "links": {
+          "countertop": "Mermer tezgah",
+          "inspection": "Oto ekspertiz",
+          "service": "Oto servis"
+        }
+      },
+      "cadie": {
+        "title": "Dil öğrenme uygulaması",
+        "description": "Aralıklı tekrar ve yapay zeka destekli geri bildirimle yeni diller öğreten mobil uygulama."
+      },
+      "scout": {
+        "title": "Yapay zeka ajanları için kod analizi",
+        "description": "Go ile yazılmış, repoları güvenlik, performans ve mimari sorunlar için tarayan npm aracı - yapay zeka kodlama ajanları için optimize edilmiş JSON çıktısı."
+      }
+    },
+    "blog": {
+      "latest": "Son blog yazıları",
+      "all": "Tüm bloglar",
+      "read": "Oku"
+    },
+    "about": {
+      "label": "Hakkımda",
+      "role": "Full-Stack Developer",
+      "location": "İstanbul, Türkiye",
+      "bio": "C# ve ASP.NET Core ile mikroservis backend'leri, Next.js ile full-stack web uygulamaları ve Swift ile iOS uygulamaları geliştirerek 2+ yıl profesyonel deneyim kazandım. Yapay zeka entegrasyonları, dağıtık sistemler ve clean architecture odağım.",
+      "education": "Gebze Teknik Üniversitesi - Bilgisayar Mühendisliği, 2021–2026",
+      "experience": {
+        "label": "Deneyim",
+        "borusan_role": "Full-Stack Developer",
+        "borusan_desc": "Araç kiralama platformu için mikroservis backend - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
+        "negzel_role": "Full-Stack Developer",
+        "negzel_desc": "Dahili proje yönetim API'leri ve RAG tabanlı doküman arama modülü - embedding, vektör veritabanı, LLM entegrasyonu."
+      }
+    },
+    "contact": {
+      "label": "İletişim",
+      "email": "E-posta",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "footer": {
+    "blog": "Blog",
+    "back_to_top": "Yukarı çık"
+  },
+  "not_found": {
+    "title": "Sayfa bulunamadı",
+    "description": "Aradığın sayfa mevcut değil veya taşınmış.",
+    "read_docs": "Blog'a göz at"
+  },
+  "docs_page": {
+    "no_posts_yet": "Henüz yazı yok"
   }
 }

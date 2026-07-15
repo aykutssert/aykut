@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from 'sonner'
 import { RoamingPetWrapper } from '@/components/pets/RoamingPetWrapper'
-import { AuthProvider } from '@/components/auth/AuthContext'
 import { siteUrl } from '@/lib/site'
 import { LocaleProvider } from '@/components/layout/LocaleProvider'
 import './globals.css'
@@ -30,11 +28,11 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    siteName: 'Kernel',
+    siteName: 'Aykut Sert',
     title: 'Aykut Sert',
     description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
     url: siteUrl,
-    images: [{ url: '/kernel-logo.png', width: 512, height: 512, alt: 'Kernel' }],
+    images: [{ url: '/kernel-logo.png', width: 512, height: 512, alt: 'Aykut Sert' }],
   },
   twitter: {
     card: 'summary',
@@ -54,11 +52,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
         <LocaleProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <AuthProvider>
-              <div id="page-root">{children}</div>
-              <RoamingPetWrapper />
-              <Toaster position="bottom-center" mobileOffset={16} richColors />
-            </AuthProvider>
+            <div id="page-root">{children}</div>
+            <RoamingPetWrapper />
           </ThemeProvider>
         </LocaleProvider>
       </body>

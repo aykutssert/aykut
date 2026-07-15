@@ -15,28 +15,3 @@ export const CODEX_PET_STATES = [
 ] as const
 
 export type PetStateName = (typeof CODEX_PET_STATES)[number]['name']
-
-export interface Pet {
-  id: string
-  display_name: string
-  description: string | null
-  spritesheet_url: string
-  source_url: string | null
-  published: boolean
-  is_nsfw: boolean
-  likes_count?: number
-  views_count?: number | null
-  created_at: string
-}
-
-export function validatePetJson(json: unknown): { id: string; displayName: string; description: string } | null {
-  if (typeof json !== 'object' || json === null) return null
-  const j = json as Record<string, unknown>
-  if (typeof j.id !== 'string' || !j.id) return null
-  if (typeof j.displayName !== 'string' || !j.displayName) return null
-  return {
-    id: j.id,
-    displayName: j.displayName,
-    description: typeof j.description === 'string' ? j.description : '',
-  }
-}

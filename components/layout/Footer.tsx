@@ -1,40 +1,37 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 export function Footer() {
   const t = useTranslations('footer')
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <footer className="border-t border-border mt-auto">
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pt-5 pb-3">
       </div>
       <div className="max-w-[1400px] mx-auto w-full px-4 md:px-6 pb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Image src="/kernel-logo.svg" alt="Kernel" width={16} height={16} className="opacity-60" />
-          <span>Kernel</span>
-          <span className="text-border">·</span>
-          <span>{t('built_by')}</span>
-          <a
-            href="https://github.com/aykutssert"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
-          >
-            Aykut Sert
-          </a>
-        </div>
+        <Link href="/blog" className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground">
+          {t('blog')}
+        </Link>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-          <Link href="/prompts" className="hover:text-foreground transition-colors">
-            {t('blog')}
-          </Link>
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="transition-colors duration-200 hover:text-foreground"
+          >
+            {t('back_to_top')}
+          </button>
           <a
             href="https://github.com/aykutssert/kernel"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors"
+            className="transition-colors duration-200 hover:text-foreground"
             aria-label="GitHub"
           >
             <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">

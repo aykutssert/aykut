@@ -1,291 +1,10 @@
 {
   "nav": {
-    "search": "Search blog...",
-    "projects": "Projects",
+    "projects": "Project",
+    "experience": "Experience",
     "about": "About",
-    "contact": "Contact",
     "blog": "Blog",
-    "prompts": "Prompts",
-    "pets": "Codex Pets",
-    "sign_in": "Sign in",
-    "more": "More",
-    "navigate": "Navigate",
-    "studio": "Studio",
-    "developers": "Developers",
-    "liked": "Liked",
-    "categories": "Categories"
-  },
-  "footer": {
-    "built_by": "Built by",
-    "disclaimer": "Prompt data via <link>Awesome ChatGPT Prompts</link>. Pets shared by the community - some may reference existing characters or brands; takedown requests to <email>aykutssert@gmail.com</email>.",
-    "blog": "Blog"
-  },
-  "search": {
-    "recently_viewed": "Recently viewed",
-    "filtering_by_tag": "Filtering by tag:",
-    "no_results": "No results for \"{query}\""
-  },
-  "prompts_page": {
-    "filters": "Filters",
-    "filter": "Filter",
-    "clear": "Clear",
-    "search_prompts": "Search prompts",
-    "placeholder_content": "Title, content...",
-    "search_tags": "Search tags",
-    "placeholder_tags": "Filter tags...",
-    "sort": "Sort",
-    "sort_default": "Default",
-    "sort_alpha": "A-Z",
-    "sort_newest": "Newest",
-    "sort_oldest": "Oldest",
-    "prompts_heading": "Prompts",
-    "result_count": "{count, plural, one {# result} other {# results}}",
-    "prompt_copied": "Prompt copied.",
-    "badge_image": "Image",
-    "badge_text": "Text"
-  },
-  "docs_page": {
-    "articles_and_references": "Articles and references",
-    "article_count": "{count, plural, one {# article} other {# articles}} across {cats, plural, one {# category} other {# categories}}.",
-    "article_count_short": "{count, plural, one {# article} other {# articles}}",
-    "categories": "Categories",
-    "prompts_link": "Prompts",
-    "no_posts_yet": "No posts yet",
-    "article_coming": "The first article is on its way.",
-    "browse_prompts": "Browse prompts"
-  },
-  "auth": {
-    "sign_in": "Sign in",
-    "sign_up": "Sign up",
-    "create_account": "Create account",
-    "reset_password": "Reset password",
-    "send_reset_link": "Send reset link",
-    "back_to_signin": "Back to sign in",
-    "forgot_password": "Forgot password?",
-    "have_account": "Have an account?",
-    "username": "Username",
-    "email": "Email",
-    "password": "Password",
-    "desc_signin": "Continue with your Kernel account.",
-    "desc_signup": "Save your account and keep Kernel features tied to your profile.",
-    "desc_forgot": "Enter your email and we will send a reset link.",
-    "success_signup": "Account created. Check your email to confirm your address.",
-    "success_reset": "Password reset link sent. Check your email.",
-    "error_load": "Signed in, but user data could not be loaded.",
-    "sign_in_to_like": "Sign in to like prompts.",
-    "liked": "Liked",
-    "logout": "Logout"
-  },
-  "account": {
-    "library": "Library",
-    "library_desc": "Manage your saved blog posts and pet companions.",
-    "search_in_prompts": "Search in blog posts...",
-    "search_in_pets": "Search in pets...",
-    "pets_tab": "Pets",
-    "prompts_tab": "Blog",
-    "matched": "{count} matched",
-    "total_count": "{count} total",
-    "no_results": "No results for \"{query}\"",
-    "try_different": "Try a different keyword or clear the search.",
-    "no_liked_prompts": "No liked blog posts yet",
-    "no_liked_pets": "No liked pets yet",
-    "heart_prompt_hint": "Hit the heart on any blog post to save it here for quick access later.",
-    "heart_pet_hint": "Tap the heart on any pet to keep your favorites in one place.",
-    "browse_prompts": "Browse Blog",
-    "browse_pets": "Browse pets",
-    "view_liked_pets": "View liked pets",
-    "view_liked_prompts": "View liked blog posts"
-  },
-  "pets_page": {
-    "description": "Pixel-art companion sprites generated with OpenAI Codex.",
-    "no_pets_found": "No pets found for \"{q}\"",
-    "try_different": "Try a different search term.",
-    "clear_search": "Clear search",
-    "no_pets_yet": "No pets yet.",
-    "search_placeholder": "Search pets…",
-    "find": "Find",
-    "newest": "Newest",
-    "most_liked": "Most liked",
-    "most_viewed": "Most viewed",
-    "liked_short": "Liked",
-    "viewed_short": "Viewed",
-    "include_nsfw": "Include NSFW",
-    "pet_count": "{count, plural, one {# pet} other {# pets}}",
-    "page_of": "Page {page} / {total}",
-    "back": "Back",
-    "view": "View",
-    "download": "Download",
-    "more_lines": "+{count} more lines",
-    "animations": "Animations",
-    "codex_pet": "Codex Pet",
-    "download_codex_pet": "Download .codex-pet",
-    "unzip_instruction": "Download the package, then unzip it into",
-    "source": "Source",
-    "terminal_instruction": "Alternatively, copy and paste this command into your terminal."
-  },
-  "doc": {
-    "related": "Related",
-    "more_in": "More in {category}",
-    "previous": "Previous",
-    "next": "Next",
-    "source": "Source",
-    "badge_image": "Image",
-    "requires_images": "Requires {count, plural, one {# image} other {# images}}",
-    "copy_prompt": "Copy prompt",
-    "copied": "Copied!",
-    "categories": "Categories",
-    "tab_content": "Content",
-    "tab_versions": "Versions",
-    "version_history": "Version History",
-    "compare_latest": "Compare Latest",
-    "current_version": "Current Version",
-    "no_description": "No description provided",
-    "diff_title": "v{from} → Current Version",
-    "diff_subtitle": "Changes between v{from} and current version",
-    "close": "Close"
-  },
-  "hero_text": "Things I've built",
-  "landing": {
-    "hero": {
-      "badge": "Full-stack · Backend · Mobile · AI",
-      "by": "by",
-      "description": "Building production-grade software across the stack - microservice backends, iOS apps, and AI integrations.",
-      "cta_projects": "View projects",
-      "cta_contact": "Contact me"
-    },
-    "identity": {
-      "role": "Full-Stack Developer · 2+ yrs professional · C# · Go · Swift · TypeScript · İstanbul"
-    },
-    "stack": {
-      "title": "Stack",
-      "languages": "Languages",
-      "frameworks": "Frameworks",
-      "data": "Data & Messaging",
-      "ai": "AI & APIs",
-      "architecture": "Architecture",
-      "cloud": "Cloud & Infra"
-    },
-    "projects": {
-      "title": "Projects",
-      "open": "Open",
-      "app_store": "App Store",
-      "mypetroutine": {
-        "title": "Pet care tracker",
-        "description": "iOS app on the App Store for tracking daily pet care - feeding, grooming, vet visits."
-      },
-      "flamy": {
-        "title": "Habit tracker",
-        "description": "iOS habit tracker with streak tracking, milestone badges, and progress charts."
-      },
-      "trippack": {
-        "title": "Travel packing app",
-        "description": "iOS app that generates AI-powered packing lists based on your destination, trip duration, and activities."
-      },
-      "localseo": {
-        "title": "Local SEO site",
-        "description": "Multi-district landing page structure targeting Istanbul's countertop market on Google."
-      },
-      "surge": {
-        "title": "Distributed load tester",
-        "description": "HTTP load testing engine - up to 5,000 requests, configurable concurrency, live latency percentiles."
-      },
-      "uptime": {
-        "title": "Self-hosted uptime monitor",
-        "description": "Real-time uptime monitoring dashboard - response time charts, downtime alerts, and per-minute checks."
-      },
-      "cadie": {
-        "title": "Language learning app",
-        "description": "Mobile app for learning new languages with spaced repetition and AI-powered feedback."
-      },
-      "scout": {
-        "title": "Code intelligence for AI agents",
-        "description": "Go-powered npm tool that scans repos for security, performance, and architecture issues - structured JSON output optimized for AI coding agents."
-      }
-    },
-    "in_progress": {
-      "label": "In progress"
-    },
-    "toolkit": {
-      "badge": "Developer",
-      "title": "Developer toolkit",
-      "description": "Full-text searchable docs system, a curated prompt library, and pixel-art Codex pets with a public REST API and npm CLI.",
-      "explore": "Explore",
-      "npm_cli": "published npm cli for one-command installs"
-    },
-    "blog": {
-      "latest": "Latest",
-      "all": "All posts",
-      "read": "Read",
-      "post_label": "Post",
-      "last_updated": "Last updated",
-      "revision": "Rev"
-    },
-    "demos": {
-      "title": "Interactive demos",
-      "kitchen": {
-        "badge": "Kitchen Studio",
-        "title": "AI countertop visualizer",
-        "description": "Upload a kitchen photo, generate realistic countertop alternatives with AI."
-      },
-      "tshirt": {
-        "badge": "T-Shirt Studio",
-        "title": "3D t-shirt designer",
-        "description": "UV canvas editor with drag, scale & rotate - renders live on a real 3D shirt model with WebGL.",
-        "live": "Live demo"
-      }
-    },
-    "about": {
-      "label": "About",
-      "role": "Full-Stack Developer",
-      "location": "İstanbul, Turkey",
-      "bio": "2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.",
-      "education": "Gebze Technical University - Computer Engineering, 2021–2026",
-      "experience": {
-        "label": "Experience",
-        "borusan_role": "Full-Stack Developer",
-        "borusan_desc": "Microservice backend for a vehicle rental platform - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
-        "negzel_role": "Full-Stack Developer",
-        "negzel_desc": "Internal project management APIs and an RAG-based document search module - embedding, vector database, LLM integration."
-      }
-    },
-    "contact": {
-      "label": "Contact",
-      "email": "Email",
-      "github": "GitHub",
-      "linkedin": "LinkedIn"
-    }
-  },
-  "not_found": {
-    "title": "Page not found",
-    "description": "The page you're looking for doesn't exist or has been moved.",
-    "browse_pets": "Browse Pets",
-    "read_docs": "Read Docs"
-  },
-  "reset_password": {
-    "error_mismatch": "Passwords do not match.",
-    "error_update": "Password could not be updated.",
-    "success_updated": "Password updated. Redirecting...",
-    "heading": "Reset password",
-    "description": "Choose a new password for your Kernel account.",
-    "label_new_password": "New password",
-    "label_confirm_password": "Confirm password",
-    "submit": "Update password"
-  },
-  "tshirt": {
-    "tab_design": "Design",
-    "tab_preview": "3D Preview",
-    "editor_heading": "Design Editor",
-    "upload": "Upload",
-    "reset": "Reset",
-    "label_color": "Color",
-    "color_picker_hint": "Click to pick any color",
-    "label_brightness": "Brightness",
-    "download": "Download"
-  },
-  "more_menu": {
-    "label_pet": "Pet",
-    "on": "ON",
-    "off": "OFF"
+    "more": "More"
   },
   "pet": {
     "click": [
@@ -326,11 +45,6 @@
       "Are you writing code?",
       "Bloop."
     ],
-    "food": [
-      "Yummy!",
-      "🍎❤️",
-      "Delicious!"
-    ],
     "typing_idle": "What are we typing? 🤔",
     "typing_slow": "Type faster! ⌨️",
     "typing_comments": [
@@ -347,7 +61,178 @@
       "I was reading that too!",
       "Taking notes?",
       "Fascinating."
-    ],
-    "feed": "Feed"
+    ]
+  },
+  "landing": {
+    "hero": {
+      "text": "What I Build",
+      "badge": "Computer Engineer",
+      "by": "by",
+      "description": "Building production-grade software across the stack - microservice backends, iOS apps, and AI integrations.",
+      "cta_projects": "View projects",
+      "cta_contact": "Contact me"
+    },
+    "identity": {
+      "role": "Full-Stack Developer · 2+ yrs professional · C# · Go · Swift · TypeScript · İstanbul"
+    },
+    "stack": {
+      "title": "Skills",
+      "groups": [
+        {
+          "label": "Programming Languages",
+          "items": [
+            "C#",
+            "Python",
+            "C/C++"
+          ]
+        },
+        {
+          "label": "Architecture & Design",
+          "items": [
+            "OOP",
+            "Algorithms & Data Structures",
+            "System Design",
+            "Microservices",
+            "Layered Architecture",
+            "REST & WebSocket",
+            "CQRS",
+            "Dependency Injection",
+            "Repository / Unit of Work",
+            "Message Queues (RabbitMQ)",
+            "Caching",
+            "Scheduled Jobs (Quartz)",
+            "Clean Code / SOLID"
+          ]
+        },
+        {
+          "label": "Databases & ORM",
+          "items": [
+            "MSSQL",
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "SQLite",
+            "EF Core",
+            "Dapper",
+            "Firebase",
+            "Supabase"
+          ]
+        },
+        {
+          "label": "Infrastructure & DevOps",
+          "items": [
+            "Docker",
+            "Linux / VPS",
+            "Nginx",
+            "Cloudflare",
+            "Git",
+            "Azure DevOps",
+            "CI/CD"
+          ]
+        },
+        {
+          "label": "Identity & Quality",
+          "items": [
+            "JWT",
+            "OAuth",
+            "ASP.NET Identity",
+            "Unit Testing",
+            "Code Review",
+            "Logging (Serilog / Seq)",
+            "Agile / Scrum"
+          ]
+        }
+      ]
+    },
+    "projects": {
+      "title": "Projects",
+      "open": "Open",
+      "app_store": "App Store",
+      "premium": {
+        "title": "Premium Kiralama",
+        "badge": "Borusan Otomotiv · Microservice Backend",
+        "description": "Live corporate and long-term vehicle rental platform backend covering reservation, payment, and fleet workflows."
+      },
+      "inference": {
+        "title": "Inference Serving Engine",
+        "badge": "Model Serving Infrastructure",
+        "description": "API server for language models with chat/completion endpoints, streaming responses, rate limiting, queueing, metrics, and NVIDIA GPU deployment on RunPod."
+      },
+      "fileupload": {
+        "title": "Large file upload service",
+        "badge": "Distributed Backend",
+        "description": "Production-grade large file upload and processing service with multipart uploads, resumability, durable queues, and asynchronous workers."
+      },
+      "iosapps": {
+        "title": "iOS apps",
+        "description": "SwiftUI apps shipped around pet care, habits, trip packing, and language learning."
+      },
+      "mypetroutine": {
+        "title": "Pet care tracker",
+        "description": "iOS app on the App Store for tracking daily pet care - feeding, grooming, vet visits."
+      },
+      "flamy": {
+        "title": "Habit tracker",
+        "description": "iOS habit tracker with streak tracking, milestone badges, and progress charts."
+      },
+      "trippack": {
+        "title": "Travel packing app",
+        "description": "iOS app that generates AI-powered packing lists based on your destination, trip duration, and activities."
+      },
+      "localseo": {
+        "title": "Customer sites",
+        "description": "Multi-district landing page structure targeting local service searches on Google.",
+        "links": {
+          "countertop": "Countertop site",
+          "inspection": "Auto inspection",
+          "service": "Auto service"
+        }
+      },
+      "cadie": {
+        "title": "Language learning app",
+        "description": "Mobile app for learning new languages with spaced repetition and AI-powered feedback."
+      },
+      "scout": {
+        "title": "Code intelligence for AI agents",
+        "description": "Go-powered npm tool that scans repos for security, performance, and architecture issues - structured JSON output optimized for AI coding agents."
+      }
+    },
+    "blog": {
+      "latest": "Latest blog",
+      "all": "All blogs",
+      "read": "Read"
+    },
+    "about": {
+      "label": "About",
+      "role": "Full-Stack Developer",
+      "location": "İstanbul, Turkey",
+      "bio": "2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.",
+      "education": "Gebze Technical University - Computer Engineering, 2021–2026",
+      "experience": {
+        "label": "Experience",
+        "borusan_role": "Full-Stack Developer",
+        "borusan_desc": "Microservice backend for a vehicle rental platform - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
+        "negzel_role": "Full-Stack Developer",
+        "negzel_desc": "Internal project management APIs and an RAG-based document search module - embedding, vector database, LLM integration."
+      }
+    },
+    "contact": {
+      "label": "Contact",
+      "email": "Email",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "footer": {
+    "blog": "Blog",
+    "back_to_top": "Back to top"
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "read_docs": "Read Docs"
+  },
+  "docs_page": {
+    "no_posts_yet": "No posts yet"
   }
 }

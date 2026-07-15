@@ -1,19 +1,14 @@
 import type { Metadata } from 'next'
-import { getDocs, getRecentBlogPosts, getRecentPrompts } from '@/lib/docs'
+import { getBlogPosts } from '@/lib/blog'
 import { LandingClient } from '@/components/landing/LandingClient'
-import { DiscoverWidget } from '@/components/layout/DiscoverWidget'
 
 export const metadata: Metadata = {
   title: 'Aykut Sert',
   description: 'Full-stack developer building web apps, mobile apps, and developer tools. Next.js, Go, C#, React Native, Swift.',
 }
 
-export default async function LandingPage() {
-  const [docs, recentBlogPosts, recentPrompts] = await Promise.all([
-    getDocs().catch(() => []),
-    getRecentBlogPosts(3).catch(() => []),
-    getRecentPrompts(3).catch(() => []),
-  ])
+export default function LandingPage() {
+  const recentBlogPosts = getBlogPosts().slice(0, 3)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -49,8 +44,7 @@ export default async function LandingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LandingClient docs={docs} recentBlogPosts={recentBlogPosts} recentPrompts={recentPrompts} />
-      <DiscoverWidget />
+      <LandingClient recentBlogPosts={recentBlogPosts} />
     </>
   )
 }

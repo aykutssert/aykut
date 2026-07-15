@@ -1,31 +1,20 @@
 import type { MetadataRoute } from 'next'
-import { getAllDocParams, getAllTags } from '@/lib/docs'
+import { getBlogPosts } from '@/lib/blog'
 import { siteUrl } from '@/lib/site'
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [docParams, tags] = await Promise.all([
-    getAllDocParams().catch(() => []),
-    getAllTags().catch(() => []),
-  ])
+export const dynamic = 'force-static'
 
-  const docUrls: MetadataRoute.Sitemap = docParams.map(({ category, slug }) => ({
-    url: `${siteUrl}/docs/${category}/${slug}`,
+export default function sitemap(): MetadataRoute.Sitemap {
+  const postUrls: MetadataRoute.Sitemap = getBlogPosts().map(({ slug }) => ({
+    url: `${siteUrl}/blog/${slug}`,
     changeFrequency: 'weekly',
     priority: 0.8,
   }))
 
-  const tagUrls: MetadataRoute.Sitemap = tags.map((tag) => ({
-    url: `${siteUrl}/prompts?tag=${encodeURIComponent(tag)}`,
-    changeFrequency: 'weekly',
-    priority: 0.5,
-  }))
-
   return [
     { url: siteUrl, changeFrequency: 'daily', priority: 1 },
-    { url: `${siteUrl}/prompts`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${siteUrl}/docs`, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${siteUrl}/pets`, changeFrequency: 'weekly', priority: 0.7 },
-...docUrls,
-    ...tagUrls,
+    { url: `${siteUrl}/blog`, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${siteUrl}/scout`, changeFrequency: 'monthly', priority: 0.6 },
+    ...postUrls,
   ]
 }

@@ -1,37 +1,33 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 const TYPE_SPEED = 55
 
 export function HeroTyper({ className }: { className?: string }) {
-  const t = useTranslations()
-  const TEXT = t('hero_text')
-  const [displayed, setDisplayed] = useState('')
-  const index = useRef(0)
+  const t = useTranslations('landing.hero')
+  const text = t('text')
+
+  return <TypedText key={text} text={text} className={className} />
+}
+
+function TypedText({ text, className }: { text: string; className?: string }) {
+  const [displayed, setDisplayed] = useState(() => text.slice(0, 1))
 
   useEffect(() => {
-    index.current = 0
-    setDisplayed('')
+    if (displayed.length >= text.length) return
 
-    let timer: ReturnType<typeof setTimeout>
+    const timer = setTimeout(() => {
+      setDisplayed(text.slice(0, displayed.length + 1))
+    }, TYPE_SPEED)
 
-    function tick() {
-      if (index.current < TEXT.length) {
-        index.current++
-        setDisplayed(TEXT.slice(0, index.current))
-        timer = setTimeout(tick, TYPE_SPEED)
-      }
-    }
-
-    timer = setTimeout(tick, TYPE_SPEED)
     return () => clearTimeout(timer)
-  }, [TEXT])
+  }, [text, displayed])
 
   return (
     <span className={className}>
-      {displayed}
+      {displayed || text}
     </span>
   )
 }

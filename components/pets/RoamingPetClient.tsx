@@ -14,12 +14,10 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
   const grabbedPhrases = tPet.raw('grabbed') as string[]
   const thrownPhrases = tPet.raw('thrown') as string[]
   const idlePhrases = tPet.raw('idle') as string[]
-  const foodPhrases = tPet.raw('food') as string[]
   const typingIdlePhrase = tPet('typing_idle')
   const typingSlowPhrase = tPet('typing_slow')
   const typingCommentPhrases = tPet.raw('typing_comments') as string[]
   const readingPhrases = tPet.raw('reading') as string[]
-  const feedLabel = tPet('feed')
 
   const containerRef = useRef<HTMLDivElement>(null)
   const bubbleRef = useRef<HTMLDivElement>(null)
@@ -71,8 +69,6 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
   const bubbleTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const phraseIndexRef = useRef(0)
 
-  const foodRef = useRef<{ x: number, y: number, velY: number } | null>(null)
-  const foodElementRef = useRef<HTMLDivElement>(null)
   const selectionTargetRef = useRef<{ x: number, text: string } | null>(null)
   const lastSpokenSelectionRef = useRef<string | null>(null)
   
@@ -303,31 +299,7 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
         changeState('waving')
       }
       else {
-        if (foodRef.current) {
-          // FOOD CHASE LOGIC
-          const dist = foodRef.current.x - (posRef.current.x + currentVisibleWidth / 2)
-
-          if (Math.abs(dist) > 20) {
-            if (dist > 0) {
-              changeState('running-right')
-              velRef.current.x = 7.0 * speedMult // Run slightly faster for food
-            } else {
-              changeState('running-left')
-              velRef.current.x = -7.0 * speedMult
-            }
-          } else {
-            velRef.current.x = 0
-            changeState('idle')
-            // Eat it if it's on the ground
-            if (foodRef.current.y >= winH - 50) {
-              foodRef.current = null
-              showSpeech(foodPhrases, 3000)
-              velRef.current.y = -8 * speedMult // Happy jump
-              changeState('jumping')
-            }
-          }
-          stateTimerRef.current = 0 // Keep timer reset while chasing
-        } else if (activeInputRef.current) {
+        if (activeInputRef.current) {
           // INPUT INSPECTOR LOGIC
           const rect = activeInputRef.current.getBoundingClientRect()
           const targetX = rect.left + rect.width / 2
@@ -446,29 +418,6 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
       if (posRef.current.y < 0) posRef.current.y = 0
       if (posRef.current.y > winH - currentVisibleHeight) posRef.current.y = winH - currentVisibleHeight
 
-      // FOOD PHYSICS
-      if (foodRef.current) {
-        foodRef.current.velY += 0.8 * speedMult // Gravity for food
-        foodRef.current.y += foodRef.current.velY
-
-        // Floor collision for food
-        if (foodRef.current.y > winH - 30) {
-          foodRef.current.y = winH - 30
-          if (foodRef.current.velY > 3) {
-            foodRef.current.velY *= -0.4 // bounce
-          } else {
-            foodRef.current.velY = 0 // settle
-          }
-        }
-
-        if (foodElementRef.current) {
-          foodElementRef.current.style.transform = `translate(${foodRef.current.x}px, ${foodRef.current.y}px)`
-          foodElementRef.current.style.opacity = '1'
-        }
-      } else if (foodElementRef.current) {
-        foodElementRef.current.style.opacity = '0'
-      }
-
       // Render Loop
       ctx!.clearRect(0, 0, CELL_WIDTH, CELL_HEIGHT)
       ctx!.drawImage(
@@ -546,32 +495,6 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
           }}
         />
       </div>
-
-      {/* Food Element */}
-      <div
-        ref={foodElementRef}
-        className="absolute top-0 left-0 text-2xl transition-opacity duration-200"
-        style={{ opacity: 0, willChange: 'transform' }}
-      >
-        🍎
-      </div>
-
-      {/* Feed Button */}
-      <button
-        onClick={() => {
-          if (!foodRef.current) {
-            foodRef.current = {
-              x: Math.max(20, Math.random() * (windowSizeRef.current.width - 40)),
-              y: -50,
-              velY: 0
-            }
-            hideSpeech()
-          }
-        }}
-        className="fixed bottom-4 left-4 z-[10000] bg-background/80 backdrop-blur-sm border border-border px-3 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-muted transition-colors pointer-events-auto flex items-center gap-2"
-      >
-        <span>🍎</span> <span className="hidden sm:inline" suppressHydrationWarning>{feedLabel}</span>
-      </button>
     </div>
   )
 }

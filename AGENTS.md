@@ -22,14 +22,15 @@ If you think something is important, keep it in MEMORY.md.
 
 ## Architecture
 
-- **Deployment**: VPS via Docker single container. NOT Vercel. NOT serverless.
-- **Database**: PocketBase (remote: https://db.kernelgallery.com).
-- **Framework**: Next.js 16 App Router with `'use cache'`, `cacheTag`, `cacheLife`, `revalidateTag` (requires 2 arguments).
-- **Blog rendering**: `renderMarkdownHtml` (remark/rehype). Prompts/docs: `renderDocHtml` (Shiki).
+- **Personal site** (blog + CV) of Aykut Sert. Fully static: `output: 'export'`, no database, no API routes, no auth, no admin panel.
+- **Deployment**: Cloudflare static hosting, domain kernelgallery.com. `npm run build` outputs to `out/`. NOT Vercel. NOT a VPS.
+- **Blog content**: markdown files in `content/blog/<slug>.md` with frontmatter (title, description, date, image, tags). Images in `public/blog/`. Publishing = add file + git push.
+- **Blog rendering**: `renderMarkdownHtml` in `lib/render-markdown.ts` (remark/rehype + rehype-pretty-code). Data layer: `lib/blog.ts` (fs-based, runs at build time).
+- **i18n**: EN/TR via next-intl, fully client-side (`LocaleProvider` reads a cookie in the browser). UI strings in `messages/en.json` + `messages/tr.json`. Blog content is single-language.
+- **Roaming pet**: sprite atlas at `public/pets/spritesheet.webp` (8 cols x 9 rows, 192x208 cells), driven by `components/pets/RoamingPetClient.tsx`.
 
 ## Workflow Rules
 
 - **Never push to git without explicit permission from the user.**
 - Don't add new dependencies without asking first.
-- Don't modify auth logic without asking first.
-- Don't change the database schema without asking first.
+- Static export constraints apply: no `cookies()`/`headers()` in server components, no API routes, no middleware/proxy, `next/image` runs unoptimized.

@@ -1,28 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
-  cacheComponents: true,
+  output: 'export',
   typescript: { ignoreBuildErrors: true },
-  serverExternalPackages: ['pocketbase'],
   images: {
-    formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "db.kernelgallery.com",
-        pathname: "/api/files/**",
-      },
-    ],
-  },
-  async redirects() {
-    return [
-      {
-        source: "/tags/:tag",
-        destination: "/prompts?tag=:tag",
-        permanent: false,
-      },
-    ];
+    unoptimized: true,
   },
 };
 

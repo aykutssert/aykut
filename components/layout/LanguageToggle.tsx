@@ -14,7 +14,7 @@ export function LanguageToggle() {
   return (
     <button
       onClick={handleToggle}
-      className="flex h-8 items-center gap-1 rounded-lg border border-border px-2.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-[#EEEEE8] dark:hover:bg-[#171513] hover:text-foreground"
+      className="flex h-8 items-center gap-1 rounded-md px-2.5 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:bg-[#EEEEE8] hover:text-foreground dark:hover:bg-[#171513]"
     >
       {locale === 'en' ? '🇹🇷 TR' : '🇬🇧 EN'}
     </button>

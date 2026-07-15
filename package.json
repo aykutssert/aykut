@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "deploy": "wrangler deploy",
+    "deploy:preview": "wrangler versions upload",
     "lint": "eslint"
   },
   "dependencies": {

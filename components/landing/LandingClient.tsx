@@ -37,7 +37,7 @@ export function LandingClient({ recentBlogPosts }: Props) {
         <div className="animate-glow-b absolute right-0 top-4 h-56 w-56 translate-x-1/4 rounded-full bg-sky-400/40 blur-3xl dark:bg-sky-500/15 sm:h-64 sm:w-64 sm:right-1/4 sm:translate-x-1/2" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
 
-        <div className="relative mx-auto w-full max-w-[1400px] px-4 pt-20 pb-6 text-center md:px-0 md:pt-28 md:pb-8">
+        <div className="relative mx-auto w-full max-w-[1400px] px-4 pt-16 pb-6 text-center md:px-0 md:pt-24 md:pb-8">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm">
             <Sparkles className="h-3 w-3" />
             {t('hero.badge')}

@@ -45,13 +45,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable}`}
+      lang="tr"
+      className={`${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
         <LocaleProvider>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <div id="page-root">{children}</div>
             <RoamingPetWrapper />
           </ThemeProvider>

@@ -19,7 +19,7 @@ type Props = {
 
 export function LandingClient({ recentBlogPosts }: Props) {
   const t = useTranslations('landing')
-  const heroButtonClass = 'inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:border-foreground/50'
+  const heroButtonClass = 'inline-flex items-center gap-1.5 rounded-xl border border-foreground/50 px-5 py-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:border-foreground'
   const stackGroups = t.raw('stack.groups') as { label: string; items: string[] }[]
 
   return (
@@ -46,10 +46,6 @@ export function LandingClient({ recentBlogPosts }: Props) {
           <h1 className="mx-auto max-w-xl text-4xl font-bold tracking-tight sm:text-5xl md:text-[3.5rem] md:leading-[1.15] min-h-[1.15em]">
             <HeroTyper className="animate-gradient hero-gradient-text bg-clip-text text-transparent" />
           </h1>
-
-          <p className="mx-auto mt-3 text-sm text-muted-foreground/60">
-            {t('hero.by')} <a href="https://github.com/aykutssert" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors underline underline-offset-2">Aykut Sert</a>
-          </p>
 
           <p className="mx-auto mt-4 max-w-sm text-sm leading-7 text-muted-foreground sm:max-w-md sm:text-[15px]">
             {t('hero.description')}

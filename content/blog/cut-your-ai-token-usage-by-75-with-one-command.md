@@ -3,7 +3,7 @@ title: "Cut Your AI Token Usage by 75% With One Command"
 titleTr: "Tek Komutla AI Token Kullanımını %75 Azalt"
 description: "Most AI responses are padding. One command strips the filler and cuts your token usage by around 75 percent."
 date: "2026-05-25"
-image: "/blog/cut-your-ai-token-usage-by-75-with-one-command.png"
+image: "/blog/cut-your-ai-token-usage-by-75-with-one-command.webp"
 tags: ["claude-code", "tokens", "productivity"]
 ---
 

@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Home",
     "projects": "Project",
     "experience": "Experience",
     "about": "About",
@@ -65,7 +66,7 @@
   },
   "landing": {
     "hero": {
-      "text": "What I Build",
+      "text": "Aykut Sert",
       "badge": "Computer Engineer",
       "by": "by",
       "description": "Building production-grade software across the stack - microservice backends, iOS apps, and AI integrations.",

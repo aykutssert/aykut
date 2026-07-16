@@ -41,7 +41,7 @@ export function Navbar() {
             className="md:w-6 md:h-6"
             priority
           />
-          <span className="font-semibold text-sm">Aykut Sert</span>
+          <span className="font-semibold text-sm">{t('home')}</span>
         </HomeLink>
 
         <div className="flex-1" />

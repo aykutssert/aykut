@@ -3,7 +3,7 @@ title: "How to Actually Get Good at Working with AI"
 titleTr: "AI ile Çalışmada Gerçekten İyi Olmak"
 description: "Working with AI tools is a skill. The habits that separate developers who fight their tools from those who ship four times more."
 date: "2026-05-25"
-image: "/blog/how-to-actually-get-good-at-working-with-ai.png"
+image: "/blog/how-to-actually-get-good-at-working-with-ai.webp"
 tags: ["ai", "workflow", "habits"]
 ---
 

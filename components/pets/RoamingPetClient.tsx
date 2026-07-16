@@ -98,11 +98,23 @@ export function RoamingPetClient({ spritesheetUrl }: { spritesheetUrl: string | 
   useEffect(() => {
     if (hiddenInAdmin) return
     if (!spritesheetUrl) return
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.src = spritesheetUrl
-    img.onload = () => { imgRef.current = img; setLoaded(true) }
-    return () => { img.onload = null }
+    let img: HTMLImageElement | null = null
+    // Defer the 2MB sprite load until the browser is idle so it does not
+    // compete with above-the-fold assets on initial page load.
+    const start = () => {
+      img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.src = spritesheetUrl
+      img.onload = () => { imgRef.current = img!; setLoaded(true) }
+    }
+    const ric = typeof window !== 'undefined' && 'requestIdleCallback' in window
+      ? window.requestIdleCallback(start, { timeout: 3000 })
+      : window.setTimeout(start, 1200)
+    return () => {
+      if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) window.cancelIdleCallback(ric as number)
+      else window.clearTimeout(ric as number)
+      if (img) img.onload = null
+    }
   }, [hiddenInAdmin, spritesheetUrl])
 
   useEffect(() => {

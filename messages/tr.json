@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Ana Sayfa",
     "projects": "Proje",
     "experience": "Deneyim",
     "about": "Hakkımda",
@@ -65,7 +66,7 @@
   },
   "landing": {
     "hero": {
-      "text": "Yaptıklarım",
+      "text": "Aykut Sert",
       "badge": "Computer Engineer",
       "by": "by",
       "description": "Mikroservis mimarileri, iOS uygulamaları ve yapay zeka entegrasyonları üzerine yazılımlar geliştiriyorum.",

@@ -3,7 +3,7 @@ title: "AI Coding Security"
 titleTr: "AI Kodlama Güvenliği"
 description: "An AI agent deleted a production database in 9 seconds. What the PocketOS incident reveals about running AI agents against real infrastructure."
 date: "2026-05-25"
-image: "/blog/ai-coding-security.png"
+image: "/blog/ai-coding-security.webp"
 tags: ["ai", "security", "agents"]
 ---
 

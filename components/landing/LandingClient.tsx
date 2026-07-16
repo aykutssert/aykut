@@ -32,9 +32,17 @@ export function LandingClient({ recentBlogPosts }: Props) {
           style={{ backgroundImage: 'radial-gradient(circle, var(--dot-color) 1px, transparent 1px)', backgroundSize: '22px 22px' }}
         />
 
-      <section className="relative overflow-hidden">
-        <div className="animate-glow-a absolute left-0 top-0 h-72 w-72 -translate-x-1/4 rounded-full bg-violet-400/40 blur-3xl dark:bg-violet-500/15 sm:h-80 sm:w-80 sm:left-1/4 sm:-translate-x-1/2" />
-        <div className="animate-glow-b absolute right-0 top-4 h-56 w-56 translate-x-1/4 rounded-full bg-sky-400/40 blur-3xl dark:bg-sky-500/15 sm:h-64 sm:w-64 sm:right-1/4 sm:translate-x-1/2" />
+      <section className="relative">
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 65%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent)',
+          }}
+        >
+          <div className="animate-glow-a absolute left-0 top-0 h-72 w-72 -translate-x-1/4 rounded-full bg-violet-400/40 blur-3xl dark:bg-violet-500/15 sm:h-80 sm:w-80 sm:left-1/4 sm:-translate-x-1/2" />
+          <div className="animate-glow-b absolute right-0 top-4 h-56 w-56 translate-x-1/4 rounded-full bg-sky-400/40 blur-3xl dark:bg-sky-500/15 sm:h-64 sm:w-64 sm:right-1/4 sm:translate-x-1/2" />
+        </div>
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
 
         <div className="relative mx-auto w-full max-w-[1400px] px-4 pt-16 pb-6 text-center md:px-0 md:pt-24 md:pb-8">

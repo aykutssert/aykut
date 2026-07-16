@@ -221,7 +221,7 @@ export function LandingClient({ recentBlogPosts }: Props) {
           </TiltCard>
 
           <TiltCard>
-          <a href="https://github.com/aykutssert/inference-systems-lab" target="_blank" rel="noopener noreferrer"
+          <Link href="/projects/inference"
             className="group flex h-full flex-col gap-3 rounded-xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/15 hover:shadow-xl hover:shadow-foreground/5">
             <div className="inline-flex w-fit items-center rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/40 dark:text-violet-300">
               {t('projects.inference.badge')}
@@ -232,10 +232,10 @@ export function LandingClient({ recentBlogPosts }: Props) {
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Python · C++ · llama.cpp · Docker · RunPod · NVIDIA GPU</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">aykutssert/inference-systems-lab</span>
-              <ExternalLink className="h-3 w-3" />
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
+              <ArrowRight className="h-3 w-3" />
             </div>
-          </a>
+          </Link>
           </TiltCard>
 
           <TiltCard>
@@ -266,7 +266,7 @@ export function LandingClient({ recentBlogPosts }: Props) {
           </TiltCard>
 
           <TiltCard>
-          <a href="https://github.com/aykutssert/file-upload-service" target="_blank" rel="noopener noreferrer"
+          <Link href="/projects/file-upload-service"
             className="group flex h-full flex-col gap-3 rounded-xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/15 hover:shadow-xl hover:shadow-foreground/5">
             <div className="inline-flex w-fit items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/40 dark:text-emerald-300">
               {t('projects.fileupload.badge')}
@@ -277,10 +277,10 @@ export function LandingClient({ recentBlogPosts }: Props) {
             </div>
             <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · Docker · PostgreSQL · NATS · SeaweedFS · Observability</p>
             <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">aykutssert/file-upload-service</span>
-              <ExternalLink className="h-3 w-3" />
+              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
+              <ArrowRight className="h-3 w-3" />
             </div>
-          </a>
+          </Link>
           </TiltCard>
 
           <TiltCard>

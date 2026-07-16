@@ -235,5 +235,9 @@
   },
   "docs_page": {
     "no_posts_yet": "No posts yet"
+  },
+  "projects_page": {
+    "back": "Back to projects",
+    "view_source": "View on GitHub"
   }
 }

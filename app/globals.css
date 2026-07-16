@@ -252,6 +252,15 @@ button:disabled { cursor: not-allowed !important; }
   color: #abb2bf;
 }
 
+/* In-content images: theme-aware frame so edges stay visible on any bg */
+.prose img {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.dark .prose img {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 /* Prose direct color overrides — bypasses variable cascade issues */
 .prose h1,
 .prose h2,

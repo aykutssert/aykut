@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = 'https://www.kernelgallery.com'
+const DEFAULT_SITE_URL = 'https://kernelgallery.com'
 
 function normalizeSiteUrl(value: string | undefined) {
   const raw = (value || DEFAULT_SITE_URL).trim().replace(/\/+$/, '')

@@ -235,5 +235,9 @@
   },
   "docs_page": {
     "no_posts_yet": "Henüz yazı yok"
+  },
+  "projects_page": {
+    "back": "Projelere dön",
+    "view_source": "GitHub’da gör"
   }
 }

@@ -113,7 +113,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Cover image */}
           {post.image && (
-            <div className="relative mb-8 rounded-xl border border-border overflow-hidden flex justify-center items-center" style={{ maxHeight: '70vh' }}>
+            <div className="relative mb-8 rounded-xl border border-black/15 dark:border-white/20 overflow-hidden flex justify-center items-center" style={{ maxHeight: '70vh' }}>
               <div
                 className="absolute inset-0 scale-110 blur-2xl brightness-90"
                 style={{ backgroundImage: `url(${post.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}

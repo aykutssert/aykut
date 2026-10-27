@@ -15,7 +15,7 @@ export default function LandingPage() {
     '@type': 'Person',
     name: 'Aykut Sert',
     jobTitle: 'Full-Stack Developer',
-    url: 'https://kernelgallery.com',
+    url: 'https://aykutsert.com',
     email: 'aykutssert@gmail.com',
     sameAs: [
       'https://github.com/aykutssert',

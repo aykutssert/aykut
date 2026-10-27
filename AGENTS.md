@@ -23,7 +23,7 @@ If you think something is important, keep it in MEMORY.md.
 ## Architecture
 
 - **Personal site** (blog + CV) of Aykut Sert. Fully static: `output: 'export'`, no database, no API routes, no auth, no admin panel.
-- **Deployment**: Cloudflare static hosting, domain kernelgallery.com. `npm run build` outputs to `out/`. NOT Vercel. NOT a VPS.
+- **Deployment**: Cloudflare static hosting, domain aykutsert.com (kernelgallery.com is the old domain). `npm run build` outputs to `out/`. NOT Vercel. NOT a VPS.
 - **Blog content**: markdown files in `content/blog/<slug>.md` with frontmatter (title, description, date, image, tags). Images in `public/blog/`. Publishing = add file + git push.
 - **Blog rendering**: `renderMarkdownHtml` in `lib/render-markdown.ts` (remark/rehype + rehype-pretty-code). Data layer: `lib/blog.ts` (fs-based, runs at build time).
 - **i18n**: EN/TR via next-intl, fully client-side (`LocaleProvider` reads a cookie in the browser). UI strings in `messages/en.json` + `messages/tr.json`. Blog content is single-language.

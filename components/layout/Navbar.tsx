@@ -6,7 +6,6 @@ import type { MouseEvent } from 'react'
 import { usePathname } from 'next/navigation'
 import { ThemeToggle } from './ThemeToggle'
 import { MobileNav } from './MobileNav'
-import { RoamingPetToggle } from '@/components/pets/RoamingPetToggle'
 import { HomeLink } from './HomeLink'
 import { LanguageToggle } from './LanguageToggle'
 import { useTranslations } from 'next-intl'
@@ -58,7 +57,6 @@ export function Navbar() {
           </Link>
           <LanguageToggle />
           <ThemeToggle />
-          <RoamingPetToggle />
         </div>
         <div className="flex md:hidden items-center gap-1.5">
           <LanguageToggle />

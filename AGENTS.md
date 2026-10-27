@@ -27,7 +27,6 @@ If you think something is important, keep it in MEMORY.md.
 - **Blog content**: markdown files in `content/blog/<slug>.md` with frontmatter (title, description, date, image, tags). Images in `public/blog/`. Publishing = add file + git push.
 - **Blog rendering**: `renderMarkdownHtml` in `lib/render-markdown.ts` (remark/rehype + rehype-pretty-code). Data layer: `lib/blog.ts` (fs-based, runs at build time).
 - **i18n**: EN/TR via next-intl, fully client-side (`LocaleProvider` reads a cookie in the browser). UI strings in `messages/en.json` + `messages/tr.json`. Blog content is single-language.
-- **Roaming pet**: sprite atlas at `public/pets/spritesheet.webp` (8 cols x 9 rows, 192x208 cells), driven by `components/pets/RoamingPetClient.tsx`.
 
 ## Workflow Rules
 

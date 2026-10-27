@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from '@/components/theme-provider'
-import { RoamingPetWrapper } from '@/components/pets/RoamingPetWrapper'
 import { siteUrl } from '@/lib/site'
 import { LocaleProvider } from '@/components/layout/LocaleProvider'
 import './globals.css'
@@ -43,7 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LocaleProvider>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <div id="page-root">{children}</div>
-            <RoamingPetWrapper />
           </ThemeProvider>
         </LocaleProvider>
       </body>

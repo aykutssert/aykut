@@ -29,7 +29,7 @@ export function LandingClient({ recentBlogPosts }: Props) {
   const t = useTranslations('landing')
   const heroButtonClass = 'inline-flex items-center gap-1.5 rounded-xl border border-foreground/50 px-5 py-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:border-foreground'
   const stackGroups = t.raw('stack.groups') as { label: string; items: string[] }[]
-  const experienceItems = t.raw('about.experience.items') as { company: string; period: string; bullets: string[] }[]
+  const experienceItems = t.raw('about.experience.items') as { company: string; role: string; period: string; bullets: string[] }[]
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -125,11 +125,14 @@ export function LandingClient({ recentBlogPosts }: Props) {
                 <div id="experience" className="p-6 sm:p-8" style={{ scrollMarginTop: '72px' }}>
                   <h3 className="mb-5 text-base font-semibold tracking-tight text-foreground">{t('about.experience.label')}</h3>
                   <div className="relative space-y-6 before:absolute before:bottom-2 before:left-[3px] before:top-2 before:w-px before:bg-border">
-                    {experienceItems.map(({ company, period, bullets }, index) => (
+                    {experienceItems.map(({ company, role, period, bullets }, index) => (
                       <div key={company} className="relative pl-5">
                         <span className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-foreground/70 ring-2 ring-background" />
                         <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                          <p className="font-semibold text-sm">{company}</p>
+                          <div>
+                            <p className="font-semibold text-sm">{company}</p>
+                            <p className="mt-0.5 text-xs text-muted-foreground">{role}</p>
+                          </div>
                           <span className="shrink-0 text-[11px] font-mono text-muted-foreground">{period}</span>
                         </div>
                         <ul className="mt-2 space-y-1.5 text-xs leading-5 text-muted-foreground">

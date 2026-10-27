@@ -133,7 +133,8 @@
         "label": "Deneyim",
         "items": [
           {
-            "company": "Serbest Çalışma",
+            "company": "Serbest",
+            "role": "Freelancer",
             "period": "Mayıs 2026 - Günümüz",
             "bullets": [
               "Kurumsal müşterilerim için responsive web sitesi, back office (admin) paneli ve mobil uygulama geliştirdim; SEO odaklı organik trafiği artıracak çalışmalar yaptım."
@@ -141,6 +142,7 @@
           },
           {
             "company": "Borusan Otomotiv",
+            "role": "Backend Developer",
             "period": "Ocak 2025 - Mayıs 2026",
             "bullets": [
               "BMW/MINI/Land Rover kiralama platformunun mikroservis backend'inde RESTful API'ler geliştirdim; CQRS, RabbitMQ, Redis, JWT.",
@@ -149,6 +151,7 @@
           },
           {
             "company": "Tezel Lojistik",
+            "role": "Software Developer",
             "period": "Ağustos 2023 - Ocak 2025",
             "bullets": [
               "Lojistik operasyonları için full-stack .NET geliştirme: sevkiyat/parsiyel takibi, depo ve sipariş yönetimi modüllerini uçtan uca (ASP.NET Core + EF Core backend, web arayüzleri) geliştirdim.",
@@ -157,6 +160,7 @@
           },
           {
             "company": "Negzel Teknoloji",
+            "role": "Junior Software Developer",
             "period": "Nisan 2022 - Ağustos 2023",
             "bullets": [
               "6 kişilik ekipte bir iç proje yönetim platformu geliştirdim (ASP.NET MVC, EF Core); ayrıca dokümanlarda doğal dille arama yapan semantik arama modülünü (embedding + vektör DB) ekledim."

@@ -133,7 +133,8 @@
         "label": "Experience",
         "items": [
           {
-            "company": "Freelance",
+            "company": "Self-employed",
+            "role": "Freelancer",
             "period": "May 2026 - Present",
             "bullets": [
               "Built responsive websites, back-office (admin) panels, and a mobile app for business clients, along with SEO work to grow organic traffic."
@@ -141,6 +142,7 @@
           },
           {
             "company": "Borusan Otomotiv",
+            "role": "Backend Developer",
             "period": "Jan 2025 - May 2026",
             "bullets": [
               "Built RESTful APIs in the microservice backend of the BMW/MINI/Land Rover rental platform; CQRS, RabbitMQ, Redis, JWT.",
@@ -149,6 +151,7 @@
           },
           {
             "company": "Tezel Lojistik",
+            "role": "Software Developer",
             "period": "Aug 2023 - Jan 2025",
             "bullets": [
               "Full-stack .NET development for logistics operations: built shipment and partial-load tracking, warehouse, and order management modules end to end (ASP.NET Core + EF Core backend, web interfaces).",
@@ -157,6 +160,7 @@
           },
           {
             "company": "Negzel Teknoloji",
+            "role": "Junior Software Developer",
             "period": "Apr 2022 - Aug 2023",
             "bullets": [
               "Built an internal project management platform in a 6-person team (ASP.NET MVC, EF Core), and added a semantic search module for natural-language search over documents (embedding + vector DB)."

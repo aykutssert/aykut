@@ -1,32 +1,30 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from '@/components/theme-provider'
-import { siteUrl } from '@/lib/site'
+import { defaultOgImage, siteDescription, siteName, siteUrl } from '@/lib/site'
 import { LocaleProvider } from '@/components/layout/LocaleProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Aykut Sert',
-    template: '%s',
+    default: siteName,
+    template: `%s - ${siteName}`,
   },
-  description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
+  description: siteDescription,
   metadataBase: new URL(siteUrl),
-  alternates: {
-    canonical: siteUrl,
-  },
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
   openGraph: {
     type: 'website',
-    siteName: 'Aykut Sert',
-    title: 'Aykut Sert',
-    description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
-    url: siteUrl,
-    images: [{ url: '/kernel-logo.png', width: 512, height: 512, alt: 'Aykut Sert' }],
+    siteName,
+    title: siteName,
+    description: siteDescription,
+    images: [defaultOgImage],
   },
   twitter: {
     card: 'summary',
-    title: 'Aykut Sert',
-    description: 'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.',
-    images: ['/kernel-logo.png'],
+    title: siteName,
+    description: siteDescription,
+    images: [defaultOgImage.url],
   },
 }
 

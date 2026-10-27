@@ -12,6 +12,7 @@ import { ScrollToTop } from '@/components/layout/ScrollToTop'
 import { BlogToc } from '@/components/docs/BlogToc'
 import { PostDate } from '@/components/blog/PostDate'
 import { LocalizedBlogTitle } from '@/components/blog/LocalizedBlogTitle'
+import { absoluteUrl, defaultOgImage, siteName, siteUrl } from '@/lib/site'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -25,19 +26,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getBlogPost(slug)
   if (!post) return {}
+  const url = `/blog/${post.slug}`
+  const images = post.image ? [{ url: post.image, alt: post.title }] : [defaultOgImage]
   return {
     title: post.title,
     description: post.description,
+    keywords: post.tags,
+    alternates: { canonical: url },
     openGraph: {
+      type: 'article',
+      siteName,
       title: post.title,
       description: post.description,
-      ...(post.image ? { images: [{ url: post.image }] } : {}),
+      url,
+      images,
+      ...(post.date ? { publishedTime: post.date } : {}),
+      authors: [siteUrl],
+      tags: post.tags,
     },
     twitter: {
       card: post.image ? 'summary_large_image' : 'summary',
       title: post.title,
       description: post.description,
-      ...(post.image ? { images: [post.image] } : {}),
+      images: images.map((image) => image.url),
     },
   }
 }
@@ -63,6 +74,21 @@ export default async function BlogPostPage({ params }: Props) {
 
   const html = await renderMarkdownHtml(post.content)
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    url: absoluteUrl(`/blog/${post.slug}`),
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    ...(post.image ? { image: absoluteUrl(post.image) } : {}),
+    ...(post.date ? { datePublished: post.date, dateModified: post.date } : {}),
+    inLanguage: 'en',
+    keywords: post.tags.join(', '),
+    author: { '@type': 'Person', name: siteName, url: siteUrl },
+    publisher: { '@type': 'Person', name: siteName, url: siteUrl },
+  }
+
   const posts = getBlogPosts()
   const currentIndex = posts.findIndex((p) => p.slug === post.slug)
   const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null
@@ -70,10 +96,14 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
 
       <div id="main-content" className="flex flex-1 max-w-[1400px] mx-auto w-full">
-        <main className="flex-1 min-w-0 px-4 md:px-10 pt-8 md:pt-10 pb-32">
+        <main lang="en" className="flex-1 min-w-0 px-4 md:px-10 pt-8 md:pt-10 pb-32">
           <div className="mb-8">
             <LocalizedBlogTitle
               as="h1"

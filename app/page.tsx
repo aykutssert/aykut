@@ -1,10 +1,19 @@
 import type { Metadata } from 'next'
 import { getBlogPosts } from '@/lib/blog'
 import { LandingClient } from '@/components/landing/LandingClient'
+import { defaultOgImage, siteDescription, siteName, siteUrl } from '@/lib/site'
 
 export const metadata: Metadata = {
-  title: 'Aykut Sert',
-  description: 'Full-stack developer building web apps, mobile apps, and developer tools. Next.js, Go, C#, React Native, Swift.',
+  title: { absolute: siteName },
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName,
+    title: siteName,
+    description: siteDescription,
+    url: '/',
+    images: [defaultOgImage],
+  },
 }
 
 export default function LandingPage() {
@@ -13,9 +22,11 @@ export default function LandingPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': `${siteUrl}/#person`,
+    image: `${siteUrl}/my-face.webp`,
     name: 'Aykut Sert',
     jobTitle: 'Full-Stack Developer',
-    url: 'https://aykutsert.com',
+    url: siteUrl,
     email: 'aykutssert@gmail.com',
     sameAs: [
       'https://github.com/aykutssert',
@@ -38,11 +49,24 @@ export default function LandingPage() {
     ],
   }
 
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    url: siteUrl,
+    description: siteDescription,
+    author: { '@id': `${siteUrl}/#person` },
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
       <LandingClient recentBlogPosts={recentBlogPosts} />
     </>

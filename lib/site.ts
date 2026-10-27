@@ -17,3 +17,8 @@ export function absoluteUrl(path = '/') {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`
   return `${siteUrl}${normalizedPath}`
 }
+
+export const siteName = 'Aykut Sert'
+export const siteDescription =
+  'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.'
+export const defaultOgImage = { url: '/kernel-logo.png', width: 512, height: 512, alt: siteName }

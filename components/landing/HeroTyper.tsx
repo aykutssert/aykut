@@ -26,8 +26,11 @@ function TypedText({ text, className }: { text: string; className?: string }) {
   }, [text, displayed])
 
   return (
-    <span className={className}>
-      {displayed || text}
-    </span>
+    <>
+      <span className="sr-only">{text}</span>
+      <span className={className} aria-hidden="true">
+        {displayed || text}
+      </span>
+    </>
   )
 }

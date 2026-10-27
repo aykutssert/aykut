@@ -6,8 +6,9 @@ import { siteUrl } from '@/lib/site'
 export const dynamic = 'force-static'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const postUrls: MetadataRoute.Sitemap = getBlogPosts().map(({ slug }) => ({
+  const postUrls: MetadataRoute.Sitemap = getBlogPosts().map(({ slug, date }) => ({
     url: `${siteUrl}/blog/${slug}`,
+    ...(date ? { lastModified: new Date(date) } : {}),
     changeFrequency: 'weekly',
     priority: 0.8,
   }))

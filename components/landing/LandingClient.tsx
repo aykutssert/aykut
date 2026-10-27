@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, GraduationCap, Mail, MapPin, Sparkles, ExternalLink, ChevronDown } from 'lucide-react'
+import { ArrowRight, GraduationCap, Languages, Mail, MapPin, Sparkles, ExternalLink, ChevronDown } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -17,10 +17,19 @@ type Props = {
   recentBlogPosts: BlogPostMeta[]
 }
 
+// Links per experience entry, in the same order as about.experience.items
+const EXPERIENCE_LINKS: string[][] = [
+  ['https://myarabamservis.com/', 'https://myarabamekspertiz.com/', 'https://bagcilarmermerci.com/'],
+  ['https://www.premiumkiralama.com/'],
+  [],
+  [],
+]
+
 export function LandingClient({ recentBlogPosts }: Props) {
   const t = useTranslations('landing')
   const heroButtonClass = 'inline-flex items-center gap-1.5 rounded-xl border border-foreground/50 px-5 py-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:border-foreground'
   const stackGroups = t.raw('stack.groups') as { label: string; items: string[] }[]
+  const experienceItems = t.raw('about.experience.items') as { company: string; period: string; bullets: string[] }[]
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -107,33 +116,38 @@ export function LandingClient({ recentBlogPosts }: Props) {
                     <GraduationCap className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                     <span>{t('about.education')}</span>
                   </div>
+                  <div className="mt-2 flex items-start gap-2 text-xs leading-5 text-muted-foreground">
+                    <Languages className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                    <span>{t('about.language')}</span>
+                  </div>
                 </div>
 
                 <div id="experience" className="p-6 sm:p-8" style={{ scrollMarginTop: '72px' }}>
                   <h3 className="mb-5 text-base font-semibold tracking-tight text-foreground">{t('about.experience.label')}</h3>
-                  <div className="relative space-y-5 before:absolute before:bottom-2 before:left-[3px] before:top-2 before:w-px before:bg-border">
-                    <div className="relative pl-5">
-                      <span className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-foreground/70 ring-2 ring-background" />
-                      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                        <div>
-                          <p className="font-semibold text-sm">Borusan Otomotiv</p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">{t('about.experience.borusan_role')}</p>
+                  <div className="relative space-y-6 before:absolute before:bottom-2 before:left-[3px] before:top-2 before:w-px before:bg-border">
+                    {experienceItems.map(({ company, period, bullets }, index) => (
+                      <div key={company} className="relative pl-5">
+                        <span className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-foreground/70 ring-2 ring-background" />
+                        <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                          <p className="font-semibold text-sm">{company}</p>
+                          <span className="shrink-0 text-[11px] font-mono text-muted-foreground">{period}</span>
                         </div>
-                        <span className="shrink-0 text-[11px] font-mono text-muted-foreground">Jan 2025 - Jan 2026</span>
+                        <ul className="mt-2 space-y-1.5 text-xs leading-5 text-muted-foreground">
+                          {bullets.map((bullet) => (
+                            <li key={bullet}>{bullet}</li>
+                          ))}
+                        </ul>
+                        {EXPERIENCE_LINKS[index]?.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium text-foreground">
+                            {EXPERIENCE_LINKS[index].map((href) => (
+                              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 transition-colors hover:text-muted-foreground">
+                                {new URL(href).hostname.replace(/^www\./, '')} <ExternalLink className="h-3 w-3" />
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <p className="mt-3 text-xs leading-5 text-muted-foreground">{t('about.experience.borusan_desc')}</p>
-                    </div>
-                    <div className="relative pt-2 pl-5">
-                      <span className="absolute left-0 top-3.5 h-2 w-2 rounded-full bg-foreground/70 ring-2 ring-background" />
-                      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                        <div>
-                          <p className="font-semibold text-sm">Negzel Teknoloji</p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">{t('about.experience.negzel_role')}</p>
-                        </div>
-                        <span className="shrink-0 text-[11px] font-mono text-muted-foreground">Jul 2023 - Aug 2024</span>
-                      </div>
-                      <p className="mt-3 text-xs leading-5 text-muted-foreground">{t('about.experience.negzel_desc')}</p>
-                    </div>
+                    ))}
                   </div>
                 </div>
 
@@ -306,8 +320,8 @@ export function LandingClient({ recentBlogPosts }: Props) {
                 <a href="https://apps.apple.com/us/app/my-pet-routine/id6768613964" target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 transition-colors hover:text-muted-foreground">
                   My Pet Routine <ExternalLink className="h-3 w-3" />
                 </a>
-                <a href="https://apps.apple.com/us/app/flamy-habit-tracker/id6770295891" target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 transition-colors hover:text-muted-foreground">
-                  Flamy <ExternalLink className="h-3 w-3" />
+                <a href="https://apps.apple.com/us/app/buuvo-habit-tracker/id6770295891" target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 transition-colors hover:text-muted-foreground">
+                  Buuvo <ExternalLink className="h-3 w-3" />
                 </a>
                 <a href="https://apps.apple.com/us/app/pack-my-trip/id6768713391" target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 transition-colors hover:text-muted-foreground">
                   TripPack <ExternalLink className="h-3 w-3" />

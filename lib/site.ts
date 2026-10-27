@@ -20,5 +20,5 @@ export function absoluteUrl(path = '/') {
 
 export const siteName = 'Aykut Sert'
 export const siteDescription =
-  'Portfolio of Aykut Sert, full-stack developer building web apps, iOS apps, and AI integrations with Go, C#, Next.js, and Swift.'
+  'Portfolio of Aykut Sert, computer engineer building microservice backends, web apps, iOS apps, and AI integrations with C#, ASP.NET Core, Next.js, and Swift.'
 export const defaultOgImage = { url: '/kernel-logo.png', width: 512, height: 512, alt: siteName }

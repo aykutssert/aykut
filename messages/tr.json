@@ -16,9 +16,6 @@
       "cta_projects": "Projelere bak",
       "cta_contact": "İletişime geç"
     },
-    "identity": {
-      "role": "Full-Stack Developer · 2+ yıl profesyonel · C# · Go · Swift · TypeScript · İstanbul"
-    },
     "stack": {
       "title": "Yetenekler",
       "groups": [
@@ -27,63 +24,47 @@
           "items": [
             "C#",
             "Python",
-            "C/C++"
+            "C++"
           ]
         },
         {
           "label": "Mimari & Tasarım",
           "items": [
             "OOP",
-            "Algoritma & Veri Yapıları",
-            "Sistem Tasarımı",
+            "Veri yapıları & Algoritma",
             "Mikroservis",
-            "Katmanlı Mimari",
+            "Dağıtık Sistemler",
             "REST & WebSocket",
-            "CQRS",
-            "Dependency Injection",
-            "Repository / Unit of Work",
-            "Mesaj Kuyruğu (RabbitMQ)",
+            "Queue",
+            "Async workers",
             "Caching",
-            "Zamanlanmış İşler (Quartz)",
-            "Clean Code / SOLID"
+            "Rate limiting",
+            "Clean Code/SOLID",
+            "LLM/Model serving"
           ]
         },
         {
-          "label": "Veritabanı & ORM",
+          "label": "Veritabanı & DevOps",
           "items": [
             "MSSQL",
             "PostgreSQL",
             "MongoDB",
             "Redis",
-            "SQLite",
             "EF Core",
             "Dapper",
-            "Firebase",
-            "Supabase"
-          ]
-        },
-        {
-          "label": "Altyapı & DevOps",
-          "items": [
             "Docker",
-            "Linux / VPS",
-            "Nginx",
-            "Cloudflare",
             "Git",
-            "Azure DevOps",
             "CI/CD"
           ]
         },
         {
-          "label": "Kimlik & Kalite",
+          "label": "Güvenlik & Süreç",
           "items": [
             "JWT",
-            "OAuth",
-            "ASP.NET Identity",
+            "Cookie-Session",
+            "Logging",
             "Unit Testing",
-            "Code Review",
-            "Loglama (Serilog / Seq)",
-            "Agile / Scrum"
+            "Agile/Scrum"
           ]
         }
       ]
@@ -144,17 +125,46 @@
     },
     "about": {
       "label": "Hakkımda",
-      "role": "Full-Stack Developer",
+      "role": "Bilgisayar Mühendisi",
       "location": "İstanbul, Türkiye",
-      "bio": "C# ve ASP.NET Core ile mikroservis backend'leri, Next.js ile full-stack web uygulamaları ve Swift ile iOS uygulamaları geliştirerek 2+ yıl profesyonel deneyim kazandım. Yapay zeka entegrasyonları, dağıtık sistemler ve clean architecture odağım.",
-      "education": "Gebze Teknik Üniversitesi - Bilgisayar Mühendisliği, 2021–2026",
+      "bio": "C# ve ASP.NET Core ile mikroservis backend'leri, lojistik ve araç kiralama alanlarında kurumsal sistemler, kurumsal müşteriler için web siteleri ve Swift ile iOS uygulamaları geliştirerek 4+ yıl profesyonel deneyim kazandım. Dağıtık sistemler, yapay zeka entegrasyonları ve clean code odağım.",
+      "education": "Gebze Teknik Üniversitesi - Bilgisayar Mühendisliği (Lisans), 2021 - Şubat 2026",
       "experience": {
         "label": "Deneyim",
-        "borusan_role": "Full-Stack Developer",
-        "borusan_desc": "Araç kiralama platformu için mikroservis backend - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
-        "negzel_role": "Full-Stack Developer",
-        "negzel_desc": "Dahili proje yönetim API'leri ve RAG tabanlı doküman arama modülü - embedding, vektör veritabanı, LLM entegrasyonu."
-      }
+        "items": [
+          {
+            "company": "Serbest Çalışma",
+            "period": "Mayıs 2026 - Günümüz",
+            "bullets": [
+              "Kurumsal müşterilerim için responsive web sitesi, back office (admin) paneli ve mobil uygulama geliştirdim; SEO odaklı organik trafiği artıracak çalışmalar yaptım."
+            ]
+          },
+          {
+            "company": "Borusan Otomotiv",
+            "period": "Ocak 2025 - Mayıs 2026",
+            "bullets": [
+              "BMW/MINI/Land Rover kiralama platformunun mikroservis backend'inde RESTful API'ler geliştirdim; CQRS, RabbitMQ, Redis, JWT.",
+              "Quartz.NET ile SAP entegrasyonu; web/admin için versiyonlu BFF uçları; MongoDB, Docker, Azure DevOps."
+            ]
+          },
+          {
+            "company": "Tezel Lojistik",
+            "period": "Ağustos 2023 - Ocak 2025",
+            "bullets": [
+              "Lojistik operasyonları için full-stack .NET geliştirme: sevkiyat/parsiyel takibi, depo ve sipariş yönetimi modüllerini uçtan uca (ASP.NET Core + EF Core backend, web arayüzleri) geliştirdim.",
+              "Sevkiyat durumları için izleme/raporlama ekranları ve RESTful API entegrasyonları; MSSQL üzerinde sorgu ve performans iyileştirmeleri."
+            ]
+          },
+          {
+            "company": "Negzel Teknoloji",
+            "period": "Nisan 2022 - Ağustos 2023",
+            "bullets": [
+              "6 kişilik ekipte bir iç proje yönetim platformu geliştirdim (ASP.NET MVC, EF Core); ayrıca dokümanlarda doğal dille arama yapan semantik arama modülünü (embedding + vektör DB) ekledim."
+            ]
+          }
+        ]
+      },
+      "language": "İngilizce - Okuma/Yazma B2, Konuşma B1"
     },
     "contact": {
       "label": "İletişim",

@@ -16,9 +16,6 @@
       "cta_projects": "View projects",
       "cta_contact": "Contact me"
     },
-    "identity": {
-      "role": "Full-Stack Developer · 2+ yrs professional · C# · Go · Swift · TypeScript · İstanbul"
-    },
     "stack": {
       "title": "Skills",
       "groups": [
@@ -27,63 +24,47 @@
           "items": [
             "C#",
             "Python",
-            "C/C++"
+            "C++"
           ]
         },
         {
           "label": "Architecture & Design",
           "items": [
             "OOP",
-            "Algorithms & Data Structures",
-            "System Design",
+            "Data Structures & Algorithms",
             "Microservices",
-            "Layered Architecture",
+            "Distributed Systems",
             "REST & WebSocket",
-            "CQRS",
-            "Dependency Injection",
-            "Repository / Unit of Work",
-            "Message Queues (RabbitMQ)",
+            "Queue",
+            "Async workers",
             "Caching",
-            "Scheduled Jobs (Quartz)",
-            "Clean Code / SOLID"
+            "Rate limiting",
+            "Clean Code/SOLID",
+            "LLM/Model serving"
           ]
         },
         {
-          "label": "Databases & ORM",
+          "label": "Database & DevOps",
           "items": [
             "MSSQL",
             "PostgreSQL",
             "MongoDB",
             "Redis",
-            "SQLite",
             "EF Core",
             "Dapper",
-            "Firebase",
-            "Supabase"
-          ]
-        },
-        {
-          "label": "Infrastructure & DevOps",
-          "items": [
             "Docker",
-            "Linux / VPS",
-            "Nginx",
-            "Cloudflare",
             "Git",
-            "Azure DevOps",
             "CI/CD"
           ]
         },
         {
-          "label": "Identity & Quality",
+          "label": "Security & Process",
           "items": [
             "JWT",
-            "OAuth",
-            "ASP.NET Identity",
+            "Cookie-Session",
+            "Logging",
             "Unit Testing",
-            "Code Review",
-            "Logging (Serilog / Seq)",
-            "Agile / Scrum"
+            "Agile/Scrum"
           ]
         }
       ]
@@ -144,17 +125,46 @@
     },
     "about": {
       "label": "About",
-      "role": "Full-Stack Developer",
+      "role": "Computer Engineer",
       "location": "İstanbul, Turkey",
-      "bio": "2+ years of professional experience building microservice backends with C# and ASP.NET Core, full-stack web apps with Next.js, and iOS apps with Swift. Focused on AI integrations, distributed systems, and clean architecture.",
-      "education": "Gebze Technical University - Computer Engineering, 2021–2026",
+      "bio": "4+ years of professional experience building microservice backends with C# and ASP.NET Core, enterprise systems for logistics and car rental, websites for business clients, and iOS apps with Swift. Focused on distributed systems, AI integrations, and clean code.",
+      "education": "Gebze Technical University - Computer Engineering (B.Sc.), 2021 - Feb 2026",
       "experience": {
         "label": "Experience",
-        "borusan_role": "Full-Stack Developer",
-        "borusan_desc": "Microservice backend for a vehicle rental platform - C#, ASP.NET Core, CQRS/MediatR, RabbitMQ, Quartz.NET, Redis, MongoDB, MSSQL, Docker.",
-        "negzel_role": "Full-Stack Developer",
-        "negzel_desc": "Internal project management APIs and an RAG-based document search module - embedding, vector database, LLM integration."
-      }
+        "items": [
+          {
+            "company": "Freelance",
+            "period": "May 2026 - Present",
+            "bullets": [
+              "Built responsive websites, back-office (admin) panels, and a mobile app for business clients, along with SEO work to grow organic traffic."
+            ]
+          },
+          {
+            "company": "Borusan Otomotiv",
+            "period": "Jan 2025 - May 2026",
+            "bullets": [
+              "Built RESTful APIs in the microservice backend of the BMW/MINI/Land Rover rental platform; CQRS, RabbitMQ, Redis, JWT.",
+              "SAP integration with Quartz.NET; versioned BFF endpoints for web and admin; MongoDB, Docker, Azure DevOps."
+            ]
+          },
+          {
+            "company": "Tezel Lojistik",
+            "period": "Aug 2023 - Jan 2025",
+            "bullets": [
+              "Full-stack .NET development for logistics operations: built shipment and partial-load tracking, warehouse, and order management modules end to end (ASP.NET Core + EF Core backend, web interfaces).",
+              "Monitoring and reporting screens for shipment statuses and RESTful API integrations; query and performance improvements on MSSQL."
+            ]
+          },
+          {
+            "company": "Negzel Teknoloji",
+            "period": "Apr 2022 - Aug 2023",
+            "bullets": [
+              "Built an internal project management platform in a 6-person team (ASP.NET MVC, EF Core), and added a semantic search module for natural-language search over documents (embedding + vector DB)."
+            ]
+          }
+        ]
+      },
+      "language": "English - Reading/Writing B2, Speaking B1"
     },
     "contact": {
       "label": "Contact",

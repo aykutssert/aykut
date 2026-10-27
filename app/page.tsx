@@ -25,7 +25,6 @@ export default function LandingPage() {
     '@id': `${siteUrl}/#person`,
     image: `${siteUrl}/my-face.webp`,
     name: 'Aykut Sert',
-    jobTitle: 'Full-Stack Developer',
     url: siteUrl,
     email: 'aykutssert@gmail.com',
     sameAs: [
@@ -42,10 +41,10 @@ export default function LandingPage() {
       name: 'Gebze Technical University',
     },
     knowsAbout: [
-      'C#', 'Go', 'TypeScript', 'Swift', 'Python',
-      'ASP.NET Core', 'Next.js', 'SwiftUI',
-      'MongoDB', 'PostgreSQL', 'Redis', 'RabbitMQ',
-      'Docker', 'Microservices', 'RAG', 'LLM',
+      'C#', 'Python', 'C++', 'ASP.NET Core', 'EF Core', 'Dapper',
+      'Microservices', 'Distributed Systems', 'REST', 'WebSocket', 'Caching', 'Rate limiting',
+      'MSSQL', 'PostgreSQL', 'MongoDB', 'Redis', 'RabbitMQ', 'Docker', 'CI/CD',
+      'Swift', 'SwiftUI', 'Next.js', 'LLM',
     ],
   }
 

@@ -7,63 +7,6 @@
     "blog": "Blog",
     "more": "Daha fazla"
   },
-  "pet": {
-    "click": [
-      "Merhaba!",
-      "Selam!",
-      "Seni görmek güzel!",
-      "Hehe!"
-    ],
-    "hover": [
-      "Merhaba!",
-      "Selam!",
-      "Hey!",
-      "Seni görmek güzel!"
-    ],
-    "grabbed": [
-      "Vay be!",
-      "Bırak beni!",
-      "Serbest bırak!",
-      "Hey!",
-      "Uçuş zamanı!"
-    ],
-    "thrown": [
-      "Ay!",
-      "Hey, dikkat et!",
-      "Acıttı!",
-      "Beni atma!",
-      "Deli misin?!",
-      "Kafam...",
-      "Neden yaptın bunu?"
-    ],
-    "idle": [
-      "Ne harika bir sayfa!",
-      "Sürüklemeyi dene!",
-      "Codex tarafından oluşturuldum.",
-      "Code review lazım mı?",
-      "Burası çok sessiz...",
-      "Tıkla bana!",
-      "Kod mu yazıyorsun?",
-      "Bloop."
-    ],
-    "typing_idle": "Ne yazıyoruz? 🤔",
-    "typing_slow": "Daha hızlı yaz! ⌨️",
-    "typing_comments": [
-      "Yazıma dikkat et! 🧐",
-      "Öyle yazılmıyor sanırım...",
-      "Vay be, ne hızlı yazıyorsun! ⚡",
-      "Derlediğinden emin ol!",
-      "İlginç..."
-    ],
-    "reading": [
-      "Hmm, ilginç...",
-      "Kopyalayacak mısın?",
-      "İyi okuma!",
-      "Ben de okuyordum!",
-      "Not alıyor musun?",
-      "Büyüleyici."
-    ]
-  },
   "landing": {
     "hero": {
       "text": "Aykut Sert",
@@ -192,10 +135,6 @@
       "cadie": {
         "title": "Dil öğrenme uygulaması",
         "description": "Aralıklı tekrar ve yapay zeka destekli geri bildirimle yeni diller öğreten mobil uygulama."
-      },
-      "scout": {
-        "title": "Yapay zeka ajanları için kod analizi",
-        "description": "Go ile yazılmış, repoları güvenlik, performans ve mimari sorunlar için tarayan npm aracı - yapay zeka kodlama ajanları için optimize edilmiş JSON çıktısı."
       }
     },
     "blog": {

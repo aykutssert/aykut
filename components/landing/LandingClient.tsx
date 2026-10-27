@@ -302,7 +302,7 @@ export function LandingClient({ recentBlogPosts }: Props) {
             </div>
             <div className="mt-auto space-y-2">
               <p className="text-[11px] font-mono text-muted-foreground/60">Swift · SwiftUI · SwiftData · AI · App Store</p>
-              <div className="grid gap-1.5 text-xs font-medium text-foreground">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs font-medium text-foreground">
                 <a href="https://apps.apple.com/us/app/my-pet-routine/id6768613964" target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 transition-colors hover:text-muted-foreground">
                   My Pet Routine <ExternalLink className="h-3 w-3" />
                 </a>
@@ -318,24 +318,6 @@ export function LandingClient({ recentBlogPosts }: Props) {
               </div>
             </div>
           </div>
-          </TiltCard>
-
-          <TiltCard>
-          <a href="/scout"
-            className="group flex h-full flex-col gap-3 rounded-xl border border-border bg-background p-5 transition-all duration-300 hover:border-foreground/15 hover:shadow-xl hover:shadow-foreground/5">
-            <div className="inline-flex w-fit items-center rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 dark:border-indigo-800/40 dark:bg-indigo-950/40 dark:text-indigo-300">
-              Scout
-            </div>
-            <div>
-              <h3 className="font-semibold tracking-tight">{t('projects.scout.title')}</h3>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">{t('projects.scout.description')}</p>
-            </div>
-            <p className="mt-auto text-[11px] font-mono text-muted-foreground/60">Go · AST · npm</p>
-            <div className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
-              <span className="group-hover:underline underline-offset-2">{t('projects.open')}</span>
-              <ExternalLink className="h-3 w-3" />
-            </div>
-          </a>
           </TiltCard>
 
         </StaggeredGrid>
